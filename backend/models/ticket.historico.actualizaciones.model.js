@@ -3,9 +3,10 @@ const mongoose = require("mongoose");
 const ticketHistoricoActualizaciones = new mongoose.Schema(
   {
     ticket_id             : {type: Number, defualt: null},
-    id_tipo_actualizacion : {type: Number, defualt: null},
-    valor_antiguo         : {type: String, default: null},
-    valor_nuevo           : {type: String, default: null}
+    flujo_paso_id         : {type: Number, defualt: null},
+    compleado_a           : {type: Date, default: null},
+    asignado_id           : {type: String, default: null},
+    esta_compleatado      : {type: Boolean, default: null}
   },
   {
     timestamps: 

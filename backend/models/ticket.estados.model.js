@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ticketEstados = new mongoose.Schema(
   {
     nombre          : {type: String, defualt: null},
     color           : {type: String, defualt: null},
-    creador_id      : {type: Number, default: null},
-    actualizador_id : {type: Number, default: null}
+    creador_id      : {type: ObjectId, default: null}
   },
   {
     timestamps: 
