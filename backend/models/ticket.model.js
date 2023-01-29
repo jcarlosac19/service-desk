@@ -8,10 +8,10 @@ const ticketSchema = new mongoose.Schema(
     estado_id       : { type: ObjectId, default: null },
     prioridad_id    : { type: ObjectId, default: null },
     creador_id      : { type: ObjectId, default: null },
-    asignado_id     : { type: ObjectId, default: null },
-    actualizador_id : { type: ObjectId, default: null},
-    completador_id  : { type: ObjectId, default: null },
+    categoria_id    : { type: ObjectId, default: null },
+    trabajo_flujo_id: { type: ObjectId, default: null },
     completado_a    : { type: Date, default: null },
+    esta_completado : { type: Boolean, default: false}
   },
   {
     timestamps: 

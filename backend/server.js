@@ -19,6 +19,8 @@ app.get("/", (req, res) => {
 
 app.use(authRoutes);
 
+
+
 app.use('/api/v1/tickets',
     [
       verifyToken.verifyToken,
