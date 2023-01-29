@@ -6,6 +6,7 @@ const ticketRoutes = require('./routes/ticket.routes');
 const authRoutes = require('./routes/auth.routes');
 const verifyAccessLevel = require('./middleware/access.level');
 const verifyToken = require('./middleware/jwt.auth');
+const config = require('./config/index').config;
 
 const app = express();
 require("./config/db.config").connect();
@@ -31,7 +32,7 @@ app.use('/api/v1/tickets',
 
 
 
-const port = process.env.PORT || '3000';
+const port = config.MONGO_PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app);
