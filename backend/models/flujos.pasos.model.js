@@ -3,10 +3,10 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const flujoPasos = new mongoose.Schema(
   {
-    nombre                      : {type: String, defualt: null},
-    order                       : {type: Number, default: null},
-    tiempo_respuesta_esperado   : {type: Number, default: null},
-    creador_id                  : {type: ObjectId, defualt: null}
+    nombre                          : {type: String, defualt: null},
+    order                           : {type: Number, default: null},
+    tiempo_respuesta_esperado_hrs   : {type: Number, default: null},
+    creador_id                      : {type: ObjectId, defualt: null}
   },
   {
     timestamps: 

@@ -6,7 +6,7 @@ const ticketHistoricoActualizaciones = new mongoose.Schema(
     flujo_paso_id         : {type: Number, defualt: null},
     compleado_a           : {type: Date, default: null},
     asignado_id           : {type: String, default: null},
-    esta_compleatado      : {type: Boolean, default: null}
+    esta_completado       : {type: Boolean, default: null}
   },
   {
     timestamps: 

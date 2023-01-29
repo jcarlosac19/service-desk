@@ -1,5 +1,4 @@
 const Categoria = require("../models/ticket.categorias.model");
-const mongoose = require("mongoose");
 
 exports.crearCategoria = async (req, res) => {
     currentUserId = req.user.user_id;
