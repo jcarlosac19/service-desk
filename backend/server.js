@@ -32,7 +32,7 @@ app.use('/api/v1/tickets',
 
 
 
-const port = config.MONGO_PORT || '3000';
+const port = config.NODE_PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app);
