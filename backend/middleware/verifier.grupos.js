@@ -7,7 +7,7 @@ gruposOpciones.verifyIfGroupExist = async (req, res, next) =>{
     await Grupos.findOne({ nombre })
     .then(grupo =>{
       if(grupo) {
-        res.status(409).send("Esta grupo ya existe, intente con otro nombre.");
+        res.status(409).send("Este grupo ya existe, intente con otro nombre.");
         return;
       }
       next();

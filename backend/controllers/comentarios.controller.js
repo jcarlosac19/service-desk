@@ -16,4 +16,26 @@ exports.crearComentario = async (req, res) => {
     .catch((err)=>{
         res.status(400).send(err)
     })
-}
+};
+
+exports.obtenerComentarios = async (req, res) => {
+
+    await Comentario.find()
+    .then(comentarios => {
+        res.status(200).send(comentarios);
+    })
+    .catch(err => {
+        res.status(400).send(`El ticket id: ${ticket_id} no tiene ningun comentario.`)
+    })
+};
+
+exports.obtenerComentarioByTicketId = async (req, res) => {
+    const id = req.params.id;
+    await Comentario.find({ ticket_id: id })
+    .then(comentarios => {
+        res.status(200).send(comentarios);
+    })
+    .catch(err => {
+        res.status(400).send(`El ticket id: ${ticket_id} no tiene ningun comentario.`)
+    })
+};

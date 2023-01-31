@@ -3,7 +3,6 @@ const Usuario = require("../models/usuario.model");
 const auth = require("../middleware/jwt.auth");
 
 exports.register = async (req, res) => {
-
   try {
     const { nombres, apellidos, email, password } = req.body;
     encryptedPassword = await bcrypt.hash(password, 10);

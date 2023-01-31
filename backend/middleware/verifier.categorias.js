@@ -1,6 +1,5 @@
 const Categorias = require("../models/ticket.categorias.model");
 const Grupos = require("../models/ticket.grupos.model");
-const gruposOpciones = require("./verify.grupos");
 
 let categoriasOpciones = {}
 
@@ -21,8 +20,8 @@ categoriasOpciones.verifyIfCategoryExist = async (req, res, next) =>{
 };
 
 categoriasOpciones.verifyIfGroupIdExist = async (req, res, next) => {
-  const { group_id } = req.body;
-  await Grupos.findOne({ group_id })
+  const { grupo_id } = req.body;
+  await Grupos.findById( grupo_id )
   .then(grupo =>{
     if(!grupo){
       res.status(400).send("El grupo que ingreso no existe.");

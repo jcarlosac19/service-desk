@@ -2,13 +2,26 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const ticketRoutes = require('./routes/ticket.routes');
-const authRoutes = require('./routes/auth.routes');
-const verifyAccessLevel = require('./middleware/access.level');
-const verifyToken = require('./middleware/jwt.auth');
 const config = require('./config/index').config;
 
+//Routes
+const ticketRoutes = require('./routes/ticket.routes');
+const authRoutes = require('./routes/auth.routes');
+const categoriasRoutes = require('./routes/categorias.routes');
+const gruposRoutes = require('./routes/grupos.routes');
+const prioridadesRoutes = require('./routes/prioridades.routes');
+const flujosRoutes = require('./routes/flujos.routes');
+const pasosRoutes = require('./routes/flujos.pasos.routes');
+const estadosRoutes = require('./routes/estados.router');
+const comentariosRoutes = require('./routes/comentarios.routes');
+const historicoRoutes = require('./routes/historico.routes');
+
+//Middlewares
+const verifyAccessLevel = require('./middleware/access.level');
+const verifyToken = require('./middleware/jwt.auth');
+
 const app = express();
+
 require("./config/db.config").connect();
 
 app.use(bodyParser.json());
@@ -20,19 +33,25 @@ app.get("/", (req, res) => {
 
 app.use(authRoutes);
 
-
-
-app.use('/api/v1/tickets',
+app.use('/api/v1',
     [
       verifyToken.verifyToken,
       verifyAccessLevel.isActive
     ],
-      ticketRoutes
+      [
+        ticketRoutes,
+        categoriasRoutes,
+        gruposRoutes,
+        prioridadesRoutes,
+        flujosRoutes,
+        pasosRoutes,
+        estadosRoutes,
+        comentariosRoutes,
+        historicoRoutes
+      ]
 );
 
-
-
-const port = config.MONGO_PORT || '3000';
+const port = config.PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app);
