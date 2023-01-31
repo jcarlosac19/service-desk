@@ -1,0 +1,45 @@
+.navbar-container  {
+  background-color: white;
+  padding: 1.8rem 3rem;
+  display: flex;
+  border-radius: 1rem;
+  width: 100%;
+  height: 3rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3.5rem;
+  box-shadow: 9px 10px 26px -6px rgba(170,170,170,0.74);
+  -webkit-box-shadow: 9px 10px 26px -6px rgba(170,170,170,0.74);
+  -moz-box-shadow: 9px 10px 26px -6px rgba(170,170,170,0.74);
+}
+
+.container-logo  {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.image-logo  {
+  width: 50px;
+  max-width: 100%;
+  height: 30px;
+}
+
+.container-list ul {
+  display: flex;
+  list-style: none;
+  gap: 3rem;
+  font-size: 1rem;
+}
+
+.navitem a  {
+  padding: 1rem;
+  cursor: pointer;
+  transition: color ease-in 400ms;
+}
+
+.navitem a:hover {
+  color: blue;
+}
+
