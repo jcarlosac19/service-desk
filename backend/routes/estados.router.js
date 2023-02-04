@@ -31,4 +31,30 @@ app.get("/estados/:id",
     estadosController.obtenerEstadoPorId
 );
 
+app.put("/estados/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    estadosController.actualizarEstado
+)
+
+
+app.delete("/estados/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    estadosController.cambiarDisponibilidadDeUnEstado
+)
+
+app.put("/estados/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    estadosController.cambiarDisponibilidadDeUnEstado
+)
+
+
 module.exports = app;

@@ -5,7 +5,7 @@ const verifySignIn = require("../middleware/verifier.sign.in")
 const app = Router();
 
 app.post( 
-    "/api/login",
+    "/login",
     [
         verifySignIn.verifyRequiredFields
     ], 
@@ -13,7 +13,7 @@ app.post(
 );
 
 app.post( 
-    "/api/register",
+    "/register",
     [
         verifySignUp.verifyIfUserExist, 
         verifySignUp.verifyRequiredFields

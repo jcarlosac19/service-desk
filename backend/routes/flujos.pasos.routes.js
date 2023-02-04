@@ -16,7 +16,7 @@ app.post("/flujos/pasos",
     pasosController.crearPaso
 );
 
-app.get("/flujos/pasos",
+app.get("/pasos",
     [
         verifyAccessLevel.isAdmin,
         verifyAccessLevel.isUser
@@ -24,12 +24,37 @@ app.get("/flujos/pasos",
     pasosController.obtenerPasos
 );
 
-app.get("/flujos/pasos/:id",
+app.get("/pasos/:id",
     [
         verifyAccessLevel.isAdmin,
         verifyAccessLevel.isUser
     ],
     pasosController.obtenerPasosPorId
 );
+
+app.put("/pasos/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    pasosController.actualizarPaso
+);
+
+app.delete("/pasos/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    pasosController.cambiarDisponibilidadDeUnPaso
+)
+
+app.put("/pasos/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    pasosController.cambiarDisponibilidadDeUnPaso
+)
+
 
 module.exports = app;

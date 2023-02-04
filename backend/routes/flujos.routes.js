@@ -31,4 +31,28 @@ app.get("/flujos/:id",
     flujosController.obtenerFlujoPorId
 );
 
+app.put("/flujos/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    flujosController.modificarFlujo
+);
+
+app.delete("/flujos/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    flujosController.cambiarDisponibilidadDeUnFlujo
+)
+
+app.put("/flujos/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    flujosController.cambiarDisponibilidadDeUnFlujo
+)
+
 module.exports = app;

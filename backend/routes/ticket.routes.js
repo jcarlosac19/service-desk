@@ -32,5 +32,29 @@ app.get("/tickets/:id",
     ticketsController.obtenerTicketPorId
 );
 
+app.put("/tickets/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    ticketsController.actualizarTicket
+);
+
+app.delete("/tickets/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    ticketsController.cambiarDisponibilidadDeUnTicket
+)
+
+app.put("/ticket/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    ticketsController.cambiarDisponibilidadDeUnTicket
+)
+
 module.exports = app;
 

@@ -34,4 +34,14 @@ categoriasOpciones.verifyIfGroupIdExist = async (req, res, next) => {
   });
 };
 
+categoriasOpciones.verifyRequiredFields = async (req, res, next) => {
+  const { nombre, color, grupo_id } = req.body;
+  hasRequestAllRequiredFields = nombre && color && grupo_id;
+    if (!hasRequestAllRequiredFields) {
+      res.status(400).send("Todos los campos son requeridos.");
+      return;
+    }
+  next();
+};
+
 module.exports = categoriasOpciones

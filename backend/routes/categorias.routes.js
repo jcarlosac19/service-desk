@@ -8,6 +8,7 @@ app.post("/categorias",
 [
     verifyAccessLevel.isAdmin,
     verifyAccessLevel.isUser,
+    verifyCategory.verifyRequiredFields,
     verifyCategory.verifyIfCategoryExist,
     verifyCategory.verifyIfGroupIdExist
 ],
@@ -29,5 +30,29 @@ app.get("/categorias/:id",
     ],
     categoriaController.obtenerCategoriaPorId
 );
+
+app.put("/categorias/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    categoriaController.actualizarCategoria
+);
+
+app.delete("/categorias/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    categoriaController.cambiarDisponibilidadDeUnaCategoria
+)
+
+app.put("/categorias/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    categoriaController.cambiarDisponibilidadDeUnaCategoria
+)
 
 module.exports = app;

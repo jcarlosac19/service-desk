@@ -19,14 +19,13 @@ gruposOpciones.verifyIfGroupExist = async (req, res, next) =>{
 };
 
 gruposOpciones.verifyRequiredFields = (req, res, next) => {
-  const { nombres, color } = req.body;
-  hasRequestAllRequiredFields = nombres && color
+  const { nombre, color } = req.body;
+  hasRequestAllRequiredFields = nombre && color
   if (!hasRequestAllRequiredFields) {
       res.status(400).send("Todos los campos son requeridos.");
       return;
     }
   next();
-
 };
 
 module.exports = gruposOpciones

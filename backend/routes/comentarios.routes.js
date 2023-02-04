@@ -29,4 +29,28 @@ app.get("/comentarios/:id",
     comentariosController.obtenerComentarioByTicketId
 );
 
+app.put("/comentarios/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    comentariosController.actualizarComentario
+);
+
+app.delete("/comentarios/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    comentariosController.cambiarDisponibilidadDeUnComentario
+)
+
+app.put("/comentarios/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    comentariosController.cambiarDisponibilidadDeUnComentario
+)
+
 module.exports = app;

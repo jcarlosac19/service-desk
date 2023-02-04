@@ -31,4 +31,29 @@ app.get("/prioridades/:id",
     prioridadesController.obtenerPrioridadPorId
 );
 
+
+app.put("/prioridades/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    prioridadesController.actualizarPrioridad
+);
+
+app.delete("/prioridades/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    prioridadesController.cambiarDisponibilidadDeUnaPrioridad
+)
+
+app.put("/prioridades/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    prioridadesController.cambiarDisponibilidadDeUnaPrioridad
+)
+
 module.exports = app;

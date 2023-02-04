@@ -5,7 +5,9 @@ const ticketEstados = new mongoose.Schema(
   {
     nombre          : {type: String, defualt: null, unique: true},
     color           : {type: String, defualt: null},
-    creador_id      : {type: ObjectId, default: null}
+    modificador_id  : {type: ObjectId, default: null},
+    creador_id      : {type: ObjectId, default: null},
+    esta_eliminado  : {type: Boolean, default: false}
   },
   {
     timestamps: 

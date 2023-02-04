@@ -18,10 +18,11 @@ exports.register = async (req, res) => {
 
     const token = auth.createToken(user._id, email);
 
-    res.status(201).send("Se creo la cuenta exitosamente.").json({
-      Token: `Bearer ${token}`,
-      Role: user.role
-    });
+    res.status(201).send(
+      {
+        message: "Se creo la cuenta exitosamente.",
+        token: `Bearer ${token}`
+      });
 
     } catch (err) {
       res.status(400).send("Hubo un error inesperado.")
@@ -38,8 +39,8 @@ exports.login = async (req, res) => {
       user.token = token;
 
       res.status(200).json({
-        Success: true,
-        Token: `Bearer ${token}`,
+        message: "Las credenciales han sido validadas.",
+        token: `Bearer ${token}`,
         Role: user.role
       });
     } else {

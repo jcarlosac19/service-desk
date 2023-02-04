@@ -21,6 +21,7 @@ const verifyAccessLevel = require('./middleware/access.level');
 const verifyToken = require('./middleware/jwt.auth');
 
 const app = express();
+const urlPrefix = '/api/v1';
 
 require("./config/db.config").connect();
 
@@ -31,9 +32,9 @@ app.get("/", (req, res) => {
     res.json({ message: "La API esta corriendo..." });
   });
 
-app.use(authRoutes);
+app.use(urlPrefix,authRoutes);
 
-app.use('/api/v1',
+app.use(urlPrefix,
     [
       verifyToken.verifyToken,
       verifyAccessLevel.isActive

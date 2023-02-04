@@ -7,9 +7,10 @@ const grupoController = require("../controllers/grupos.controller");
 const app = Router();
 
 app.post("/grupos",
-    [   verifyGroups.verifyRequiredFields,
+    [   
         verifyAccessLevel.isAdmin,
         verifyAccessLevel.isUser,
+        verifyGroups.verifyRequiredFields,
         verifyGroups.verifyIfGroupExist
     ],
     grupoController.crearGrupo
@@ -31,5 +32,28 @@ app.get("/grupos/:id",
     grupoController.obtenerGrupoPorId
 );
 
+app.put("/grupos/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    grupoController.modificarGrupo
+)
+
+app.delete("/grupos/eliminar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    grupoController.cambiarDisponibilidadDeUnGrupo
+)
+
+app.put("/grupos/restaurar/:id",
+    [
+        verifyAccessLevel.isAdmin,
+        verifyAccessLevel.isUser
+    ],
+    grupoController.cambiarDisponibilidadDeUnGrupo
+)
 
 module.exports = app;
