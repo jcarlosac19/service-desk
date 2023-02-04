@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ticketPrioridades = new mongoose.Schema(
   {
-    nombre    : {type: String, defualt: null},
-    color     : {type: String, defualt: null},
-    creador_id: {type: Number, default: null}
+    nombre          : {type: String, defualt: null},
+    color           : {type: String, defualt: null},
+    modificador_id  : {type: ObjectId, default: null},
+    esta_eliminado  : {type: Boolean, default: false},
+    creador_id      : {type: ObjectId, default: null}
   },
   {
     timestamps: 
@@ -15,4 +18,4 @@ const ticketPrioridades = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("ticket_prioridad", ticketPrioridades);
+module.exports = mongoose.model("ticket_prioridade", ticketPrioridades);

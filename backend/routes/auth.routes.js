@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const controller = require("../controllers/user.auth.controller");
-const verifySignUp = require("../middleware/verify.sign.up")
-const verifySignIn = require("../middleware/verify.sign.in")
+const verifySignUp = require("../middleware/verifier.sign.up")
+const verifySignIn = require("../middleware/verifier.sign.in")
 const app = Router();
 
 app.post( 
-    "/api/login",
+    "/login",
     [
         verifySignIn.verifyRequiredFields
     ], 
@@ -13,7 +13,7 @@ app.post(
 );
 
 app.post( 
-    "/api/register",
+    "/register",
     [
         verifySignUp.verifyIfUserExist, 
         verifySignUp.verifyRequiredFields
