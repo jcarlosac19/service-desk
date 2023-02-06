@@ -54,6 +54,9 @@ exports.actualizarCategoria = async (req, res) => {
         ...( grupo_id   && { grupo_id })
     }
 
+    const modificador = req.user.user_id;
+    update.modificador_id = modificador;
+
     await Categoria.findOneAndUpdate(
         filter, update, {
         new: true

@@ -56,6 +56,9 @@ exports.actualizarPrioridad = async (req, res) => {
         ...( color  && { color  })
     }
 
+    const modificador = req.user.user_id;
+    update.modificador_id = modificador;
+
     await Prioridad.findOneAndUpdate(
         filter, update, {
         new: true

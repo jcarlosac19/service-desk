@@ -3,14 +3,16 @@ const TicketHistorico = require("../models/ticket.historico.actualizaciones.mode
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
 
-    const {ticket_id, flujo_paso_id,completado_a,asignado_id,esta_completado} = req.body;
+    const { ticket_id, flujo_paso_id, asignado_id } = req.body;
 
      await TicketHistorico.create({
         ticket_id: ticket_id,
         flujo_paso_id: flujo_paso_id,
         completado_a: null,
         asignado_id: asignado_id,
-        esta_completado: false
+        esta_completado: false,
+        modificador_id: null,
+        esta_eliminado: false
     })
     .then(()=>{
         res.status(201).send("La actualizacion se creo exitosamente.")
@@ -41,3 +43,5 @@ exports.obtenerHistoricoPorId = async (req, res) => {
         res.status(400).send(`El ticket id: ${id} no se pudo encontrar.`)
     })
   };
+
+  

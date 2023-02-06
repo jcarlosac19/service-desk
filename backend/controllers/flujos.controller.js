@@ -52,8 +52,8 @@ exports.modificarFlujo = async (req, res) => {
     }
 
     const modificador = req.user.user_id;
-
     update.modificador_id = modificador;
+    
     await Flujos.findOneAndUpdate(
         filter, update, {
         new: true

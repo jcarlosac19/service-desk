@@ -52,6 +52,9 @@ exports.actualizarComentario = async (req, res) => {
         ...( contenido  && { contenido  })
     }
 
+    const modificador = req.user.user_id;
+    update.modificador_id = modificador;
+
     await Comentario.findOneAndUpdate(
         filter, update, {
         new: true

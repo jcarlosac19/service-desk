@@ -5,9 +5,9 @@ const ticketComentario = new mongoose.Schema(
   {
     asunto            : {type: String, defualt: null},
     contenido         : {type: String, defualt: null},
-    user_id           : {type: ObjectId, default: null},
+    creador_id        : {type: ObjectId, default: null},
     ticket_id         : {type: ObjectId, default: null},
-    modificardor_id   : {type: ObjectId, default: null},
+    modificador_id    : {type: ObjectId, default: null},
     esta_eliminado    : {type: Boolean, default: false}
   },
   {

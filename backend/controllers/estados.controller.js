@@ -52,7 +52,8 @@ exports.actualizarEstado = async (req, res) => {
         ...(color   && { color  })
     }
 
-    console.log(update);
+    const modificador = req.user.user_id;
+    update.modificador_id = modificador;
     
     await Estados.findOneAndUpdate(
         filter, update, {
