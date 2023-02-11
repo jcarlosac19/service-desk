@@ -58,8 +58,8 @@ exports.modificarGrupo = async (req, res) => {
     console.log(update);
 
     const modificador = req.user.user_id;
-
     update.modificador_id = modificador;
+    
     await Grupos.findOneAndUpdate(
         filter, update, {
         new: true

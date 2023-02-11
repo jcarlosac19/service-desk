@@ -32,7 +32,7 @@ jwtActions.createToken = (id, email) => {
     },
       config.keys.secret,
     {
-      expiresIn: "2h",
+      expiresIn: config.keys.expiresIn,
     }
   );
 };
