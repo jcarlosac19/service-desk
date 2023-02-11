@@ -16,4 +16,11 @@ export class JwtService {
     window.localStorage.removeItem('jwtToken');
   }
 
+  saveAuthenticated(authenticated: boolean){
+    window.localStorage['authenticated'] = authenticated;
+  }
+
+  getAuthenticated(){
+    return window.localStorage['authenticated']
+  }
 }
