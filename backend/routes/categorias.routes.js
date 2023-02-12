@@ -45,7 +45,7 @@ app.delete("/categorias/eliminar/:id",
         verifyAccessLevel.isUser
     ],
     categoriaController.cambiarDisponibilidadDeUnaCategoria
-)
+);
 
 app.put("/categorias/restaurar/:id",
     [

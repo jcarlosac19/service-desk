@@ -19,7 +19,7 @@ exports.crearComentario = async (req, res) => {
 };
 
 exports.obtenerComentarios = async (req, res) => {
-    const eliminados = req.query.eliminados || true;
+    const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
     const activos = false;
     const filtro = { esta_eliminado: { $in: [activos, eliminados] } };
 
