@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~normalize.css';
+
+html  {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after  {
+  box-sizing: inherit;
+}
+
+body  {
+  background-color: #f2f2f2;
+  height: 100vh;
+  min-height: 100vh;
+}
+
+
+.container-logo  {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.image-logo  {
+  width: 50px;
+  max-width: 100%;
+  height: 30px;
+}
+
+.content  {
+  width: 100%;
+  height: 100vh;
+}
+
+.main-content  {
+  height: 92vh;
+  display: grid;
+  place-content: center;
+}

@@ -2,6 +2,7 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const config = require('./config/index').config;
 
 //Routes
@@ -27,6 +28,7 @@ require("./config/db.config").connect();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.json({ message: "La API esta corriendo..." });
@@ -52,7 +54,9 @@ app.use(urlPrefix,
       ]
 );
 
-const port = config.PORT || '3000';
+
+
+const port = config.NODE_PORT || '3000';
 app.set('port', port);
 
 const server = http.createServer(app);

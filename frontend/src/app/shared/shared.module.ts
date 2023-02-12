@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 
 import { ListErrorsComponent } from './list-errors.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ListErrorsComponent } from './list-errors.component';
   ],
   declarations: [
 
-    ListErrorsComponent
+    ListErrorsComponent,
+    SidebarComponent
   ],
   exports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { ListErrorsComponent } from './list-errors.component';
     ReactiveFormsModule,
     HttpClientModule,
     ListErrorsComponent,
-    RouterModule
+    RouterModule,
+    SidebarComponent
   ]
 })
 export class SharedModule {}

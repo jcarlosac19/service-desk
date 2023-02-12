@@ -1,15 +1,24 @@
 import { Component, OnInit } from "@angular/core";
+import {  } from "rxjs/operators";
 
-import { UserService } from "./core";
+import { JwtService, UserService } from "./core";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  isAutheticate: boolean = this.jwtService.getAuthenticated()  ?? false;
+  constructor(private userService: UserService, private jwtService: JwtService) {}
 
-  ngOnInit() {
+  isAuthenticated():void{debugger;
+    this.userService.isAuthenticated.subscribe({
+      next: authenticate => this.isAutheticate = authenticate
+    })
+  }
+
+  ngOnInit() {debugger;
     this.userService.populate();
+    this.isAuthenticated();
   }
 }

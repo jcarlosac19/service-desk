@@ -1,3 +1,11 @@
-
-
-<router-outlet></router-outlet>
+<main class="d-flex">
+  <div>
+    <app-sidebar *ngIf="isAutheticate"></app-sidebar>
+  </div>
+  <div class="content">
+    <!-- <div>
+      <app-navbar *ngIf="isAuthenticated"></app-navbar>
+    </div> -->
+    <router-outlet></router-outlet>
+  </div>
+</main>
