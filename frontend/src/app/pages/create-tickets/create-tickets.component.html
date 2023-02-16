@@ -1,1 +1,41 @@
-<p>create-tickets works!</p>
+<main class="main-content">
+  <h3 class="text-center">Crear Ticket</h3>
+  <hr class="mb-5" />
+  <section>
+    <form [formGroup]="ticketForm" (submit)="onSubmitTicket()" class="form-group bg-light rounded p-3">
+      <div class="grid-container">
+        <div>
+          <label class="form-label" for="prioritiesList">
+            Prioridad:
+            <select formControlName="prioritiesSelect" class="form-select" id="prioritiesList">
+              <option *ngFor="let priority of priorities" [value]="priority">
+                {{ priority }}
+              </option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label class="form-label" for="categoriesList">
+            Categorias:
+            <select formControlName="categoriesSelect" class="form-select" id="categoriesList">
+              <option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <label class="form-label" for="asunto">
+        Asunto:
+        <input formControlName="asunto" class="form-control mb-3" type="text" id="asunto" />
+      </label>
+      <label>
+        Contenido:
+        <textarea formControlName="contenido" class="form-control mb-3" style="height: 200px"></textarea>
+      </label>
+      <section class="d-flex justify-content-center w-100">
+        <button class="btn btn-lg btn-primary mb-2" type="submit">Crear Ticket</button>
+      </section>
+    </form>
+  </section>
+</main>
