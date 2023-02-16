@@ -12,9 +12,10 @@ jwtActions.verifyToken = (req, res, next) => {
     res.status(403).send("Un token es requerido para esta solicitud.");
     return;
   }
-  
+  const getScrypt = token.split(' ');
+  const loginToken = getScrypt.find(value => value !== 'Bearer');
   try {
-    const decoded = jwt.verify(token, config.keys.secret);
+    const decoded = jwt.verify(loginToken, config.keys.secret);
     req.user = decoded;
   } catch (err) {
     res.status(401).send("El token es invalido.");
