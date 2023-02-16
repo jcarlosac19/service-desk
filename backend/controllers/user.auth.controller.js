@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/usuario.model");
 const auth = require("../middleware/jwt.auth");
+const helper = require('../config/helpers');
 
 exports.register = async (req, res) => {
   try {
@@ -61,3 +62,17 @@ exports.login = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getUserByEmail = async(req, res) => {
+  const { email } = req.query;
+  try{
+    const user = await  Usuario.findOne({ email });
+    if(!helper.isNullOrWhiteSpace(user)){
+      res.status(200).json(user);
+      return;
+    };
+    res.status(400).json({ message: 'Is null or whitespace' });
+  }catch(err){
+    console.error(err);
+  }
+}
