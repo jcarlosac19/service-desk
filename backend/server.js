@@ -13,7 +13,7 @@ const gruposRoutes = require('./routes/grupos.routes');
 const prioridadesRoutes = require('./routes/prioridades.routes');
 const flujosRoutes = require('./routes/flujos.routes');
 const pasosRoutes = require('./routes/flujos.pasos.routes');
-const estadosRoutes = require('./routes/estados.router');
+const estadosRoutes = require('./routes/estados.routes');
 const comentariosRoutes = require('./routes/comentarios.routes');
 const historicoRoutes = require('./routes/historico.routes');
 
@@ -53,8 +53,6 @@ app.use(urlPrefix,
         historicoRoutes
       ]
 );
-
-
 
 const port = config.NODE_PORT || '3000';
 app.set('port', port);
