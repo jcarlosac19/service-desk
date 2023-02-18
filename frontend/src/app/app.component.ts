@@ -11,13 +11,13 @@ export class AppComponent implements OnInit {
   isAutheticate: boolean = this.jwtService.getAuthenticated()  ?? false;
   constructor(private userService: UserService, private jwtService: JwtService) {}
 
-  isAuthenticated():void{debugger;
+  isAuthenticated():void{
     this.userService.isAuthenticated.subscribe({
       next: authenticate => this.isAutheticate = authenticate
     })
   }
 
-  ngOnInit() {debugger;
+  ngOnInit() {
     this.userService.populate();
     this.isAuthenticated();
   }

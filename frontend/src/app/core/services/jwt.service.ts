@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserResponse } from '../interfaces/user.interface';
 
 
 @Injectable()
@@ -10,6 +11,13 @@ export class JwtService {
 
   saveToken(token: String) {
     window.localStorage['jwtToken'] = token;
+  }
+  saveUserInfo(userInfo: UserResponse) {
+    window.localStorage['userInfo'] = JSON.stringify(userInfo);
+  }
+
+  getUserInfo(): string {
+    return window.localStorage['userInfo'];
   }
 
   destroyToken() {

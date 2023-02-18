@@ -9,7 +9,7 @@ import { UserService } from '../core';
 export class HomeComponent implements OnInit {
   isAutheticate: boolean = false;
 
-  isAuthenticated():void{debugger;
+  isAuthenticated():void{
     this.userService.isAuthenticated.subscribe({
       next: authenticate => this.isAutheticate = authenticate
     })
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private userService: UserService){}
   
-  ngOnInit(): void {debugger;
+  ngOnInit(): void {
     this.isAuthenticated();  
   }
 
