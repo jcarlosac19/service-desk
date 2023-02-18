@@ -23,5 +23,5 @@ interface UserInfo  {
 }
 
 export interface GetUserResponse {
-  user: User
+  user: UserResponse
 }
