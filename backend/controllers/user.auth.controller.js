@@ -5,7 +5,7 @@ const helper = require('../config/helpers');
 
 exports.register = async (req, res) => {
   try {
-    const { nombres, apellidos, email, password, isAdministrator } = req.body;
+    const { nombres, apellidos, email, password, isAdministrator, isUser } = req.body;
     encryptedPassword = await bcrypt.hash(password, 10);
     const user = await Usuario.create({
       nombres,
@@ -13,7 +13,7 @@ exports.register = async (req, res) => {
       email: email.toLowerCase(),
       password: encryptedPassword,
       es_administrador: isAdministrator,
-      es_usuario: !isAdministrator,
+      es_usuario: isAdministrator ? isAdministrator : isUser,
       esta_activo: true
     });
 

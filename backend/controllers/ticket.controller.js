@@ -22,10 +22,10 @@ exports.crearTicket = async (req, res) => {
           esta_eliminado  : false
       })
       .then(()=>{
-        res.status(201).send("El ticket se creo exitosamente.")
+        res.status(201).json({error: '', message: "Ticket creado exitosamente."})
       })
       .catch((err)=>{
-          res.status(400).send({error: err, message: "Hubo un error al crear el ticket."})
+          res.status(400).json({error: err, message: "Hubo un error al crear el ticket."})
       });
 };
 
