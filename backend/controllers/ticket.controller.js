@@ -1,5 +1,6 @@
 const Ticket = require("../models/ticket.model");
 const Pasos = require("../models/flujos.pasos.model");
+const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
 const Estados = require("../models/ticket.estados.model");
 const Comentarios = require("../models/ticket.comentario.model");
 
@@ -10,24 +11,45 @@ exports.crearTicket = async (req, res) => {
     const { asunto, contenido, estado_id, prioridad_id, categoria_id } = req.body
     const { trabajo_flujo_id } = req.body
 
-    await Ticket.create({
-          asunto          : asunto,
-          contenido       : contenido,
-          estado_id       : estado_id,
-          prioridad_id    : prioridad_id,
-          categoria_id    : categoria_id,
-          trabajo_flujo_id: trabajo_flujo_id,
-          creador_id      : currentUserId,
-          modificador_id  : null,
-          esta_eliminado  : false
-      })
-      .then(()=>{
+    try{
+        const ticket = await Ticket.create({
+            asunto,
+            contenido,
+            estado_id,
+            prioridad_id,
+            categoria_id,
+            trabajo_flujo_id,
+            creador_id      : currentUserId,
+            modificador_id  : null,
+            esta_eliminado  : false
+        });
+
+        const transaccion = new TicketHistorico({
+            ticket_id: ticket._id,
+            creador_id: ticket.creador_id,
+            esta_completado: false,
+            flujo_paso_id: ticket.trabajo_flujo_id,
+            esta_eliminado: false,
+        });
+
+        await transaccion.save();
         res.status(201).json({error: '', message: "Ticket creado exitosamente."})
-      })
-      .catch((err)=>{
-          res.status(400).json({error: err, message: "Hubo un error al crear el ticket."})
-      });
+    }catch(err){
+        res.status(400).json({error: err, message: "Hubo un error al crear el ticket."})
+    }
 };
+
+Ticket.schema.post('create', async function (doc, next) {
+    const transaccion = new TicketHistorico({
+      ticket_id: doc._id,
+      creador_id: doc.creador_id,
+      esta_completado: false,
+      flujo_paso_id: doc.trabajo_flujo_id,
+      esta_eliminado: false,
+    });
+    await transaccion.save();
+    next();
+  });
 
 
 exports.obtenerTickets = async (req, res) => {
