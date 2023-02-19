@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Errors, UserService } from '../core';
 import { User, UserResponse } from '../core/interfaces/user.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth-page',
@@ -43,7 +43,8 @@ export class AuthComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastr: ToastrService
   ) {
     // use FormBuilder to create a form group
     this.authForm = this.fb.group({
@@ -90,6 +91,7 @@ export class AuthComponent implements OnInit {
       this.userService.attemptAuth(this.authType, password, email).subscribe({
         next: (response) => {
           this.userResponse = response;
+          this.toastr.success(this.userResponse.message, 'Login exitoso');
           this.router.navigateByUrl('/my-tickets');
         },
         error: (err) => console.log(err),

@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TicketService } from 'src/app/core';
 import { KeyMap } from 'src/app/core/interfaces/sidebar.links.interface';
+import { ToastrService } from 'ngx-toastr';
 import {
   CreateTicket,
+  TicketPostResponse,
   TicketSelect,
 } from 'src/app/core/interfaces/ticket.interface';
 
@@ -29,6 +31,9 @@ export class CreateTicketsComponent {
   ticketForm: FormGroup;
   priorities: string[] = ['Alto', 'Medio', 'Bajo'];
   categories: string[] = ['Reclamo', 'Solicitud', 'Informacion'];
+  ticketResponse: TicketPostResponse = {
+    message: '',
+  };
   status = {
     pendiente: '63ed84d64aaa4014a8cf51d7',
     enProceso: '63ed84ed4aaa4014a8cf51dc',
@@ -48,7 +53,7 @@ export class CreateTicketsComponent {
     informacion: '63ec418483bf4769f2e184a4',
   };
 
-  constructor(private ticketService: TicketService) {
+  constructor(private ticketService: TicketService, private toastr: ToastrService) {
     this.ticketForm = new FormGroup({
       prioritiesSelect: new FormControl(this.priorities),
       categoriesSelect: new FormControl(this.categories),
@@ -62,8 +67,16 @@ export class CreateTicketsComponent {
     const ticketRequest: TicketSelect = this.ticketForm.value;
     const request: CreateTicket = this.materializeTicketRequest(ticketRequest);
     this.ticketService.createTicket(request).subscribe({
-      next: (response) => console.log(response),
-      error: (err) => console.log(err),
+      next: (response) => {
+        this.ticketResponse = response;
+        this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
+        this.ticketForm.reset();
+      },
+      error: (err) => {
+        console.log(err);
+        this.toastr.error(err?.error?.message, 'Error al crear ticket');
+        this.ticketForm.reset();
+      },
     });
   }
 
