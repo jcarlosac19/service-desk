@@ -7,7 +7,7 @@ import { CoreModule } from './core';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
-import { NavbarModule } from './navbar/navbar.module';
+import { NavbarModule } from './shared/navbar/navbar.module';
 import { PagesModule } from './pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';

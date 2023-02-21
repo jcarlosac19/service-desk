@@ -32,6 +32,7 @@ export class AuthComponent implements OnInit {
     message: '',
     token: '',
     userInfo: {
+      _id: '',
       email: '',
       nombres: '',
       apellidos: '',

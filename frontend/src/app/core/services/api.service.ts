@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../env/env';
-import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-
 import { JwtService } from './jwt.service';
 import { catchError } from 'rxjs/operators';
+import { ApiOptions } from '../interfaces/ticket.interface';
+import * as helper from '../helpers';
 
 @Injectable()
 export class ApiService<T> {
@@ -14,9 +15,15 @@ export class ApiService<T> {
     return throwError(error.error);
   }
 
-  get(path: string, params: HttpParams = new HttpParams()): Observable<T> {
+  get(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders()): Observable<T> {debugger;
     return this.http
-      .get<T>(`${environment.api_url}${path}`, { params })
+      .get<T>(`${environment.api_url}${path}`, { params, headers })
+      .pipe(catchError(this.formatErrors));
+  }
+
+  getAll(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders()): Observable<T[]> {
+    return this.http
+      .get<T[]>(`${environment.api_url}${path}`, { headers, params })
       .pipe(catchError(this.formatErrors));
   }
 

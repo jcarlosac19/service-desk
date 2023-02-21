@@ -49,6 +49,7 @@ exports.login = async (req, res) => {
         message: "Las credenciales han sido validadas.",
         token: `Bearer ${token}`,
         userInfo: {
+          _id: user._id,
           nombres: user.nombres,
           apellidos: user.apellidos,
           email: user.email,

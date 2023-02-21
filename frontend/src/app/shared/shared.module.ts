@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 import { ListErrorsComponent } from './list-errors.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TableComponent } from './table/table.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
 
     ListErrorsComponent,
-    SidebarComponent
+    SidebarComponent,
+    TableComponent
   ],
   exports: [
     CommonModule,

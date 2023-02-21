@@ -8,7 +8,8 @@ import { JwtService, UserService } from "./core";
   templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
-  isAutheticate: boolean = this.jwtService.getAuthenticated()  ?? false;
+  private evaluateLS:string = this.jwtService.getAuthenticated() ?? 'false';
+  private isAutheticate: boolean = this.evaluateLS === 'true';
   constructor(private userService: UserService, private jwtService: JwtService) {}
 
   isAuthenticated():void{
@@ -17,7 +18,15 @@ export class AppComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  setAuthenticate(value: boolean) {
+    this.isAutheticate = value;
+  }
+
+  get getAuthenticate(): boolean {
+    return this.isAutheticate;
+  }
+
+  ngOnInit() {debugger;
     this.userService.populate();
     this.isAuthenticated();
   }

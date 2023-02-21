@@ -5,11 +5,11 @@ import { UserResponse } from '../interfaces/user.interface';
 @Injectable()
 export class JwtService {
 
-  getToken(): String {
+  getToken(): string {
     return window.localStorage['jwtToken'];
   }
 
-  saveToken(token: String) {
+  saveToken(token: string) {
     window.localStorage['jwtToken'] = token;
   }
   saveUserInfo(userInfo: UserResponse) {
@@ -20,8 +20,10 @@ export class JwtService {
     return window.localStorage['userInfo'];
   }
 
-  destroyToken() {
+  destroyAuthetication() {debugger;
     window.localStorage.removeItem('jwtToken');
+    window.localStorage.removeItem('userInfo');
+    window.localStorage.removeItem('authenticated');
   }
 
   saveAuthenticated(authenticated: boolean){

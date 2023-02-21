@@ -5,6 +5,8 @@ import { map, distinctUntilChanged } from 'rxjs/operators';
 import { GetUserResponse, UserResponse } from '../interfaces/user.interface';
 import * as helper from '../helpers';
 import { HttpParams } from '@angular/common/http';
+import { ApiOptions } from '../interfaces/ticket.interface';
+import { AppComponent } from 'src/app/app.component';
 
 @Injectable()
 export class UserService {
@@ -21,26 +23,31 @@ export class UserService {
   constructor(
     private apiService: ApiService<GetUserResponse>,
     private postApiService: ApiService<UserResponse>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   // Verify JWT in localstorage with server & load user's info.
   // This runs once on application startup.
   populate() {
-    debugger;
     // If JWT detected, attempt to get & store user's info
-    const token = this.jwtService.getToken();
-    const user = JSON.parse(this.jwtService?.getUserInfo());
-    if (helper.isNullOrUndefined(user)) console.error('No email found in token')
-    if (!helper.isNullOrUndefined(token)) {
-      const params = new HttpParams();
-      params.set('email', user.userInfo.email);
-      this.apiService.get(`/get-user-by-email`, params).subscribe({
-        next: (data) => {
-          this.setAuth(data.user);
-        },
-        error: (err) => this.purgeAuth(),
-      });
+    const token = this.jwtService.getToken() ?? '';
+    const userInfo = this.jwtService.getUserInfo() ?? '{}';
+    const user:UserResponse = JSON.parse(userInfo) ?? '{}';
+    const isAuthenticate = this.jwtService.getAuthenticated() ?? 'false';
+    if (!helper.isFullObject(user)) {
+      this.purgeAuth();
+      return;
+    }
+    if (!helper.isNullOrWhitespace(token) && helper.isFullObject(user)) {
+      const params = new HttpParams().set('email', user.userInfo.email);
+      
+      debugger;
+      // this.apiService.get(`/get-user-by-email`, params).subscribe({
+      //   next: (data) => {debugger;
+      //     this.setAuth(data.user);
+      //   },
+      //   error: (err) => this.purgeAuth(),
+      // });
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
@@ -68,18 +75,17 @@ export class UserService {
 
     return this.postApiService.post(route, request).pipe(
       map((data) => {
-        debugger;
         this.setAuth(data);
         return data;
       })
     );
   }
 
-  setAuth(user: UserResponse) {
-    debugger;
+  setAuth(user: UserResponse) {debugger;
     // Save JWT sent from server in localstorage
     this.jwtService.saveToken(user.token!);
     this.jwtService.saveUserInfo(user);
+    this.jwtService.saveAuthenticated(true);
     // Set current user data into observable
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
@@ -88,7 +94,7 @@ export class UserService {
 
   purgeAuth() {
     // Remove JWT from localstorage
-    this.jwtService.destroyToken();
+    this.jwtService.destroyAuthetication();
     // Set current user to an empty object
     this.currentUserSubject.next({} as UserResponse);
     // Set auth status to false
@@ -104,8 +110,7 @@ export class UserService {
     return this.postApiService
       .post(`${route}`, { password: credentials, email })
       .pipe(
-        map((data) => {
-          debugger;
+        map((data) => {debugger;
           this.setAuth(data);
           return data;
         })

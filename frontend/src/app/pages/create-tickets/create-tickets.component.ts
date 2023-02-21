@@ -63,7 +63,6 @@ export class CreateTicketsComponent {
   }
 
   onSubmitTicket() {
-    debugger;
     const ticketRequest: TicketSelect = this.ticketForm.value;
     const request: CreateTicket = this.materializeTicketRequest(ticketRequest);
     this.ticketService.createTicket(request).subscribe({
