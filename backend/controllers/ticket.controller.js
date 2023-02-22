@@ -3,6 +3,11 @@ const Pasos = require("../models/flujos.pasos.model");
 const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
 const Estados = require("../models/ticket.estados.model");
 const Comentarios = require("../models/ticket.comentario.model");
+const Prioridad = require("../models/ticket.prioridades.model");
+const Categoria = require("../models/ticket.categorias.model");
+const Flujo = require("../models/flujos.model");
+const Usuario = require("../models/usuario.model");
+
 
 exports.crearTicket = async (req, res) => {
 
@@ -53,66 +58,21 @@ Ticket.schema.post('create', async function (doc, next) {
 
 
 exports.obtenerTickets = async (req, res) => {
-    const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
-    const activos = false;
-    Ticket.aggregate([
-        {
-            $match: 
-            { 
-                esta_eliminado: { $in: [activos, eliminados] } 
-            }
-        },
-        {
-            $lookup: 
-                {
-                    from: "ticket_comentarios",
-                    localField: "_id",
-                    foreignField: "ticket_id",
-                    as: "comentarios"
-                },
-        },
-        {
-            $lookup: 
-                {
-                    from: "ticket_historico_actualizaciones",
-                    localField: "_id",
-                    foreignField: "ticket_id",
-                    as: "flujo_actual"
-                }
-        },
-        {
-            $project: {
-                asunto: 1,
-                contenido: 1,
-                estado_id: 1,
-                prioridad_id: 1,
-                creador_id: 1,
-                categoria_id: 1,
-                trabajo_flujo_id: 1,
-                modificador_id: 1,
-                esta_eliminado: 1,
-                flujo_actual: 1,
-                comentarios: {
-                    $filter: {
-                        input: "$comentarios",
-                        as: "item",
-                        cond: {
-                            $or: [
-                                {$eq: ["$$item.esta_eliminado", eliminados]},
-                                {$eq: ["$$item.esta_eliminado", activos]}
-                            ]
-                        }
-                    }
-                },
-            }
-        }
-    ]).exec(async (err, docs)=>{
-        if (err) return res.status(400).send("Hubo un error."); 
-        var ticketsWithComments = await Promise.all(docs.map(doc => {
-            return doc;
-        }));
-        res.status(200).send(ticketsWithComments);
-    });
+    // const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
+    // const activos = false;
+    Ticket.find()
+          .populate('estado_id')
+          .populate('prioridad_id')
+          .populate('categoria_id')
+          .populate('creador_id')
+          .populate('modificador_id')
+          .populate('trabajo_flujo_id')
+          .exec((err, docs)=>{
+            console.log(err);
+            if (err) return res.status(400).send("Hubo un error."); 
+            console.log(docs);
+            return res.status(200).send(docs);
+        });
 };
 
 exports.obtenerTicketPorId = async (req, res) => {

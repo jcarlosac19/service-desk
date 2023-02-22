@@ -24,6 +24,7 @@ exports.register = async (req, res) => {
         message: "Se creo la cuenta exitosamente.",
         token: `Bearer ${token}`,
         userInfo: {
+          _id: user._id,
           email,
           rol: isAdministrator ? 'Administrador' : 'Usuario' ,
           nombres,
@@ -67,9 +68,22 @@ exports.login = async (req, res) => {
 exports.getUserByEmail = async(req, res) => {
   const { email } = req.query;
   try{
-    const user = await  Usuario.findOne({ email });
-    if(!helper.isNullOrWhiteSpace(user)){
-      res.status(200).json(user);
+    const userFound = await  Usuario.findOne({ email });
+    const token = auth.createToken(userFound._id, email);
+
+    if(!helper.isNullOrWhiteSpace(userFound)){
+      res.status(200).json({
+        user: {
+          message: "Las credenciales han sido validadas.",
+          token: `Bearer ${token}`,
+          userInfo: {
+          _id: userFound._id,
+          nombres: userFound.nombres,
+          apellidos: userFound.apellidos,
+          email: userFound.email,
+          rol: userFound.es_administrador ? 'Administrador': 'usuario'
+        }
+      }});
       return;
     };
     res.status(400).json({ message: 'Is null or whitespace' });

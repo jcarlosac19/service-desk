@@ -5,12 +5,12 @@ const ticketSchema = new mongoose.Schema(
   {
     asunto          : { type: String, default: null },
     contenido       : { type: String, default: null },
-    estado_id       : { type: ObjectId, default: null },
-    prioridad_id    : { type: ObjectId, default: null },
-    creador_id      : { type: ObjectId, default: null },
-    categoria_id    : { type: ObjectId, default: null },
-    trabajo_flujo_id: { type: ObjectId, default: null },
-    modificador_id  : { type: ObjectId, default: null },
+    estado_id       : { type: ObjectId, ref: 'ticket_estados' },
+    prioridad_id    : { type: ObjectId, ref: 'ticket_prioridade' },
+    creador_id      : { type: ObjectId, ref: 'usuario' },
+    categoria_id    : { type: ObjectId, ref: 'ticket_categoria' },
+    trabajo_flujo_id: { type: ObjectId, ref: 'flujo' },
+    modificador_id  : { type: ObjectId, ref: 'usuario' },
     esta_eliminado  : { type: Boolean, default: false}
   },
   {
