@@ -1,10 +1,9 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  ApiOptions,
   CreateTicket,
-  TicketGetResponse,
   TicketPostResponse,
+  TicketResponse,
 } from '../interfaces/ticket.interface';
 import { ApiService, JwtService } from './';
 import * as helper from '../helpers';
@@ -17,7 +16,7 @@ export class TicketService {
   constructor(
     private jwtService: JwtService,
     private postService: ApiService<TicketPostResponse>,
-    private getService: ApiService<TicketGetResponse>
+    private getService: ApiService<TicketResponse>
   ) {}
 
   createTicket(request: CreateTicket): Observable<TicketPostResponse> {
@@ -31,7 +30,7 @@ export class TicketService {
     return this.postService.post('/tickets', request, { headers });
   }
 
-  getTickets(): Observable<TicketGetResponse[]> {
+  getTickets(): Observable<TicketResponse[]> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     return this.isAutheticate;
   }
 
-  ngOnInit() {debugger;
+  ngOnInit() {
     this.userService.populate();
     this.isAuthenticated();
   }

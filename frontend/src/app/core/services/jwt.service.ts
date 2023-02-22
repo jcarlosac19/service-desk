@@ -20,7 +20,7 @@ export class JwtService {
     return window.localStorage['userInfo'];
   }
 
-  destroyAuthetication() {debugger;
+  destroyAuthetication() {
     window.localStorage.removeItem('jwtToken');
     window.localStorage.removeItem('userInfo');
     window.localStorage.removeItem('authenticated');

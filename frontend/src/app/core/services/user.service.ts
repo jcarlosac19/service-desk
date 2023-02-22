@@ -5,8 +5,6 @@ import { map, distinctUntilChanged } from 'rxjs/operators';
 import { GetUserResponse, UserResponse } from '../interfaces/user.interface';
 import * as helper from '../helpers';
 import { HttpParams } from '@angular/common/http';
-import { ApiOptions } from '../interfaces/ticket.interface';
-import { AppComponent } from 'src/app/app.component';
 
 @Injectable()
 export class UserService {
@@ -33,21 +31,18 @@ export class UserService {
     const token = this.jwtService.getToken() ?? '';
     const userInfo = this.jwtService.getUserInfo() ?? '{}';
     const user:UserResponse = JSON.parse(userInfo) ?? '{}';
-    const isAuthenticate = this.jwtService.getAuthenticated() ?? 'false';
     if (!helper.isFullObject(user)) {
       this.purgeAuth();
       return;
     }
     if (!helper.isNullOrWhitespace(token) && helper.isFullObject(user)) {
       const params = new HttpParams().set('email', user.userInfo.email);
-      
-      debugger;
-      // this.apiService.get(`/get-user-by-email`, params).subscribe({
-      //   next: (data) => {debugger;
-      //     this.setAuth(data.user);
-      //   },
-      //   error: (err) => this.purgeAuth(),
-      // });
+      this.apiService.get(`/get-user-by-email`, params).subscribe({
+        next: (data) => {
+          this.setAuth(data.user);
+        },
+        error: (err) => this.purgeAuth(),
+      });
     } else {
       // Remove any potential remnants of previous auth states
       this.purgeAuth();
@@ -81,7 +76,7 @@ export class UserService {
     );
   }
 
-  setAuth(user: UserResponse) {debugger;
+  setAuth(user: UserResponse) {
     // Save JWT sent from server in localstorage
     this.jwtService.saveToken(user.token!);
     this.jwtService.saveUserInfo(user);
@@ -110,7 +105,7 @@ export class UserService {
     return this.postApiService
       .post(`${route}`, { password: credentials, email })
       .pipe(
-        map((data) => {debugger;
+        map((data) => {
           this.setAuth(data);
           return data;
         })
