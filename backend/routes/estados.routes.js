@@ -8,7 +8,7 @@ const app = Router();
 app.post("/estados",
     [
         verifyAccessLevel.isAdmin,
-        verifyAccessLevel.isUser,
+        //verifyAccessLevel.isUser,
         verifyStatus.verifyIfStatusExist,
         verifyStatus.verifyRequiredFields
     ],

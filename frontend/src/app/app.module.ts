@@ -7,8 +7,10 @@ import { CoreModule } from './core';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
-import { NavbarModule } from './navbar/navbar.module';
+import { NavbarModule } from './shared/navbar/navbar.module';
 import { PagesModule } from './pages/pages.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,13 @@ import { PagesModule } from './pages/pages.module';
     SharedModule,
     HomeModule,
     NavbarModule,
-    PagesModule
+    PagesModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -16,6 +16,7 @@ export interface UserResponse  {
 }
 
 interface UserInfo  {
+  _id: string,
   email: string,
   nombres: string,
   apellidos: string,
@@ -23,5 +24,5 @@ interface UserInfo  {
 }
 
 export interface GetUserResponse {
-  user: User
+  user: UserResponse
 }

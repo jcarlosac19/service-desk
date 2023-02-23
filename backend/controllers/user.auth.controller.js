@@ -1,10 +1,11 @@
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/usuario.model");
 const auth = require("../middleware/jwt.auth");
+const helper = require('../config/helpers');
 
 exports.register = async (req, res) => {
   try {
-    const { nombres, apellidos, email, password, isAdministrator } = req.body;
+    const { nombres, apellidos, email, password, isAdministrator, isUser } = req.body;
     encryptedPassword = await bcrypt.hash(password, 10);
     const user = await Usuario.create({
       nombres,
@@ -12,7 +13,7 @@ exports.register = async (req, res) => {
       email: email.toLowerCase(),
       password: encryptedPassword,
       es_administrador: isAdministrator,
-      es_usuario: !isAdministrator,
+      es_usuario: isAdministrator ? isAdministrator : isUser,
       esta_activo: true
     });
 
@@ -23,6 +24,7 @@ exports.register = async (req, res) => {
         message: "Se creo la cuenta exitosamente.",
         token: `Bearer ${token}`,
         userInfo: {
+          _id: user._id,
           email,
           rol: isAdministrator ? 'Administrador' : 'Usuario' ,
           nombres,
@@ -48,6 +50,7 @@ exports.login = async (req, res) => {
         message: "Las credenciales han sido validadas.",
         token: `Bearer ${token}`,
         userInfo: {
+          _id: user._id,
           nombres: user.nombres,
           apellidos: user.apellidos,
           email: user.email,
@@ -61,3 +64,30 @@ exports.login = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getUserByEmail = async(req, res) => {
+  const { email } = req.query;
+  try{
+    const userFound = await  Usuario.findOne({ email });
+    const token = auth.createToken(userFound._id, email);
+
+    if(!helper.isNullOrWhiteSpace(userFound)){
+      res.status(200).json({
+        user: {
+          message: "Las credenciales han sido validadas.",
+          token: `Bearer ${token}`,
+          userInfo: {
+          _id: userFound._id,
+          nombres: userFound.nombres,
+          apellidos: userFound.apellidos,
+          email: userFound.email,
+          rol: userFound.es_administrador ? 'Administrador': 'usuario'
+        }
+      }});
+      return;
+    };
+    res.status(400).json({ message: 'Is null or whitespace' });
+  }catch(err){
+    console.error(err);
+  }
+}

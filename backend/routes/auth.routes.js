@@ -21,5 +21,7 @@ app.post(
     controller.register
 );
 
+app.get('/get-user-by-email', controller.getUserByEmail);
+
 module.exports = app;
 

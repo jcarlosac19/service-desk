@@ -1,1 +1,7 @@
-<p>my-tickets works!</p>
+<main class="main-content overflow-auto">
+  <h3 class="text-center">Mis Tickets</h3>
+  <hr class="mb-5">
+  <section class="container table-responsive-md">
+    <app-table [columns]="columns" [data]="materializeTableData()" ></app-table>
+  </section>
+</main>

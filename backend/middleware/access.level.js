@@ -18,8 +18,8 @@ accessLevelOptions.isAdmin = async (req, res, next) =>{
 };
 
 accessLevelOptions.isUser = async (req, res, next) =>{
-    const { user_id } = req.user.user_id;
-    await Usuario.findOne({ user_id })
+    const _id  = req.user.user_id;
+    await Usuario.findOne({ _id })
     .then(user =>{
       if(!user.es_usuario) {
         res.status(409).send("Solo un usuario puede realizar esta accion.");

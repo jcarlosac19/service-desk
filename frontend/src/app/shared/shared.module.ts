@@ -3,10 +3,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
-
 import { ListErrorsComponent } from './list-errors.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TableComponent } from './table/table.component';
 
 
 @NgModule({
@@ -20,7 +19,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
 
     ListErrorsComponent,
-    SidebarComponent
+    SidebarComponent,
+    TableComponent
   ],
   exports: [
     CommonModule,
@@ -29,7 +29,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     HttpClientModule,
     ListErrorsComponent,
     RouterModule,
-    SidebarComponent
+    SidebarComponent,
+    TableComponent
   ]
 })
 export class SharedModule {}
