@@ -32,7 +32,7 @@ export class MyTicketsComponent implements OnInit {
     const tickets: Ticket[] = [];
     response.forEach((ticketResponse: TicketResponse) => {
       const ticket: Ticket = {
-        id: ticketResponse._id,
+        _id: ticketResponse._id,
         asunto: ticketResponse.asunto,
         contenido: ticketResponse.contenido,
         estado: ticketResponse.estado_id.nombre,
