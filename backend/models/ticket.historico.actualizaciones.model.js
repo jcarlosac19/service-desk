@@ -3,7 +3,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ticketHistoricoActualizaciones = new mongoose.Schema(
   {
-    ticket_id             : {type: ObjectId, ref: 'tickets', required: true},
+    ticket_id             : {type: Number, ref: 'tickets', required: true},
     flujo_paso_id         : {type: ObjectId, default: null},
     creador_id            : {type: ObjectId, default: null},
     compleado_a           : {type: Date, default: null},

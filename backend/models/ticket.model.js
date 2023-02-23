@@ -3,6 +3,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ticketSchema = new mongoose.Schema(
   {
+    _id             : { type: Number, required: true, unique: true, default: 1 },
     asunto          : { type: String, default: null },
     contenido       : { type: String, default: null },
     estado_id       : { type: ObjectId, ref: 'ticket_estados' },
@@ -21,5 +22,14 @@ const ticketSchema = new mongoose.Schema(
       }
   }
 );
+
+ticketSchema.pre('save', function(next) {
+  const doc = this;
+  doc.constructor.countDocuments({}, (err, count) => {
+    if (err) return next(err);
+    doc._id = count + 1;
+    next();
+  });
+});
 
 module.exports = mongoose.model("ticket", ticketSchema);
