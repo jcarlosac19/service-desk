@@ -1,12 +1,52 @@
-<table class="table table-striped table-hover" *ngIf="data.length > 0">
+<table class="table" *ngIf="data.length > 0">
   <thead>
     <tr>
-      <th scope="col" *ngFor="let column of columns">{{column}}</th>
+      <th scope="col" *ngFor="let column of columns">{{ column.name }}</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let row of data">
-      <td *ngFor="let column of columns">{{row[column]}}</td>
+      <td *ngFor="let column of columns">
+        <ng-container
+          *ngIf="
+            (evaluateIsUndefined(column.hasEditButton) &&
+              !column.hasEditButton) ||
+            (evaluateIsUndefined(column.hasRemoveButton) &&
+              !column.hasRemoveButton)
+          "
+        >
+          {{ row[column.key] }}
+        </ng-container>
+        <div class="actions-container">
+          <div
+            *ngIf="
+              !evaluateIsUndefined(column.hasEditButton) && column.hasEditButton
+            "
+          >
+            <button
+              pButton
+              type="button"
+              [icon]="column.editIcon!"
+              class="p-button-text"
+              (click)="column.edit!(row)"
+            ></button>
+          </div>
+          <div
+            *ngIf="
+              !evaluateIsUndefined(column.hasRemoveButton) &&
+              column.hasRemoveButton
+            "
+          >
+            <button
+              pButton
+              type="button"
+              [icon]="column.removeIcon!"
+              class="p-button-text p-button-danger"
+              (click)="column.remove!(row)"
+            ></button>
+          </div>
+        </div>
+      </td>
     </tr>
   </tbody>
 </table>

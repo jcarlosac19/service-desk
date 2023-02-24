@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService, UserService } from 'src/app/core';
-import { KeyMap } from 'src/app/core/interfaces/sidebar.links.interface';
+import { ColumnTable, KeyMap } from 'src/app/core/interfaces/sidebar.links.interface';
 import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface';
 
 @Component({
@@ -14,19 +14,62 @@ export class MyTicketsComponent implements OnInit {
   get getTickets(): Ticket[] {
     return [...this.tickets];
   }
-  columns: string[] = [];
   constructor(private ticketService: TicketService, private userService:UserService) { }  
+  columns: ColumnTable[] = [
+    {
+      name: 'Id',
+      key: '_id'
+    },
+    {
+      name: 'Asunto',
+      key: 'asunto'
+    },
+    {
+      name: 'Contenido',
+      key: 'contenido'
+    },
+    {
+      name: 'Estado',
+      key: 'estado'
+    },
+    {
+      name: 'Prioridad',
+      key: 'prioridad'
+    },
+    {
+      name: 'Creador',
+      key: 'creador'
+    },
+    {
+      name: 'Categoria',
+      key: 'categoria'
+    },
+    {
+      name: 'Flujo',
+      key: 'flujo'
+    },
+    {
+      name: 'Modificador',
+      key: 'modificador'
+    },
+    {
+      name: 'Creado a',
+      key: 'creado_a'
+    },
+    {
+      name: 'Actualizado a',
+      key: 'actualizado_a'
+    },
+  ];
   
   ngOnInit(): void {
     this.userService.populate();
     this.ticketService.getTickets().subscribe({
       next: (response) => {debugger;
-        this.tickets = this.materializeResponseToTicket(response);
-        this.columns = Object.keys(this.tickets[0]);
+        this.tickets = this.materializeResponseToTicket(response);        
       }
     });
   }
-
 
   materializeResponseToTicket(response:TicketResponse[]){
     const tickets: Ticket[] = [];
@@ -48,15 +91,15 @@ export class MyTicketsComponent implements OnInit {
     });
     return tickets;
   }
-  materializeTableData(): KeyMap[] {
-    const tableData: KeyMap[] = [];
-    this.tickets.forEach((ticket: Ticket) => {debugger;
-      const ticketData: KeyMap = {};
-      for (let key in ticket) {
-        ticketData[key] = ticket[key];
-      }
-      tableData.push(ticketData);
-    });
-    return tableData;
-  }
+  // materializeTableData(): KeyMap[] {
+  //   const tableData: KeyMap[] = [];
+  //   this.tickets.forEach((ticket: Ticket) => {debugger;
+  //     const ticketData: KeyMap = {};
+  //     for (let key in ticket) {
+  //       ticketData[key] = ticket[key];
+  //     }
+  //     tableData.push(ticketData);
+  //   });
+  //   return tableData;
+  // }
 }

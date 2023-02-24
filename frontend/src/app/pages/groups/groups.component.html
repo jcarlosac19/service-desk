@@ -1,0 +1,55 @@
+<main class="main-content overflow-auto">
+  <h3 class="text-center">Grupos</h3>
+  <hr class="mb-5" />
+  <section class="container table-responsive-md">
+    <app-table [columns]="columns" [data]="getGroups"></app-table>
+  </section>
+
+  <p-dialog
+    [(visible)]="visibleModal"
+    [transitionOptions]="'300ms'"
+    [modal]="true"
+    [header]="header"
+    [draggable]="false"
+  >
+    <form
+      class="form-group bg-light"
+      style="width: 500px"
+    >
+      <section class="container-fields">
+        <div
+          class="d-flex flex-wrap gap-3 justify-content-center align-items-center"
+        >
+          <div *ngFor="let column of columns">
+            <label class="form-label item">
+              {{ column.name }}
+              <input
+                class="form-control"
+                type="text"
+                [name]="column.key"
+                [(ngModel)]="rowSelected[column.key]"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </label>
+          </div>
+        </div>
+      </section>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <p-button
+        type="button"
+        [label]="isEdit ? 'Editar' : 'Eliminar'"
+        class="p-button-success"
+        (onClick)="onSubmitGroup()"
+      ></p-button>
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-danger"
+        (click)="visibleModal = false"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</main>

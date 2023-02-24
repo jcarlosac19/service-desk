@@ -18,7 +18,7 @@ export class SidebarComponent {
     },
     {
       name: 'Grupo',
-      routerName: '/grupo'
+      routerName: '/groups'
     },
     {
       name: 'Categorias',

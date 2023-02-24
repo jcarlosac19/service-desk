@@ -6,7 +6,8 @@ import { RouterModule } from '@angular/router';
 import { ListErrorsComponent } from './list-errors.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TableComponent } from './table/table.component';
-
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   imports: [
@@ -14,7 +15,9 @@ import { TableComponent } from './table/table.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule
+    RouterModule,
+    ButtonModule,
+    DialogModule
   ],
   declarations: [
 
