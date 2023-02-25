@@ -25,9 +25,9 @@ export class ApiService<T> {
       .pipe(catchError(this.formatErrors));
   }
 
-  put(path: string, body: Object = {}): Observable<T> {
+  put(path: string, body: Object = {}, options: Object = {}): Observable<T> {
     return this.http
-      .put<T>(`${environment.api_url}${path}`, JSON.stringify(body))
+      .put<T>(`${environment.api_url}${path}`, JSON.stringify(body), options)
       .pipe(catchError(this.formatErrors));
   }
 
@@ -37,9 +37,9 @@ export class ApiService<T> {
       .pipe(catchError(this.formatErrors));
   }
 
-  delete(path: string): Observable<T> {
+  delete(path: string, options: Object = {}): Observable<T> {
     return this.http
-      .delete<T>(`${environment.api_url}${path}`)
+      .delete<T>(`${environment.api_url}${path}`, options)
       .pipe(catchError(this.formatErrors));
   }
 }

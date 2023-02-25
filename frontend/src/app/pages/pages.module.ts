@@ -5,17 +5,23 @@ import { CreateTicketsComponent } from './create-tickets/create-tickets.componen
 import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { GroupsComponent } from './groups/groups.component';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
     CreateTicketsComponent,
-    MyTicketsComponent
+    MyTicketsComponent,
+    GroupsComponent
   ],
   imports: [
     CommonModule,
     PagesRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    DialogModule,
+    ButtonModule
   ]
 })
 export class PagesModule { }

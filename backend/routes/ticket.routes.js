@@ -24,6 +24,12 @@ app.get("/tickets",
     ticketsController.obtenerTickets
 );
 
+app.get("/tickets-by-user", 
+    [
+        verifyAccessLevel.isUser
+    ],
+    ticketsController.getTicketsByUser
+);
 
 app.get("/tickets/:id", 
     [

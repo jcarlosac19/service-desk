@@ -12,7 +12,7 @@ exports.crearGrupo = async (req, res) => {
         esta_eliminado: false
     })
     .then(()=>{
-        res.status(201).send("El grupo se creo exitosamente.")
+        res.status(201).json({message: "El grupo se creo exitosamente."})
     })
     .catch(()=>{
         res.status(400).send("Hubo un error al crear el grupo.")
@@ -27,7 +27,7 @@ exports.obtenerGrupos = async (req, res) => {
 
     await Grupos.find(filtro)
     .then(grupos => {
-        res.status(200).send(grupos);
+        res.status(200).json(grupos);
     })
     .catch(err => {
         res.status(400).send("No se encontro ningun grupo.")

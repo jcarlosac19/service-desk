@@ -47,7 +47,7 @@ export interface FlujoActual {
 }
 
 export interface TicketResponse {
-  _id:              string;
+  _id:               number;
   asunto:           string;
   contenido:        string;
   estado_id:        ID;
@@ -90,7 +90,7 @@ export interface CreadorIDClass {
 }
 
 export interface Ticket {
-  id:              string;
+  _id:               number;
   asunto:           string;
   contenido:        string;
   estado:           string;
