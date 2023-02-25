@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import * as helpers from '../../core/helpers';
 
@@ -7,13 +7,6 @@ import * as helpers from '../../core/helpers';
   templateUrl: './table.component.html',
   styles: [
     `
-      .actions-container {
-        display: grid;
-        place-items: center;
-        gap: 0.6rem;
-        grid-template-columns: repeat(2, 1fr);
-      }
-
       .item {
         flex-basis: calc(100% / 2);
         flex-grow: 1;
@@ -25,66 +18,19 @@ import * as helpers from '../../core/helpers';
 export class TableComponent {
   @Input('columns') columns: ColumnTable[] = [];
   @Input('data') data: any[] = [];
-  // @Input('rowSelected') rowSelected: any = {
-  //   _id: '',
-  //   nombre: '',
-  //   color: '',
-  //   creador_id: '',
-  //   modificador_id: '',
-  //   creado_a: '',
-  //   actualizado_a: '',
-  // };
-  // @Output('onVisibleModal') onVisibleModal: EventEmitter<boolean> =
-  //   new EventEmitter();
-  // @Output('onSubmitRowSelected') onSubmitRowSelected: EventEmitter<any> =
-  //   new EventEmitter();
-  // visibleModal: boolean = false;
-  // header: string = '';
-  // isEdit: boolean = false;
-  // copyColumns: ColumnTable[] = this.columns.filter(
-  //   (column) => column.key !== 'acciones' && column.key !== '_id' && column.key !== 'modificador_id'
-  // );
-  // copyRowSelected: any = removeKeys(this.rowSelected, [
-  //   '_id',
-  //   'acciones',
-  //   'modificador_id',
-  //   'esta_eliminado',
-  //   '__v'
-  // ]);
+  buttons: number = 3;
+
+  actionsContainer = {
+    'display': 'grid',
+      'place-items': 'center',
+      'gap': '0.45rem',
+      'grid-template-columns': `repeat(${this.buttons}, 1fr)`,
+  };
 
   evaluateIsUndefined(value: any): boolean {
     return helpers.isNullOrUndefined(value);
   }
 
-  // showModal(row: any, action = 'edit'): void {
-  //   debugger;
-  //   this.visibleModal = true;
-  //   this.copyRowSelected = row;
-  //   if (action === 'edit') {
-  //     this.header = 'Editar grupo';
-  //     this.isEdit = true
-  //     return;
-  //   }
-  //   this.header = 'Eliminar grupo';
-  //   this.isEdit = false;
-  //   this.copyColumns = this.columns.filter((column) => column.key === '_id');
-  //   this.copyRowSelected = removeKeys(this.copyRowSelected, [
-  //     'nombre',
-  //     'color',
-  //     'creador_id',
-  //     'modificador_id',
-  //     'creado_a',
-  //     'actualizado_a',
-  //     'acciones',
-  //   ]);
-  // }
-
-  // onSubmit(): void {
-  //   debugger;
-  //   this.visibleModal = false;
-  //   console.log(this.rowSelected);
-  //   //this.onSubmitRowSelected.emit(this.rowSelected);
-  // }
   constructor() {}
 }
 

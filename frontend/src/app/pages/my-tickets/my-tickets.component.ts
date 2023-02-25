@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService, UserService } from 'src/app/core';
-import { ColumnTable, KeyMap } from 'src/app/core/interfaces/sidebar.links.interface';
+import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface';
 
 @Component({
@@ -65,7 +65,7 @@ export class MyTicketsComponent implements OnInit {
   ngOnInit(): void {
     this.userService.populate();
     this.ticketService.getTickets().subscribe({
-      next: (response) => {debugger;
+      next: (response) => {
         this.tickets = this.materializeResponseToTicket(response);        
       }
     });
@@ -91,15 +91,4 @@ export class MyTicketsComponent implements OnInit {
     });
     return tickets;
   }
-  // materializeTableData(): KeyMap[] {
-  //   const tableData: KeyMap[] = [];
-  //   this.tickets.forEach((ticket: Ticket) => {debugger;
-  //     const ticketData: KeyMap = {};
-  //     for (let key in ticket) {
-  //       ticketData[key] = ticket[key];
-  //     }
-  //     tableData.push(ticketData);
-  //   });
-  //   return tableData;
-  // }
 }

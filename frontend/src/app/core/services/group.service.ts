@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GroupResponse } from '../interfaces/group.interface';
+import { GroupCreate, GroupEdit, GroupResponse, MessageResponse } from '../interfaces/group.interface';
 import { JwtService } from './jwt.service';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
@@ -12,20 +12,20 @@ import * as helper from '../helpers';
 export class GroupService {
   constructor(
     private jwtService: JwtService,
-    //private postService: ApiService<TicketPostResponse>,
+    private postService: ApiService<MessageResponse>,
     private getService: ApiService<GroupResponse>
   ) {}
 
-  // createTicket(request: CreateTicket): Observable<TicketPostResponse> {
-  //   const token = this.jwtService.getToken();
-  //   if (helper.isNullOrWhitespace(token)) throw new Error('No token');
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'x-access-token': `${token}`,
-  //   });
+  createGroup(request: GroupCreate): Observable<MessageResponse> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
 
-  //   return this.postService.post('/tickets', request, { headers });
-  // }
+    return this.postService.post('/grupos', request, { headers });
+  }
 
   getGroups(): Observable<GroupResponse[]> {
     const token = this.jwtService.getToken();
@@ -36,5 +36,27 @@ export class GroupService {
     });
 
     return this.getService.getAll('/grupos',  new HttpParams(), headers);
+  }
+
+  editGroup(request: GroupEdit): Observable<MessageResponse> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+
+    return this.postService.put(`/grupos/${request._id}`, request, { headers });
+  }
+
+  deleteGroup(id: string): Observable<MessageResponse> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+
+    return this.postService.delete(`/grupos/eliminar/${id}`, { headers });
   }
 }

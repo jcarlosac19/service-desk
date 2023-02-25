@@ -20,15 +20,16 @@
         <div
           class="d-flex flex-wrap gap-3 justify-content-center align-items-center"
         >
-          <div *ngFor="let column of columns">
+          <div *ngFor="let column of getColumnsByAction()">
             <label class="form-label item">
               {{ column.name }}
               <input
                 class="form-control"
                 type="text"
                 [name]="column.key"
-                [(ngModel)]="rowSelected[column.key]"
+                [(ngModel)]="getObjectByAction()[column.key]"
                 [ngModelOptions]="{ standalone: true }"
+                [disabled]="column.key === '_id'"
               />
             </label>
           </div>
@@ -39,7 +40,7 @@
     <ng-template pTemplate="footer">
       <p-button
         type="button"
-        [label]="isEdit ? 'Editar' : 'Eliminar'"
+        [label]="label"
         class="p-button-success"
         (onClick)="onSubmitGroup()"
       ></p-button>
@@ -49,6 +50,32 @@
         label="Cancelar"
         class="p-button-danger"
         (click)="visibleModal = false"
+      ></button>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    [(visible)]="deleteModal"
+    transitionOptions="300ms"
+    [modal]="true"
+    [header]="header"
+    [draggable]="false"
+  >
+    {{ message }}
+
+    <ng-template pTemplate="footer">
+      <p-button
+        type="button"
+        [label]="label"
+        class="p-button-danger"
+        (onClick)="onSubmitGroup()"
+      ></p-button>
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-secondary"
+        (click)="deleteModal= false"
       ></button>
     </ng-template>
   </p-dialog>

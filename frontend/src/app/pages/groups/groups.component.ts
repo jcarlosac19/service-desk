@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/core';
 import {
+  Group,
+  GroupCreate,
   GroupDelete,
   GroupEdit,
   GroupResponse,
@@ -8,39 +10,37 @@ import {
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { GroupService } from 'src/app/core/services/group.service';
 import { PrimeIcons } from 'primeng/api';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
 })
 export class GroupsComponent {
-  private groups: GroupResponse[] = [];
-  get getGroups(): GroupResponse[] {
+  private groups: Group[] = [];
+  get getGroups(): Group[] {
     return [...this.groups];
   }
-
   visibleModal: boolean = false;
-  isEdit: boolean = false;
+  deleteModal: boolean = false;
+  label: string = 'Crear';
   header: string = '';
-  rowSelected: GroupResponse = {
-    _id: '',
+  action: string = '';
+  message: string = '';
+  messageResponse: string = '';
+  rowCreate: GroupCreate = {
     nombre: '',
     color: '',
-    creador_id: '',
-    modificador_id: '',
-    creado_a: new Date(),
-    actualizado_a: new Date(),
   };
   rowSelectedEdit: GroupEdit = {
+    _id: '',
     nombre: '',
     color: '',
     creador_id: '',
     modificador_id: '',
     actualizado_a: new Date(),
   };
-  rowSelectedDelete: GroupDelete = {
-    _id: '',
-  };
+  rowSelectedDelete: GroupDelete = { _id: ''};
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -75,79 +75,117 @@ export class GroupsComponent {
       key: 'acciones',
       hasEditButton: true,
       hasRemoveButton: true,
-      edit: (row: GroupResponse) => {
-        debugger;
-        this.rowSelectedEdit = this.materialization(row);
-        this.rowSelected = this.materializationToRow(row);
+      hasCreateButton: true,
+      edit: (row: GroupEdit) => {
+        this.rowSelectedEdit = row;
         this.visibleModal = true;
-        this.isEdit = true;
+        this.label = 'Guardar Cambios';
         this.header = 'Editar grupo';
-        console.log('edit', this.rowSelectedEdit);
-        console.log(this.visibleModal);
+        this.action = 'edit';
       },
       remove: (row: GroupDelete) => {
-        debugger;
         this.rowSelectedDelete = row;
-        this.isEdit = false;
+        this.label = 'Eliminar';
         this.header = 'Eliminar grupo';
-        this.visibleModal = true;
+        this.action = 'delete';
+        this.message = `¿Está seguro que desea eliminar el grupo: ${row._id}?`;
+        this.deleteModal = true;
       },
+      create: () => {
+        this.action = 'create';
+        this.visibleModal = true;
+        this.header = 'Crear grupo';
+        this.label = 'Crear';
+      },
+      createIcon: PrimeIcons.PLUS,
       editIcon: PrimeIcons.PENCIL,
       removeIcon: PrimeIcons.TRASH,
     },
   ];
+  
+
   constructor(
     private userService: UserService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.userService.populate();
+    this.fetchGroups();
+  }
+
+  fetchGroups(): void {
     this.groupService.getGroups().subscribe({
       next: (response) => {
-        debugger;
-        this.groups = response;
+        this.groups = this.materializeGroups(response);
+
       },
+      error: (error) => console.error(error),
     });
   }
 
-  showModal(event: any): void {
-    console.log(event.target.value);
-    this.visibleModal = event.target.value;
+  materializeGroups(groups: GroupResponse[]): Group[] {
+    const groupsMaterialized: Group[] = [];
+    groups.forEach((group) => {
+      groupsMaterialized.push({
+        _id: group._id,
+        nombre: group.nombre,
+        color: group.color,
+        creador_id: group.creador_id,
+        modificador_id: group.modificador_id,
+        creado_a: new Date(group.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(group.actualizado_a).toLocaleDateString('es-ES'),
+      });
+    }
+    );
+    return groupsMaterialized;
   }
 
   onSubmitGroup(): void {
-    console.log('submit', this.rowSelectedEdit);
     this.visibleModal = false;
-    console.log(this.rowSelected);
-    console.log(this.rowSelectedDelete);
+    this.deleteModal = false;
+    if (this.action === 'edit') {
+      this.groupService.editGroup(this.rowSelectedEdit).subscribe({
+        next: (response) => {
+          this.toastr.success(response.message, 'Éxito');
+        },
+        error: (error) => this.toastr.error(error?.error?.message, 'Error'),
+      });
+      this.rowSelectedEdit = {} as GroupEdit;
+    }
+    if (this.action === 'create') {
+      this.groupService.createGroup(this.rowCreate).subscribe({
+        next: (response) => {
+          this.toastr.success(response.message, 'Éxito');
+          this.fetchGroups();
+        },
+      });
+      this.rowCreate = {} as GroupCreate;
+    }
+    if(this.action === 'delete'){
+      this.groupService.deleteGroup(this.rowSelectedDelete._id).subscribe({
+        next: (response) => {
+          this.toastr.success(response.message, 'Éxito');
+        },
+        error: (error) => this.toastr.error(error?.error?.message, 'Error'),
+      });
+      this.rowSelectedDelete = {} as GroupDelete;
+    }
+    this.fetchGroups();
   }
 
-  materialization(row: GroupResponse): GroupEdit {
-    return {
-      nombre: row.nombre,
-      color: row.color,
-      creador_id: row.creador_id,
-      modificador_id: row.modificador_id,
-      actualizado_a: row.actualizado_a,
-    };
+  getObjectByAction(): GroupEdit | GroupCreate {
+    return this.action === 'edit'  ? this.rowSelectedEdit : this.rowCreate;
   }
 
-  materializationDelete(row: GroupDelete): GroupDelete {
-    return {
-      _id: row._id,
-    };
+  columnsToDeleteByEdit: string[] = ['acciones', 'creado_a', 'actualizado_a', 'creador_id', 'modificador_id'];
+  columnsToDeleteByCreate: string[] = ['acciones', 'creado_a', 'actualizado_a', 'creador_id', 'modificador_id', '_id'];
+  getColumnsByAction(): ColumnTable[] {
+    if(this.action === 'edit'){
+      return this.columns.filter((column: ColumnTable) => !this.columnsToDeleteByEdit.includes(column.key));
+    }
+    return this.columns.filter((column: ColumnTable) => !this.columnsToDeleteByCreate.includes(column.key));
   }
 
-  materializationToRow(row: GroupResponse): GroupResponse {
-    return {
-      _id: row._id,
-      nombre: row.nombre,
-      color: row.color,
-      creador_id: row.creador_id,
-      modificador_id: row.modificador_id,
-      creado_a: row.creado_a,
-      actualizado_a: row.actualizado_a,
-    };
-  }
 }

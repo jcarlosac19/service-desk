@@ -17,7 +17,20 @@
         >
           {{ row[column.key] }}
         </ng-container>
-        <div class="actions-container">
+        <div [ngStyle]="actionsContainer">
+          <div
+            *ngIf="
+              !evaluateIsUndefined(column.hasCreateButton) && column.hasCreateButton
+            "
+          >
+            <button
+              pButton
+              type="button"
+              [icon]="column.createIcon!"
+              class="p-button-rounded p-button-success p-button-text"
+              (click)="column.create!()"
+            ></button>
+          </div>
           <div
             *ngIf="
               !evaluateIsUndefined(column.hasEditButton) && column.hasEditButton
@@ -27,7 +40,7 @@
               pButton
               type="button"
               [icon]="column.editIcon!"
-              class="p-button-text"
+              class="p-button-rounded p-button-text"
               (click)="column.edit!(row)"
             ></button>
           </div>
@@ -41,7 +54,7 @@
               pButton
               type="button"
               [icon]="column.removeIcon!"
-              class="p-button-text p-button-danger"
+              class="p-button-rounded p-button-danger p-button-text"
               (click)="column.remove!(row)"
             ></button>
           </div>
