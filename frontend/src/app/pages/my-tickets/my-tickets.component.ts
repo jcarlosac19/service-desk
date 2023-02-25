@@ -18,47 +18,80 @@ export class MyTicketsComponent implements OnInit {
   columns: ColumnTable[] = [
     {
       name: 'Id',
-      key: '_id'
+      key: '_id',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true,
     },
     {
       name: 'Asunto',
-      key: 'asunto'
+      key: 'asunto',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Contenido',
-      key: 'contenido'
+      key: 'contenido',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true,
     },
     {
       name: 'Estado',
-      key: 'estado'
+      key: 'estado',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Prioridad',
-      key: 'prioridad'
+      key: 'prioridad',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Creador',
-      key: 'creador'
+      key: 'creador',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Categoria',
-      key: 'categoria'
+      key: 'categoria',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Flujo',
-      key: 'flujo'
+      key: 'flujo',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Modificador',
-      key: 'modificador'
+      key: 'modificador',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Creado a',
-      key: 'creado_a'
+      key: 'creado_a',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Actualizado a',
-      key: 'actualizado_a'
+      key: 'actualizado_a',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true
     },
   ];
   

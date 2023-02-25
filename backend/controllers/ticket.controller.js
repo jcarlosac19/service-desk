@@ -83,9 +83,7 @@ exports.getTicketsByUser = async (req, res) => {
           .populate('modificador_id')
           .populate('trabajo_flujo_id')
           .exec((err, docs)=>{
-                console.log(err);
                 if (err) return res.status(400).send("Hubo un error."); 
-                console.log(docs);
                 return res.status(200).send(docs);
             });
 };

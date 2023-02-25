@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/core';
 import {
-  Group,
-  GroupCreate,
-  GroupDelete,
-  GroupEdit,
-  GroupResponse,
-} from 'src/app/core/interfaces/group.interface';
+  Status,
+  StatusCreate,
+  StatusDelete,
+  StatusEdit,
+  StatusResponse,
+} from 'src/app/core/interfaces/status.interface';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
-import { GroupService } from 'src/app/core/services/group.service';
+import { StatusService } from 'src/app/core/services/status.service';
 import { PrimeIcons } from 'primeng/api';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-groups',
-  templateUrl: './groups.component.html',
+  selector: 'app-status',
+  templateUrl: './status.component.html',
 })
-export class GroupsComponent {
-  private groups: Group[] = [];
-  get getGroups(): Group[] {
-    return [...this.groups];
+export class StatusComponent {
+  private statuses: Status[] = [];
+  get getStatus(): Status[] {
+    return [...this.statuses];
   }
   visibleModal: boolean = false;
   deleteModal: boolean = false;
@@ -28,19 +28,20 @@ export class GroupsComponent {
   action: string = '';
   message: string = '';
   messageResponse: string = '';
-  rowCreate: GroupCreate = {
+  rowCreate: StatusCreate = {
     nombre: '',
     color: '',
   };
-  rowSelectedEdit: GroupEdit = {
+  rowSelectedEdit: StatusEdit = {
     _id: '',
     nombre: '',
     color: '',
     creador_id: '',
     modificador_id: '',
+    esta_eliminado: false,
     actualizado_a: new Date(),
   };
-  rowSelectedDelete: GroupDelete = { _id: ''};
+  rowSelectedDelete: StatusDelete = { _id: ''};
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -100,14 +101,14 @@ export class GroupsComponent {
       hasEditButton: true,
       hasRemoveButton: true,
       hasCreateButton: true,
-      edit: (row: GroupEdit) => {
+      edit: (row: StatusEdit) => {
         this.rowSelectedEdit = row;
         this.visibleModal = true;
         this.label = 'Guardar Cambios';
         this.header = 'Editar grupo';
         this.action = 'edit';
       },
-      remove: (row: GroupDelete) => {
+      remove: (row: StatusDelete) => {
         this.rowSelectedDelete = row;
         this.label = 'Eliminar';
         this.header = 'Eliminar grupo';
@@ -130,7 +131,7 @@ export class GroupsComponent {
 
   constructor(
     private userService: UserService,
-    private groupService: GroupService,
+    private statusService: StatusService,
     private toastr: ToastrService
   ) {}
 
@@ -140,20 +141,13 @@ export class GroupsComponent {
   }
 
   fetchGroups(): void {
-    this.groupService.getGroups().subscribe({
+    this.statusService.getStatuses().subscribe({
       next: (response) => {
-        this.groups = this.materializeGroups(response);
+        this.statuses = this.materializeGroups(response);
 
       },
       error: (error) => console.error(error),
     });
-  }
-
-  createNewRecord(): void {
-    this.action = 'create';
-    this.visibleModal = true;
-    this.header = 'Crear grupo';
-    this.label = 'Crear';
   }
 
   filteredColums(): ColumnTable[] {
@@ -162,57 +156,67 @@ export class GroupsComponent {
     return filteredColumns
   };
 
-  materializeGroups(groups: GroupResponse[]): Group[] {
-    const groupsMaterialized: Group[] = [];
-    groups.forEach((group) => {
-      groupsMaterialized.push({
-        _id: group._id,
-        nombre: group.nombre,
-        color: group.color,
-        creador_id: group.creador_id,
-        modificador_id: group.modificador_id,
-        creado_a: new Date(group.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(group.actualizado_a).toLocaleDateString('es-ES'),
+  materializeGroups(statuses: StatusResponse[]): Status[] {
+    const statusMaterialized: Status[] = [];
+    statuses.forEach((status) => {
+      statusMaterialized.push({
+        _id: status._id,
+        nombre: status.nombre,
+        color: status.color,
+        creador_id: status.creador_id,
+        modificador_id: status.modificador_id,
+        esta_eliminado: status.esta_eliminado,
+        creado_a: new Date(status.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(status.actualizado_a).toLocaleDateString('es-ES'),
       });
     }
     );
-    return groupsMaterialized;
+    return statusMaterialized;
   }
 
-  onSubmitGroup(): void {
+  onSubmitStatus(): void {
     this.visibleModal = false;
     this.deleteModal = false;
     if (this.action === 'edit') {
-      this.groupService.editGroup(this.rowSelectedEdit).subscribe({
+      this.statusService.editStatus(this.rowSelectedEdit).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
-        error: (error) => this.toastr.error(error?.error?.message, 'Error'),
+        error: (error) => {
+          this.toastr.error(error?.message, 'Error');
+        },
       });
-      this.rowSelectedEdit = {} as GroupEdit;
+      this.rowSelectedEdit = {} as StatusEdit;
     }
     if (this.action === 'create') {
-      this.groupService.createGroup(this.rowCreate).subscribe({
+      this.statusService.createStatus(this.rowCreate).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
           this.fetchGroups();
         },
       });
-      this.rowCreate = {} as GroupCreate;
+      this.rowCreate = {} as StatusCreate;
     }
     if(this.action === 'delete'){
-      this.groupService.deleteGroup(this.rowSelectedDelete._id).subscribe({
+      this.statusService.deleteStatus(this.rowSelectedDelete._id).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      this.rowSelectedDelete = {} as GroupDelete;
+      this.rowSelectedDelete = {} as StatusDelete;
     }
     this.fetchGroups();
   }
 
-  getObjectByAction(): GroupEdit | GroupCreate {
+  createNewRecord(): void {
+    this.action = 'create';
+    this.visibleModal = true;
+    this.header = 'Crear estado';
+    this.label = 'Crear';
+  }
+
+  getObjectByAction(): StatusEdit | StatusCreate {
     return this.action === 'edit'  ? this.rowSelectedEdit : this.rowCreate;
   }
 

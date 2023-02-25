@@ -8,12 +8,16 @@ import { SharedModule } from '../shared/shared.module';
 import { GroupsComponent } from './groups/groups.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { PrioridadesComponent } from './prioridades/prioridades.component';
+import { StatusComponent } from './estados/status.component';
 
 @NgModule({
   declarations: [
     CreateTicketsComponent,
     MyTicketsComponent,
-    GroupsComponent
+    GroupsComponent,
+    PrioridadesComponent,
+    StatusComponent
   ],
   imports: [
     CommonModule,

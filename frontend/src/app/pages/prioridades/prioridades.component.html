@@ -1,13 +1,11 @@
 <main class="main-content overflow-auto">
-  <h3 class="text-center">Grupos</h3>
+  <h3 class="text-center">Prioridades</h3>
   <hr class="mb-5" />
-  
   <section>
-    <p-button (onClick)="createNewRecord()">Crear Grupo</p-button>
+    <p-button (onClick)="createNewRecord()">Crear Prioridad</p-button>
   </section>
-
   <section class="container table-responsive-md">
-    <app-table [columns]="filteredColums()" [data]="getGroups"></app-table>
+    <app-table [columns]="filteredColumns()" [data]="getPriorities"></app-table>
   </section>
 
   <p-dialog
@@ -47,7 +45,7 @@
         type="button"
         [label]="label"
         class="p-button-success"
-        (onClick)="onSubmitGroup()"
+        (onClick)="onSubmitPriority()"
       ></p-button>
       <button
         pButton
@@ -73,7 +71,7 @@
         type="button"
         [label]="label"
         class="p-button-danger"
-        (onClick)="onSubmitGroup()"
+        (onClick)="onSubmitPriority()"
       ></p-button>
       <button
         pButton

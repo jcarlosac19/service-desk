@@ -43,7 +43,7 @@ exports.obtenerEstadoPorId = async (req, res) => {
 }
 
 exports.actualizarEstado = async (req, res) => {
-    const filter  = req.params.id;
+    const filter  = {_id: req.params.id};
 
     const { nombre, color } = req.body;
 
@@ -61,7 +61,7 @@ exports.actualizarEstado = async (req, res) => {
     }).then(doc => {
         res.status(200).send(doc);
     }).catch(err => {
-        res.status(400).send("No se pudo modificar el documento.")
+        res.status(400).send({message: "No se pudo modificar el documento."})
     })
 }
 

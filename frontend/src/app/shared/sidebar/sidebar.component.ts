@@ -34,11 +34,11 @@ export class SidebarComponent {
     },
     {
       name: 'Prioridades',
-      routerName: '/prioridades'
+      routerName: '/priorities'
     },
     {
       name: 'Estados',
-      routerName: '/estados'
+      routerName: '/status'
     },
   ]
 }

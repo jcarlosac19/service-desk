@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/core';
 import {
-  Group,
-  GroupCreate,
-  GroupDelete,
-  GroupEdit,
-  GroupResponse,
-} from 'src/app/core/interfaces/group.interface';
+  Priority,
+  PriorityCreate,
+  PriorityDelete,
+  PriorityEdit,
+  PriorityResponse,
+} from 'src/app/core/interfaces/priority.interface';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
-import { GroupService } from 'src/app/core/services/group.service';
+import { PriorityService } from 'src/app/core/services/priority.service';
 import { PrimeIcons } from 'primeng/api';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-groups',
-  templateUrl: './groups.component.html',
+  selector: 'app-prioridades',
+  templateUrl: './prioridades.component.html',
 })
-export class GroupsComponent {
-  private groups: Group[] = [];
-  get getGroups(): Group[] {
-    return [...this.groups];
+export class PrioridadesComponent {
+  private priorities: Priority[] = [];
+  get getPriorities(): Priority[] {
+    return [...this.priorities];
   }
   visibleModal: boolean = false;
   deleteModal: boolean = false;
@@ -28,97 +28,105 @@ export class GroupsComponent {
   action: string = '';
   message: string = '';
   messageResponse: string = '';
-  rowCreate: GroupCreate = {
+  rowCreate: PriorityCreate = {
     nombre: '',
     color: '',
   };
-  rowSelectedEdit: GroupEdit = {
+  rowSelectedEdit: PriorityEdit = {
     _id: '',
     nombre: '',
     color: '',
     creador_id: '',
     modificador_id: '',
+    esta_eliminado: false,
     actualizado_a: new Date(),
   };
-  rowSelectedDelete: GroupDelete = { _id: ''};
+  rowSelectedDelete: PriorityDelete = { _id: ''};
+  
   columns: ColumnTable[] = [
     {
       name: 'Id',
       key: '_id',
       show: false,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: true
     },
     {
       name: 'Nombre',
       key: 'nombre',
       show: true,
       isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Color',
       key: 'color',
       show: true,
       isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnEdit: true
     },
     {
       name: 'Creador',
       key: 'creador_id',
       show: false,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false
     },
     {
       name: 'modificador',
       key: 'modificador_id',
       show: false,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false
     },
     {
       name: 'Creado',
       key: 'creado_a',
       show: true,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false
     },
     {
       name: 'Actualizado',
       key: 'actualizado_a',
       show: true,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false
+    },{
+      name: 'Elimado',
+      key: 'esta_eliminado',
+      show: false,
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false
     },
     {
       name: 'Acciones',
       key: 'acciones',
+      isAvailableOnCreation: false,
+      isAvailableOnEdit: false,
       show: true,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
       hasEditButton: true,
       hasRemoveButton: true,
       hasCreateButton: true,
-      edit: (row: GroupEdit) => {
+      edit: (row: PriorityEdit) => {
         this.rowSelectedEdit = row;
         this.visibleModal = true;
         this.label = 'Guardar Cambios';
-        this.header = 'Editar grupo';
+        this.header = 'Editar prioridad';
         this.action = 'edit';
       },
-      remove: (row: GroupDelete) => {
+      remove: (row: PriorityDelete) => {
         this.rowSelectedDelete = row;
         this.label = 'Eliminar';
-        this.header = 'Eliminar grupo';
+        this.header = 'Eliminar prioridad';
         this.action = 'delete';
-        this.message = `¿Está seguro que desea eliminar el grupo: ${row._id}?`;
+        this.message = `¿Está seguro que desea eliminar la prioridad: ${row._id}?`;
         this.deleteModal = true;
       },
       create: () => {
         this.action = 'create';
         this.visibleModal = true;
-        this.header = 'Crear grupo';
+        this.header = 'Crear prioridad';
         this.label = 'Crear';
       },
       createIcon: PrimeIcons.PLUS,
@@ -126,93 +134,95 @@ export class GroupsComponent {
       removeIcon: PrimeIcons.TRASH,
     },
   ];
+
+  
   
 
   constructor(
     private userService: UserService,
-    private groupService: GroupService,
+    private priorityService: PriorityService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.userService.populate();
-    this.fetchGroups();
+    this.fetchPriorities();
   }
 
-  fetchGroups(): void {
-    this.groupService.getGroups().subscribe({
+  fetchPriorities(): void {
+    this.priorityService.getPriorities().subscribe({
       next: (response) => {
-        this.groups = this.materializeGroups(response);
-
+        this.priorities = this.materializePriorities(response);
       },
       error: (error) => console.error(error),
     });
   }
 
-  createNewRecord(): void {
-    this.action = 'create';
-    this.visibleModal = true;
-    this.header = 'Crear grupo';
-    this.label = 'Crear';
+  materializePriorities(priorities: PriorityResponse[]): Priority[] {
+    const priorityMaterialized: Priority[] = [];
+    priorities.forEach((priority) => {
+      priorityMaterialized.push({
+        _id: priority._id,
+        nombre: priority.nombre,
+        color: priority.color,
+        creador_id: priority.creador_id,
+        modificador_id: priority.modificador_id,
+        creado_a: new Date(priority.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(priority.actualizado_a).toLocaleDateString('es-ES'),
+      });
+    }
+    );
+    return priorityMaterialized;
   }
 
-  filteredColums(): ColumnTable[] {
+  filteredColumns(): ColumnTable[] {
     let filteredColumns = this.columns.filter((column: ColumnTable) => column.show === true);
 
     return filteredColumns
   };
 
-  materializeGroups(groups: GroupResponse[]): Group[] {
-    const groupsMaterialized: Group[] = [];
-    groups.forEach((group) => {
-      groupsMaterialized.push({
-        _id: group._id,
-        nombre: group.nombre,
-        color: group.color,
-        creador_id: group.creador_id,
-        modificador_id: group.modificador_id,
-        creado_a: new Date(group.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(group.actualizado_a).toLocaleDateString('es-ES'),
-      });
-    }
-    );
-    return groupsMaterialized;
+  createNewRecord(): void {
+    this.action = 'create';
+    this.visibleModal = true;
+    this.header = 'Crear prioridad';
+    this.label = 'Crear';
   }
 
-  onSubmitGroup(): void {
+  onSubmitPriority(): void {
     this.visibleModal = false;
     this.deleteModal = false;
     if (this.action === 'edit') {
-      this.groupService.editGroup(this.rowSelectedEdit).subscribe({
+      this.priorityService.editPriority(this.rowSelectedEdit).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      this.rowSelectedEdit = {} as GroupEdit;
+      console.log(this.rowSelectedEdit);
+      this.rowSelectedEdit = {} as PriorityEdit;
     }
     if (this.action === 'create') {
-      this.groupService.createGroup(this.rowCreate).subscribe({
+      this.priorityService.createPriority(this.rowCreate).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
-          this.fetchGroups();
+          this.fetchPriorities();
         },
       });
-      this.rowCreate = {} as GroupCreate;
+      this.rowCreate = {} as PriorityCreate;
     }
     if(this.action === 'delete'){
-      this.groupService.deleteGroup(this.rowSelectedDelete._id).subscribe({
+      this.priorityService.deletePriority(this.rowSelectedDelete._id).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      this.rowSelectedDelete = {} as GroupDelete;
+      this.rowSelectedDelete = {} as PriorityDelete;
     }
-    this.fetchGroups();
+    this.fetchPriorities();
   }
 
-  getObjectByAction(): GroupEdit | GroupCreate {
+  getObjectByAction(): PriorityEdit | PriorityCreate {
     return this.action === 'edit'  ? this.rowSelectedEdit : this.rowCreate;
   }
 
@@ -220,9 +230,11 @@ export class GroupsComponent {
   columnsToDeleteByCreate: string[] = ['acciones', 'creado_a', 'actualizado_a', 'creador_id', 'modificador_id', '_id'];
   getColumnsByAction(): ColumnTable[] {
     if(this.action === 'edit'){
-      return this.columns.filter((column: ColumnTable) => !this.columnsToDeleteByEdit.includes(column.key));
+
+      return this.columns.filter((column: ColumnTable) => column.isAvailableOnEdit === true);
+      
     }
-    return this.columns.filter((column: ColumnTable) => !this.columnsToDeleteByCreate.includes(column.key));
+      return this.columns.filter((column: ColumnTable) => column.isAvailableOnCreation === true);
   }
 
 }

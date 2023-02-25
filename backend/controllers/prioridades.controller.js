@@ -47,7 +47,9 @@ exports.obtenerPrioridadPorId = async (req, res) => {
 }
 
 exports.actualizarPrioridad = async (req, res) => {
-    const filter  = req.params.id;
+    const filter  = { _id: req.params.id }
+
+    console.log(filter);
 
     const { nombre, color } = req.body;
 
