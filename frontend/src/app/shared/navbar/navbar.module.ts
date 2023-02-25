@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from './navbar.component';
-
-
+import { NavbarComponent } from './navbar.component'
+import {MenubarModule} from 'primeng/menubar'; 
 
 @NgModule({
   declarations: [
     NavbarComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MenubarModule
   ],
   exports: [NavbarComponent]
 })

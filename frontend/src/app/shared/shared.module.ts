@@ -8,6 +8,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { TableComponent } from './table/table.component';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { DialogModule } from 'primeng/dialog';
     HttpClientModule,
     RouterModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    TooltipModule
   ],
   declarations: [
 

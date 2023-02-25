@@ -3,9 +3,9 @@
     <app-sidebar *ngIf="getAuthenticate"></app-sidebar>
   </div>
   <div class="content">
-    <!-- <div>
-      <app-navbar *ngIf="isAuthenticated"></app-navbar>
-    </div> -->
+    <div>
+      <app-navbar *ngIf="getAuthenticate"></app-navbar>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </main>
