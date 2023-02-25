@@ -38,6 +38,6 @@ export class TicketService {
       'x-access-token': `${token}`,
     });
 
-    return this.getService.getAll('/tickets',  new HttpParams(), headers);
+    return this.getService.getAll('/tickets-by-user',  new HttpParams(), headers);
   }
 }

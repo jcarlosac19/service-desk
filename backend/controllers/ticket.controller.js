@@ -17,7 +17,7 @@ exports.crearTicket = async (req, res) => {
     const { trabajo_flujo_id } = req.body
 
     try{
-        const ticket = await Ticket.create({
+        const ticket = new Ticket({
             asunto,
             contenido,
             estado_id,
@@ -28,6 +28,7 @@ exports.crearTicket = async (req, res) => {
             modificador_id  : null,
             esta_eliminado  : false
         });
+        await ticket.save();
 
         const transaccion = new TicketHistorico({
             ticket_id: ticket._id,
@@ -60,7 +61,7 @@ Ticket.schema.post('create', async function (doc, next) {
 exports.obtenerTickets = async (req, res) => {
     // const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
     // const activos = false;
-    Ticket.find()
+    Ticket.find({esta_eliminado: false})
           .populate('estado_id')
           .populate('prioridad_id')
           .populate('categoria_id')
@@ -71,6 +72,22 @@ exports.obtenerTickets = async (req, res) => {
             if (err) return res.status(400).send("Hubo un error."); 
             return res.status(200).send(docs);
         });
+};
+
+exports.getTicketsByUser = async (req, res) => {
+    Ticket.find({creador_id: req.user.user_id, esta_eliminado: false})
+          .populate('estado_id')
+          .populate('prioridad_id')
+          .populate('categoria_id')
+          .populate('creador_id')
+          .populate('modificador_id')
+          .populate('trabajo_flujo_id')
+          .exec((err, docs)=>{
+                console.log(err);
+                if (err) return res.status(400).send("Hubo un error."); 
+                console.log(docs);
+                return res.status(200).send(docs);
+            });
 };
 
 exports.obtenerTicketPorId = async (req, res) => {
