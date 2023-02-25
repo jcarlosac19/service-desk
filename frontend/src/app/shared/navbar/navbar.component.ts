@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'; 
+import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/core';
 
 @Component({
   selector: 'app-navbar',
@@ -6,5 +9,32 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  navbarItems: string[] = ['Home', 'Contact', 'SignIn', 'SignUp'];
+  navbarItems: MenuItem[] = [];
+
+  ngOnInit(): void {
+    this.navbarItems = [
+      {
+        label: 'Home',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/my-tickets']
+      },
+      {
+        label: 'User',
+        icon: 'pi pi-fw pi-user',
+        items: [
+          { 
+            label: 'Logout', 
+            icon: 'pi pi-fw pi-sign-out',
+            command: () => {
+              this.userService.purgeAuth();
+              this.router.navigateByUrl('/login');
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+  constructor(private router: Router, private userService: UserService) {}  
+
 }
