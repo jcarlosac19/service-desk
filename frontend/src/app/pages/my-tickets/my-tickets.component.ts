@@ -117,8 +117,8 @@ export class MyTicketsComponent implements OnInit {
         categoria: ticketResponse.categoria_id.nombre,
         flujo: ticketResponse.trabajo_flujo_id.nombre,
         modificador: ticketResponse.modificador_id?.email ?? '',
-        creado_a: ticketResponse.creado_a,
-        actualizado_a: ticketResponse.actualizado_a
+        creado_a: new Date(ticketResponse.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(ticketResponse.actualizado_a).toLocaleDateString('es-ES')
       };
       tickets.push(ticket);
     });

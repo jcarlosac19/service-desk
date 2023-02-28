@@ -13,7 +13,7 @@ exports.crearCategoria = async (req, res) => {
         esta_eliminado: false
     })
     .then(()=>{
-        res.status(201).send("La categoria se creo exitosamente.")
+        res.status(201).json({message: "La categoria se creo exitosamente."})
     })
     .catch((err)=>{
         res.status(400).send(err)
@@ -57,11 +57,11 @@ exports.actualizarCategoria = async (req, res) => {
     const modificador = req.user.user_id;
     update.modificador_id = modificador;
 
-    await Categoria.findOneAndUpdate(
+    await Categoria.findByIdAndUpdate(
         filter, update, {
         new: true
     }).then(doc => {
-        res.status(200).send(doc);
+        res.status(200).json(doc);
     }).catch(err => {
         res.status(400).send("No se pudo modificar el documento.")
     })

@@ -22,7 +22,7 @@ export class SidebarComponent {
     },
     {
       name: 'Categorias',
-      routerName: '/categorias'
+      routerName: '/category'
     },
     {
       name: 'Flujos',
