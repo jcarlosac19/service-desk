@@ -135,9 +135,6 @@ export class PrioridadesComponent {
     },
   ];
 
-  
-  
-
   constructor(
     private userService: UserService,
     private priorityService: PriorityService,
@@ -226,8 +223,7 @@ export class PrioridadesComponent {
     return this.action === 'edit'  ? this.rowSelectedEdit : this.rowCreate;
   }
 
-  columnsToDeleteByEdit: string[] = ['acciones', 'creado_a', 'actualizado_a', 'creador_id', 'modificador_id'];
-  columnsToDeleteByCreate: string[] = ['acciones', 'creado_a', 'actualizado_a', 'creador_id', 'modificador_id', '_id'];
+
   getColumnsByAction(): ColumnTable[] {
     if(this.action === 'edit'){
 

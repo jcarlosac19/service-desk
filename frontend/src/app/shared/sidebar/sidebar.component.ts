@@ -13,6 +13,10 @@ export class SidebarComponent {
       routerName: '/my-tickets'
     },
     {
+      name: 'Tickets',
+      routerName: '/tickets'
+    },
+    {
       name: 'Create Tickets',
       routerName: '/create-tickets'
     },
