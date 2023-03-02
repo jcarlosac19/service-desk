@@ -99,7 +99,7 @@ export interface Ticket {
   categoria:        string;
   flujo:            string;
   modificador:      string;
-  creado_a:         Date;
-  actualizado_a:    Date;
+  creado_a:         string;
+  actualizado_a:    string;
   [key: string]: any;
 }
