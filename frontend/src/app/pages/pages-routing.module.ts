@@ -5,6 +5,7 @@ import { StatusComponent } from './estados/status.component';
 import { GroupsComponent } from './groups/groups.component';
 import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
+import { TicketsComponent } from './tickets/tickets.component';
 
 const routes: Routes = [
   { 
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'status',
     component: StatusComponent
+  }, 
+  {
+    path: 'tickets',
+    component: TicketsComponent
   }
 ];
 

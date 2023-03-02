@@ -34,12 +34,13 @@ exports.obtenerComentarios = async (req, res) => {
 
 exports.obtenerComentarioByTicketId = async (req, res) => {
     const id = req.params.id;
-    await Comentario.find({ ticket_id: id })
+    await Comentario.find({ ticket: id })
+    .populate('usuario ticket')
     .then(comentarios => {
         res.status(200).send(comentarios);
     })
     .catch(err => {
-        res.status(400).send(`El ticket id: ${ticket_id} no tiene ningun comentario.`)
+        res.status(400).send(`El ticket id: ${ticket} no tiene ningun comentario.`)
     })
 };
 
