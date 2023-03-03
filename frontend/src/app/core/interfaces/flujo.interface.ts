@@ -1,43 +1,36 @@
-export interface CategoriesResponse {
+export interface FlujoResponse {
   _id:            string;
   nombre:         string;
-  color:          string;
-  grupo_id:     string;
-  creador_id:     string;
   modificador_id: string;
   esta_eliminado: boolean;
   creado_a:       Date;
   actualizado_a:  Date;
-  message?:        string;
   [key: string]: any;
 }
 
-export interface Category {
+export interface Flujo {
   _id:            string;
   nombre:         string;
-  color:          string;
-  grupo_id:          string;
-  creador_id:     string;
   modificador_id: string;
   creado_a:       string;
   actualizado_a:  string;
   [key: string]: any;
 }
 
-export interface CategoryEdit {
+export interface FlujoEdit {
   _id:            string;
   nombre:         string;
-  color:          string;
-  actualizado_a:  Date;
   [key: string]: any;
 }
 
-export interface CategoryCreate {
+export interface FlujoCreate {
   nombre:         string;
-  color:          string;
-  grupo_id:       string;
   [key: string]: any;
 }
-export interface CategoryDelete {
+export interface FlujoDelete {
   _id:            string;
+}
+
+export const flujoNames = {
+  compra: 'Compra',
 }

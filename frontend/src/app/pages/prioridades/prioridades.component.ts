@@ -149,27 +149,10 @@ export class PrioridadesComponent {
   fetchPriorities(): void {
     this.priorityService.getPriorities().subscribe({
       next: (response) => {
-        this.priorities = this.materializePriorities(response);
+        this.priorities = this.priorityService.materializePriorities(response);
       },
       error: (error) => console.error(error),
     });
-  }
-
-  materializePriorities(priorities: PriorityResponse[]): Priority[] {
-    const priorityMaterialized: Priority[] = [];
-    priorities.forEach((priority) => {
-      priorityMaterialized.push({
-        _id: priority._id,
-        nombre: priority.nombre,
-        color: priority.color,
-        creador_id: priority.creador_id,
-        modificador_id: priority.modificador_id,
-        creado_a: new Date(priority.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(priority.actualizado_a).toLocaleDateString('es-ES'),
-      });
-    }
-    );
-    return priorityMaterialized;
   }
 
   filteredColumns(): ColumnTable[] {

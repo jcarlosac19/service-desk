@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatusCreate, StatusEdit, StatusResponse, MessageResponse } from '../interfaces/status.interface';
+import { StatusCreate, StatusEdit, StatusResponse, MessageResponse, Status } from '../interfaces/status.interface';
 import { JwtService } from './jwt.service';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
@@ -58,5 +58,23 @@ export class StatusService {
     });
 
     return this.postService.delete(`/estados/eliminar/${id}`, { headers });
+  }
+
+  materializeStatus(statuses: StatusResponse[]): Status[] {
+    const statusMaterialized: Status[] = [];
+    statuses.forEach((status) => {
+      statusMaterialized.push({
+        _id: status._id,
+        nombre: status.nombre,
+        color: status.color,
+        creador_id: status.creador_id,
+        modificador_id: status.modificador_id,
+        esta_eliminado: status.esta_eliminado,
+        creado_a: new Date(status.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(status.actualizado_a).toLocaleDateString('es-ES'),
+      });
+    }
+    );
+    return statusMaterialized;
   }
 }

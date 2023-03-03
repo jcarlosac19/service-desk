@@ -11,10 +11,10 @@ exports.crearFlujo = async (req, res) => {
         esta_eliminado: false
     })
     .then(()=>{
-        res.status(201).send("El flujo se creo exitosamente.")
+        res.status(201).send({message: "El flujo se creo exitosamente."})
     })
     .catch(()=>{
-        res.status(400).send("Hubo un error al crear el flujo.")
+        res.status(400).send({message: "Hubo un error al crear el flujo."})
     });
 }
 

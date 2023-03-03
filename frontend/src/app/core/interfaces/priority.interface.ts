@@ -17,6 +17,7 @@ export interface PriorityResponse {
     modificador_id: string;
     creado_a:       string;
     actualizado_a:  string;
+    [key: string]: any;
   }
   
   export interface PriorityEdit {
