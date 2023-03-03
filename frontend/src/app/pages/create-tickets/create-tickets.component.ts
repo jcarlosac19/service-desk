@@ -1,13 +1,21 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TicketService } from 'src/app/core';
-import { KeyMap } from 'src/app/core/interfaces/sidebar.links.interface';
 import { ToastrService } from 'ngx-toastr';
 import {
   CreateTicket,
   TicketPostResponse,
   TicketSelect,
 } from 'src/app/core/interfaces/ticket.interface';
+import { StatusService } from 'src/app/core/services/status.service';
+import { CategoriesService } from 'src/app/core/services/categories.service';
+import { Status } from 'src/app/core/interfaces/status.interface';
+import { status } from '../estados/constant';
+import { PriorityService } from 'src/app/core/services/priority.service';
+import { Priority } from 'src/app/core/interfaces/priority.interface';
+import { Category } from 'src/app/core/interfaces/categories.interface';
+import { Flujo, flujoNames } from 'src/app/core/interfaces/flujo.interface';
+import { FlujoService } from 'src/app/core/services/flujo.service';
 
 @Component({
   selector: 'app-create-tickets',
@@ -29,36 +37,57 @@ import {
 })
 export class CreateTicketsComponent {
   ticketForm: FormGroup;
-  priorities: string[] = ['Alto', 'Medio', 'Bajo'];
-  categories: string[] = ['Reclamo', 'Solicitud', 'Informacion'];
-  ticketResponse: TicketPostResponse = {
-    message: '',
-  };
-  status = {
-    pendiente: '63ed84d64aaa4014a8cf51d7',
-    enProceso: '63ed84ed4aaa4014a8cf51dc',
-    completado: '63ed84fd4aaa4014a8cf51e1',
-  };
-  flujos = {
-    compra: '63ed79a3d4ad9b0e5bce0cb7',
-  };
-  priorityKeys: KeyMap = {
-    alto: '63ec427820604c186cadefc9',
-    medio: '63ec428420604c186cadefce',
-    bajo: '63ec429120604c186cadefd3',
-  };
-  categoryKeys: KeyMap = {
-    solicitud: '63ec418483bf4769f2e184a4',
-    reclamo: '63ec418483bf4769f2e184a4',
-    informacion: '63ec418483bf4769f2e184a4',
-  };
+  priorities: string[] = [];
+  categories: string[] = [];
+  ticketResponse: TicketPostResponse = {} as TicketPostResponse;
+  status: Status[] = [];
+  flujos: Flujo[] = [];
+  priorityKeys: Priority[] = [];
+  categoryKeys: Category[] = [];
 
-  constructor(private ticketService: TicketService, private toastr: ToastrService) {
+  constructor(
+    private ticketService: TicketService,
+    private toastr: ToastrService,
+    private statusService: StatusService,
+    private priorityService: PriorityService,
+    private categoryService: CategoriesService,
+    private flujoService: FlujoService
+  ) {
     this.ticketForm = new FormGroup({
       prioritiesSelect: new FormControl(this.priorities),
       categoriesSelect: new FormControl(this.categories),
       asunto: new FormControl(''),
       contenido: new FormControl(''),
+    });
+  }
+
+  ngOnInit(): void {
+    this.statusService.getStatuses().subscribe({
+      next: (response) => {
+        this.status = this.statusService.materializeStatus(response);
+      },
+    });
+
+    this.priorityService.getPriorities().subscribe({
+      next: (response) => {
+        this.priorityKeys =
+          this.priorityService.materializePriorities(response);
+          this.priorities = this.priorityKeys.map((p) => p.nombre);
+      },
+    });
+
+    this.categoryService.getCategories().subscribe({
+      next: (response) => {
+        this.categoryKeys =
+          this.categoryService.materializeCategories(response);
+          this.categories = this.categoryKeys.map((c) => c.nombre);
+      },
+    });
+
+    this.flujoService.getFlujos().subscribe({
+      next: (response) => {
+        this.flujos = this.flujoService.materializeFlujos(response);
+      },
     });
   }
 
@@ -72,7 +101,6 @@ export class CreateTicketsComponent {
         this.ticketForm.reset();
       },
       error: (err) => {
-        console.log(err);
         this.toastr.error(err?.error?.message, 'Error al crear ticket');
         this.ticketForm.reset();
       },
@@ -83,10 +111,15 @@ export class CreateTicketsComponent {
     const createTicketRequest: CreateTicket = {
       asunto: ticket.asunto,
       contenido: ticket.contenido,
-      prioridad_id: this.priorityKeys[ticket.prioritiesSelect.toLowerCase()],
-      categoria_id: this.categoryKeys[ticket.categoriesSelect.toLowerCase()],
-      estado_id: this.status.pendiente,
-      trabajo_flujo_id: this.flujos.compra,
+      prioridad_id: this.priorityKeys.find(
+        (p) => p.nombre == ticket.prioritiesSelect
+      )?._id!,
+      categoria_id: this.categoryKeys.find(
+        (c) => c.nombre == ticket.categoriesSelect
+      )?._id!,
+      estado_id: this.status.find((s) => s.nombre == status.pending)?._id!,
+      trabajo_flujo_id: this.flujos.find((f) => f.nombre == flujoNames.compra)
+        ?._id!,
     };
     return createTicketRequest;
   }

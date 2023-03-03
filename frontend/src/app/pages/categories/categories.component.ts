@@ -139,7 +139,7 @@ export class CategoriesComponent {
   fetchCategories(): void {
     this.categoryService.getCategories().subscribe({
       next: (response) => {
-        this.categories = this.materializeCategories(response);
+        this.categories = this.categoryService.materializeCategories(response);
       },
       error: (error) => console.error(error),
     });
@@ -151,25 +151,6 @@ export class CategoriesComponent {
     );
 
     return filteredColumns;
-  }
-
-  materializeCategories(categories: CategoriesResponse[]): Category[] {
-    const categoryMaterialized: Category[] = [];
-    categories.forEach((category) => {
-      categoryMaterialized.push({
-        _id: category._id,
-        nombre: category.nombre,
-        color: category.color,
-        grupo_id: category.grupo_id,
-        creador_id: category.creador_id,
-        modificador_id: category.modificador_id,
-        creado_a: new Date(category.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(category.actualizado_a).toLocaleDateString(
-          'es-ES'
-        ),
-      });
-    });
-    return categoryMaterialized;
   }
 
   onSubmitCategory(): void {debugger;

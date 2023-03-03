@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PriorityCreate, PriorityEdit, PriorityResponse, MessageResponse } from '../interfaces/priority.interface';
+import { PriorityCreate, PriorityEdit, PriorityResponse, MessageResponse, Priority } from '../interfaces/priority.interface';
 import { JwtService } from './jwt.service';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
@@ -58,5 +58,22 @@ export class PriorityService {
     });
 
     return this.postService.delete(`/prioridades/eliminar/${id}`, { headers });
+  }
+
+  materializePriorities(priorities: PriorityResponse[]): Priority[] {
+    const priorityMaterialized: Priority[] = [];
+    priorities.forEach((priority) => {
+      priorityMaterialized.push({
+        _id: priority._id,
+        nombre: priority.nombre,
+        color: priority.color,
+        creador_id: priority.creador_id,
+        modificador_id: priority.modificador_id,
+        creado_a: new Date(priority.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(priority.actualizado_a).toLocaleDateString('es-ES'),
+      });
+    }
+    );
+    return priorityMaterialized;
   }
 }

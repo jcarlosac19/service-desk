@@ -143,7 +143,7 @@ export class StatusComponent {
   fetchGroups(): void {
     this.statusService.getStatuses().subscribe({
       next: (response) => {
-        this.statuses = this.materializeGroups(response);
+        this.statuses = this.statusService.materializeStatus(response);
 
       },
       error: (error) => console.error(error),
@@ -155,24 +155,6 @@ export class StatusComponent {
 
     return filteredColumns
   };
-
-  materializeGroups(statuses: StatusResponse[]): Status[] {
-    const statusMaterialized: Status[] = [];
-    statuses.forEach((status) => {
-      statusMaterialized.push({
-        _id: status._id,
-        nombre: status.nombre,
-        color: status.color,
-        creador_id: status.creador_id,
-        modificador_id: status.modificador_id,
-        esta_eliminado: status.esta_eliminado,
-        creado_a: new Date(status.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(status.actualizado_a).toLocaleDateString('es-ES'),
-      });
-    }
-    );
-    return statusMaterialized;
-  }
 
   onSubmitStatus(): void {
     this.visibleModal = false;

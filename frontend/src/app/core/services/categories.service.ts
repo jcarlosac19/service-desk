@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoriesResponse, CategoryCreate, CategoryEdit } from '../interfaces/categories.interface';
+import { CategoriesResponse, Category, CategoryCreate, CategoryEdit } from '../interfaces/categories.interface';
 import { MessageResponse } from '../interfaces/status.interface';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
@@ -59,5 +59,24 @@ export class CategoriesService {
     });
 
     return this.getService.delete(`/categorias/eliminar/${id}`, { headers });
+  }
+
+  materializeCategories(categories: CategoriesResponse[]): Category[] {
+    const categoryMaterialized: Category[] = [];
+    categories.forEach((category) => {
+      categoryMaterialized.push({
+        _id: category._id,
+        nombre: category.nombre,
+        color: category.color,
+        grupo_id: category.grupo_id,
+        creador_id: category.creador_id,
+        modificador_id: category.modificador_id,
+        creado_a: new Date(category.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(category.actualizado_a).toLocaleDateString(
+          'es-ES'
+        ),
+      });
+    });
+    return categoryMaterialized;
   }
 }
