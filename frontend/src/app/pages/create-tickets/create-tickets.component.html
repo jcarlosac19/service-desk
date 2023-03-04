@@ -1,16 +1,16 @@
-<main class="main-content">
+<main class="main-content mt-4">
   <h3 class="text-center">Crear Ticket</h3>
   <hr class="mb-5" />
   <section>
-    <form [formGroup]="ticketForm" (submit)="onSubmitTicket()" class="form-group bg-light rounded p-3">
+    <form [formGroup]="ticketForm" (submit)="onSubmitTicket()" class="form-group bg-light rounded p-4 form-style ">
       <div class="grid-container">
 
         <div>
           <label class="form-label" for="prioritiesList">
             Prioridad:
-            <select formControlName="prioritiesSelect" class="form-select" id="prioritiesList">
-              <option *ngFor="let priority of priorities" [value]="priority">
-                {{ priority }}
+            <select formControlName="prioritiesSelect" class="form-select select-style" id="prioritiesList">
+              <option *ngFor="let priority of priorities" [value]="priority" class="option-style">
+                <p> {{ priority }} </p>
               </option>
             </select>
           </label>
@@ -19,9 +19,9 @@
         <div>
           <label class="form-label" for="categoriesList">
             Grupos:
-            <select formControlName="categoriesSelect" class="form-select" id="categoriesList">
-              <option *ngFor="let category of categories" [value]="category">
-                {{ category }}
+            <select formControlName="categoriesSelect" class="form-select select-style" id="categoriesList">
+              <option class="option-style" *ngFor="let category of categories" [value]="category">
+                <p> {{ category }} </p>
               </option>
             </select>
           </label>
@@ -31,9 +31,9 @@
         <div>
           <label class="form-label" for="flujosList">
             Flujo:
-            <select formControlName="flujosSelect" class="form-select" id="flujosList">
-              <option *ngFor="let flujo of flujos" [value]="flujo">
-                {{ flujo }}
+            <select formControlName="flujosSelect" class="form-select select-style" id="flujosList">
+              <option class="option-style" *ngFor="let flujo of flujos" [value]="flujo">
+                <p class="option-text"> {{ flujo }} </p>
               </option>
             </select>
           </label>
@@ -42,11 +42,11 @@
       </div>
       <label class="form-label" for="asunto">
         Asunto:
-        <input formControlName="asunto" class="form-control mb-3" type="text" id="asunto" />
+        <input formControlName="asunto" class="form-control mb-3 mt-2" type="text" id="asunto" />
       </label>
       <label>
         Contenido:
-        <textarea formControlName="contenido" class="form-control mb-3" style="height: 200px"></textarea>
+        <textarea formControlName="contenido" class="form-control mb-3 mt-2" style="height: 200px"></textarea>
       </label>
       <section class="d-flex justify-content-center w-100">
         <button class="btn btn-lg btn-primary mb-2" type="submit">Crear Ticket</button>
