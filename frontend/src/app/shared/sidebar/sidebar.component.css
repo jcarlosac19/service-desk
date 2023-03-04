@@ -2,8 +2,42 @@
   height: 119vh;
   width: 16rem;
   background-color: #091a32;
+  padding-top: 1.5rem;
 }
 
 ul  {
   list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.li-items {
+  padding: .3rem 2rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 400;
+  cursor: pointer;
+  width: 100%;
+  margin: 0 auto;
+  transition: all 300ms ease-in-out;
+}
+.li-items:hover {
+  background-color: #0f2a5b;
+  border-left: 4px solid #fff;
+}
+
+.container-logo  {
+  padding: 0rem 1rem;
+  text-align: center;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-center {
+  margin: 0  auto;
 }

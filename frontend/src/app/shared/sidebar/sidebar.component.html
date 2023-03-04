@@ -1,4 +1,4 @@
-<aside class="p-3 sidebar">
+<aside class="sidebar">
   <div class="container-logo">
     <h4 class="text-light">HelpDesk App</h4>
     <img src="../../assets/logo-test.png" class="image-logo" alt="logo" />
@@ -6,8 +6,8 @@
 
   <div class="pages-container mt-5">
     <ul>
-      <li *ngFor="let link of links">
-        <a [routerLink]="link?.routerName" class="nav-link text-light"> {{link?.name}} </a>
+      <li *ngFor="let link of links" class="li-items">
+        <a [routerLink]="link?.routerName" class="nav-link text-light nav-center"> {{link?.name}} </a>
       </li>
     </ul>
   </div>
