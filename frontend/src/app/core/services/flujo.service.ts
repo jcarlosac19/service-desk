@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoriesResponse } from '../interfaces/categories.interface';
-import { Flujo, FlujoCreate, FlujoEdit, FlujoResponse } from '../interfaces/flujo.interface';
-import { MessageResponse } from '../interfaces/status.interface';
+import { Flujo, FlujoCreate, FlujoEdit, FlujoResponse, MessageResponse } from '../interfaces/flujo.interface';
 import { ApiService } from './api.service';
 import { JwtService } from './jwt.service';
 import * as helper from '../helpers';
@@ -23,7 +21,7 @@ export class FlujoService {
       'x-access-token': `${token}`,
     });
 
-    return this.postService.post('/categorias', request, { headers });
+    return this.postService.post('/flujos', request, { headers });
   }
 
   getFlujos(): Observable<FlujoResponse[]> {
@@ -37,7 +35,7 @@ export class FlujoService {
     return this.getService.getAll('/flujos',  new HttpParams(), headers);
   }
 
-  editCategory(request: FlujoEdit): Observable<FlujoResponse> {
+  editFlujo(request: FlujoEdit): Observable<FlujoResponse> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({
@@ -48,7 +46,7 @@ export class FlujoService {
     return this.getService.put(`/flujos/${request._id}`, request, { headers });
   }
 
-  deleteCategory(id: string): Observable<FlujoResponse> {
+  deleteFlujo(id: string): Observable<FlujoResponse> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({
@@ -65,6 +63,7 @@ export class FlujoService {
       flujosMaterialized.push({
         _id: flujo._id,
         nombre: flujo.nombre,
+        tiempo_resolucion: flujo.tiempo_resolucion,
         modificador_id: flujo.modificador_id,
         creado_a: helper.formatDate(flujo.creado_a),
         actualizado_a: helper.formatDate(flujo.actualizado_a),

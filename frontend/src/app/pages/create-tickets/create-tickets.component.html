@@ -4,6 +4,7 @@
   <section>
     <form [formGroup]="ticketForm" (submit)="onSubmitTicket()" class="form-group bg-light rounded p-3">
       <div class="grid-container">
+
         <div>
           <label class="form-label" for="prioritiesList">
             Prioridad:
@@ -14,9 +15,10 @@
             </select>
           </label>
         </div>
+
         <div>
           <label class="form-label" for="categoriesList">
-            Categorias:
+            Grupos:
             <select formControlName="categoriesSelect" class="form-select" id="categoriesList">
               <option *ngFor="let category of categories" [value]="category">
                 {{ category }}
@@ -24,6 +26,19 @@
             </select>
           </label>
         </div>
+
+
+        <div>
+          <label class="form-label" for="flujosList">
+            Flujo:
+            <select formControlName="flujosSelect" class="form-select" id="flujosList">
+              <option *ngFor="let flujo of flujos" [value]="flujo">
+                {{ flujo }}
+              </option>
+            </select>
+          </label>
+        </div>
+
       </div>
       <label class="form-label" for="asunto">
         Asunto:

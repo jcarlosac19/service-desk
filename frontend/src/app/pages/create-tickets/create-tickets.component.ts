@@ -14,7 +14,7 @@ import { status } from '../estados/constant';
 import { PriorityService } from 'src/app/core/services/priority.service';
 import { Priority } from 'src/app/core/interfaces/priority.interface';
 import { Category } from 'src/app/core/interfaces/categories.interface';
-import { Flujo, flujoNames } from 'src/app/core/interfaces/flujo.interface';
+import { Flujo } from 'src/app/core/interfaces/flujo.interface';
 import { FlujoService } from 'src/app/core/services/flujo.service';
 
 @Component({
@@ -37,13 +37,19 @@ import { FlujoService } from 'src/app/core/services/flujo.service';
 })
 export class CreateTicketsComponent {
   ticketForm: FormGroup;
-  priorities: string[] = [];
+  
+
   categories: string[] = [];
+  categoryKeys: Category[] = [];
+
   ticketResponse: TicketPostResponse = {} as TicketPostResponse;
   status: Status[] = [];
-  flujos: Flujo[] = [];
+
+  priorities: string[] = [];
   priorityKeys: Priority[] = [];
-  categoryKeys: Category[] = [];
+  
+  flujos: string[] = [];
+  flujoKeys: Flujo[] = [];
 
   constructor(
     private ticketService: TicketService,
@@ -56,6 +62,7 @@ export class CreateTicketsComponent {
     this.ticketForm = new FormGroup({
       prioritiesSelect: new FormControl(this.priorities),
       categoriesSelect: new FormControl(this.categories),
+      flujosSelect: new FormControl(this.flujos),
       asunto: new FormControl(''),
       contenido: new FormControl(''),
     });
@@ -78,21 +85,22 @@ export class CreateTicketsComponent {
 
     this.categoryService.getCategories().subscribe({
       next: (response) => {
-        this.categoryKeys =
-          this.categoryService.materializeCategories(response);
+        this.categoryKeys = this.categoryService.materializeCategories(response);
           this.categories = this.categoryKeys.map((c) => c.nombre);
       },
     });
 
     this.flujoService.getFlujos().subscribe({
       next: (response) => {
-        this.flujos = this.flujoService.materializeFlujos(response);
+        this.flujoKeys = this.flujoService.materializeFlujos(response);
+        this.flujos = this.flujoKeys.map((c) => c.nombre);
       },
     });
   }
 
   onSubmitTicket() {
     const ticketRequest: TicketSelect = this.ticketForm.value;
+    console.log(ticketRequest);
     const request: CreateTicket = this.materializeTicketRequest(ticketRequest);
     this.ticketService.createTicket(request).subscribe({
       next: (response) => {
@@ -101,7 +109,7 @@ export class CreateTicketsComponent {
         this.ticketForm.reset();
       },
       error: (err) => {
-        this.toastr.error(err?.error?.message, 'Error al crear ticket');
+        this.toastr.error(err?.message, 'Error al crear ticket');
         this.ticketForm.reset();
       },
     });
@@ -111,15 +119,10 @@ export class CreateTicketsComponent {
     const createTicketRequest: CreateTicket = {
       asunto: ticket.asunto,
       contenido: ticket.contenido,
-      prioridad_id: this.priorityKeys.find(
-        (p) => p.nombre == ticket.prioritiesSelect
-      )?._id!,
-      categoria_id: this.categoryKeys.find(
-        (c) => c.nombre == ticket.categoriesSelect
-      )?._id!,
+      prioridad_id: this.priorityKeys.find((p) => p.nombre == ticket.prioritiesSelect)?._id!,
+      categoria_id: this.categoryKeys.find((c) => c.nombre == ticket.categoriesSelect )?._id!,
       estado_id: this.status.find((s) => s.nombre == status.pending)?._id!,
-      trabajo_flujo_id: this.flujos.find((f) => f.nombre == flujoNames.compra)
-        ?._id!,
+      trabajo_flujo_id: this.flujoKeys.find((f) => f.nombre == ticket.flujosSelect)?._id!
     };
     return createTicketRequest;
   }

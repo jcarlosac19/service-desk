@@ -33,8 +33,8 @@ export class SidebarComponent {
       routerName: '/flujos'
     },
     {
-      name: 'Flujos Componentes',
-      routerName: '/flujos-componentes'
+      name: 'Equipos de Trabajo',
+      routerName: '/equipos'
     },
     {
       name: 'Prioridades',

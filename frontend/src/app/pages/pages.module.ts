@@ -12,6 +12,7 @@ import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TicketsComponent } from './tickets/tickets.component';
+import { FlujosComponent } from './flujos/flujos.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TicketsComponent } from './tickets/tickets.component';
     PrioridadesComponent,
     StatusComponent,
     CategoriesComponent,
-    TicketsComponent
+    TicketsComponent,
+    FlujosComponent
   ],
   imports: [
     CommonModule,

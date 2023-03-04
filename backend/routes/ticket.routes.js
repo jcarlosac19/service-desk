@@ -10,7 +10,6 @@ app.post("/tickets",
         verifyAccessLevel.isUser,
         verifyTickets.verifyAllRequiredFieldsForTicketCreation,
         verifyTickets.verifyIfCategoryExist,
-        verifyTickets.verifyIfStatusExist,
         verifyTickets.verifyIfPriorityExist,
         verifyTickets.verifyIfWorkflowExist
     ],

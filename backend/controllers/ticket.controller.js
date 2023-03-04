@@ -13,14 +13,14 @@ exports.crearTicket = async (req, res) => {
 
     const currentUserId = req.user.user_id;
 
-    const { asunto, contenido, estado_id, prioridad_id, categoria_id } = req.body
+    const { asunto, contenido, prioridad_id, categoria_id } = req.body
     const { trabajo_flujo_id } = req.body
 
     try{
         const ticket = new Ticket({
             asunto,
             contenido,
-            estado_id,
+            estado_id: "63de7f38565f3baaa860897e",
             prioridad_id,
             categoria_id,
             trabajo_flujo_id,

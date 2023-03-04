@@ -6,10 +6,11 @@ const Estados = require("../models/ticket.estados.model");
 let ticketOpciones = {}
 
 ticketOpciones.verifyAllRequiredFieldsForTicketCreation = (req, res, next) => {
-    const { asunto, contenido, estado_id, prioridad_id,  } = req.body
-    const { trabajo_flujo_id, categoria_id } = req.body
+    const { asunto, categoria_id, contenido, prioridad_id, trabajo_flujo_id  } = req.body
 
-    hasRequestAllRequiredFields = asunto && contenido && estado_id && prioridad_id && categoria_id && trabajo_flujo_id
+    console.log(req.body);
+
+    hasRequestAllRequiredFields = asunto && contenido && prioridad_id && categoria_id && trabajo_flujo_id
     if (!hasRequestAllRequiredFields) {
         res.status(400).send("Todos los campos son requeridos.");
         return;
