@@ -5,7 +5,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of data">
+    <tr *ngFor="let row of data" (click)="ticketEvent(row)" class="row-item">
       <td *ngFor="let column of columns">
         <ng-container
           *ngIf="

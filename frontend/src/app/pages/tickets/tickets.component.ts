@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TicketService, UserService } from 'src/app/core';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface';
@@ -9,11 +10,18 @@ import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface
   styleUrls: ['./tickets.component.css'],
 })
 export class TicketsComponent implements OnInit {
-  private tickets: Ticket[] = [];  
-  get getTickets(): Ticket[] {
-    return [...this.tickets];
+  public ticket: Ticket;  
+  get getTicket(): Ticket {
+    return this.ticket;
   }
-  constructor(private ticketService: TicketService, private userService:UserService) { }  
+
+  private ticketId: number;
+
+  constructor(private ticketService: TicketService, private userService:UserService, private route: ActivatedRoute) {
+    this.route.queryParams.subscribe(params => {
+      this.ticketId = params['ticketId']
+    })
+   }  
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -95,32 +103,32 @@ export class TicketsComponent implements OnInit {
   ];
   
   ngOnInit(): void {
+
     this.userService.populate();
-    this.ticketService.getTickets().subscribe({
+    this.ticketService.getTicketById(this.ticketId).subscribe({
       next: (response) => {
-        this.tickets = this.materializeResponseToTicket(response);        
+        this.ticket = this.materializeResponseToTicket(response);        
       }
+
+      
     });
   }
 
-  materializeResponseToTicket(response:TicketResponse[]){
-    const tickets: Ticket[] = [];
-    response.forEach((ticketResponse: TicketResponse) => {
-      const ticket: Ticket = {
+  materializeResponseToTicket(ticketResponse:TicketResponse){
+      const ticket_: Ticket = {
         _id: ticketResponse._id,
         asunto: ticketResponse.asunto,
         contenido: ticketResponse.contenido,
         estado: ticketResponse.estado_id.nombre,
         prioridad: ticketResponse.prioridad_id.nombre,
-        creador: ticketResponse.creador_id.nombres + ' ' + ticketResponse.creador_id.apellidos,
+        creador: ticketResponse.creador_id.nombres.split(" ",1) + ' ' + ticketResponse.creador_id.apellidos.split(" ",1),
         categoria: ticketResponse.categoria_id.nombre,
         flujo: ticketResponse.trabajo_flujo_id.nombre,
         modificador: ticketResponse.modificador_id?.email ?? '',
         creado_a: new Date(ticketResponse.creado_a).toLocaleDateString('es-ES'),
         actualizado_a: new Date(ticketResponse.actualizado_a).toLocaleDateString('es-ES'),
       };
-      tickets.push(ticket);
-    });
-    return tickets;
+
+    return ticket_;
   }
 }

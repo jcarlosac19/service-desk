@@ -91,13 +91,17 @@ exports.getTicketsByUser = async (req, res) => {
 exports.obtenerTicketPorId = async (req, res) => {
   const id = req.params.id;
 
-  await Ticket.findById( id )
-  .then(ticket => {
-      res.status(200).send(ticket);
-  })
-  .catch(err => {
-      res.status(400).send(`El ticket id: ${ id } no se pudo encontrar.`)
-  })
+  Ticket.findById( id )
+  .populate('estado_id')
+          .populate('prioridad_id')
+          .populate('categoria_id')
+          .populate('creador_id')
+          .populate('modificador_id')
+          .populate('trabajo_flujo_id')
+          .exec((err, docs)=>{
+                if (err) return res.status(400).send("Hubo un error."); 
+                return res.status(200).send(docs);
+            });
 };
 
 exports.actualizarTicket = async (req, res) => {

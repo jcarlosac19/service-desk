@@ -19,6 +19,7 @@ export interface ColumnTable {
   create?: () => void;
   edit?: (row: any) => void;
   remove?: (row: any) => void;
+  openTicket?: () => void;
   createIcon?: string;
   editIcon?: string;
   removeIcon?: string;

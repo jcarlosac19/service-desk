@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { tick } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { TicketService, UserService } from 'src/app/core';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface';
@@ -14,7 +16,7 @@ export class MyTicketsComponent implements OnInit {
   get getTickets(): Ticket[] {
     return [...this.tickets];
   }
-  constructor(private ticketService: TicketService, private userService:UserService) { }  
+  constructor(private ticketService: TicketService, private userService:UserService, private router: Router) { }  
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -102,6 +104,10 @@ export class MyTicketsComponent implements OnInit {
         this.tickets = this.materializeResponseToTicket(response);        
       }
     });
+  }
+
+  redirect(ticket: Ticket){
+    this.router.navigate(['/tickets'],{queryParams: { ticketId: ticket._id }});
   }
 
   materializeResponseToTicket(response:TicketResponse[]){

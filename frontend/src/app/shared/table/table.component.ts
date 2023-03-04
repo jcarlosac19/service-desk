@@ -1,6 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import * as helpers from '../../core/helpers';
+import { Ticket } from 'src/app/core/interfaces/ticket.interface';
+import { Route, Router } from '@angular/router';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-table',
@@ -12,13 +15,24 @@ import * as helpers from '../../core/helpers';
         flex-grow: 1;
         flex-shrink: 1;
       }
+
+      .row-item {
+        cursor: pointer;
+      }
+      .row-item:hover {
+          background-color: #c2c2c2;
+      }
     `,
   ],
 })
 export class TableComponent {
   @Input('columns') columns: ColumnTable[] = [];
   @Input('data') data: any[] = [];
+
+  @Output() rowItemClicked = new EventEmitter<Ticket>();
   buttons: number = 3;
+
+
 
   actionsContainer = {
     'display': 'grid',
@@ -31,7 +45,12 @@ export class TableComponent {
     return helpers.isNullOrUndefined(value);
   }
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  ticketEvent(ticket: Ticket){
+    this.rowItemClicked.emit(ticket);
+  }
+
 }
 
 function removeKeys(
@@ -42,3 +61,4 @@ function removeKeys(
   keys.forEach((key) => delete newObj[key]);
   return newObj;
 }
+

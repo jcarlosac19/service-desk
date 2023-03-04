@@ -9,12 +9,8 @@ import { SidebarLinks } from 'src/app/core/interfaces/sidebar.links.interface';
 export class SidebarComponent {
   links: SidebarLinks[] = [
     {
-      name: 'My Tickets',
-      routerName: '/my-tickets'
-    },
-    {
       name: 'Tickets',
-      routerName: '/tickets'
+      routerName: '/my-tickets'
     },
     {
       name: 'Create Tickets',
