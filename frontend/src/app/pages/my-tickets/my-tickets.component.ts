@@ -28,11 +28,6 @@ export class MyTicketsComponent implements OnInit {
       show: true,
     },
     {
-      name: 'Contenido',
-      key: 'contenido',
-      show: true,
-    },
-    {
       name: 'Estado',
       key: 'estado',
       show: true,
@@ -58,20 +53,10 @@ export class MyTicketsComponent implements OnInit {
       show: true,
     },
     {
-      name: 'Modificador',
-      key: 'modificador',
-      show: true,
-    },
-    {
-      name: 'Creado a',
+      name: 'Creado',
       key: 'creado_a',
       show: true,
-    },
-    {
-      name: 'Actualizado a',
-      key: 'actualizado_a',
-      show: true,
-    },
+    }
   ];
   
   ngOnInit(): void {
