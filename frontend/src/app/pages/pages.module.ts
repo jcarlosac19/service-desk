@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { TicketsComponent } from './tickets/tickets.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CategoriesComponent } from './categories/categories.component';
     GroupsComponent,
     PrioridadesComponent,
     StatusComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    TicketsComponent
   ],
   imports: [
     CommonModule,

@@ -2,6 +2,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CreateTicket,
+  Ticket,
   TicketPostResponse,
   TicketResponse,
 } from '../interfaces/ticket.interface';
@@ -39,5 +40,54 @@ export class TicketService {
     });
 
     return this.getService.getAll('/tickets-by-user',  new HttpParams(), headers);
+  }
+
+  getTicketById(id: string): Observable<TicketResponse> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+
+    return this.getService.get(`/tickets/${id}`, new HttpParams(), headers);
+  }
+
+  materializeResponseToTicket(response:TicketResponse[]){
+    const tickets: Ticket[] = [];
+    response.forEach((ticketResponse: TicketResponse) => {
+      const ticket: Ticket = {
+        _id: ticketResponse._id,
+        asunto: ticketResponse.asunto,
+        contenido: ticketResponse.contenido,
+        estado: ticketResponse.estado_id.nombre,
+        prioridad: ticketResponse.prioridad_id.nombre,
+        creador: ticketResponse.creador_id.nombres + ' ' + ticketResponse.creador_id.apellidos,
+        categoria: ticketResponse.categoria_id.nombre,
+        flujo: ticketResponse.trabajo_flujo_id.nombre,
+        modificador: ticketResponse.modificador_id?.email ?? '',
+        creado_a: new Date(ticketResponse.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(ticketResponse.actualizado_a).toLocaleDateString('es-ES')
+      };
+      tickets.push(ticket);
+    });
+    return tickets;
+  }
+
+  materializeResponseToTicketById(response:TicketResponse){
+    const ticket: Ticket = {
+      _id: response._id,
+      asunto: response.asunto,
+      contenido: response.contenido,
+      estado: response.estado_id.nombre,
+      prioridad: response.prioridad_id.nombre,
+      creador: response.creador_id.nombres + ' ' + response.creador_id.apellidos,
+      categoria: response.categoria_id.nombre,
+      flujo: response.trabajo_flujo_id.nombre,
+      modificador: response.modificador_id?.email ?? '',
+      creado_a: new Date(response.creado_a).toLocaleDateString('es-ES'),
+      actualizado_a: new Date(response.actualizado_a).toLocaleDateString('es-ES')
+    };
+    return ticket;
   }
 }
