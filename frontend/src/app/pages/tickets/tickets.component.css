@@ -1,5 +1,3 @@
-body{margin-top:20px;}
-
 .user-info-wrapper {
     position: relative;
     width: 100%;
@@ -313,4 +311,14 @@ a.list-group-item, .list-group-item-action {
 
 .mt-10 {
     margin-top: 25rem;
+}
+
+.main-content-ticket-detail {
+    margin: 1.5rem 2.5rem;
+    display: grid;
+}
+
+.comment-container {
+    overflow: auto;
+    height: 278.8px
 }

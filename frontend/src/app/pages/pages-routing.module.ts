@@ -35,7 +35,7 @@ const routes: Routes = [
     component: CategoriesComponent
   }, 
   {
-    path: 'tickets',
+    path: 'tickets/:id',
     component: TicketsComponent
   },
   {

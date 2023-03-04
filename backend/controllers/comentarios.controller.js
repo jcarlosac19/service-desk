@@ -1,22 +1,31 @@
 const Comentario = require("../models/ticket.comentario.model");
+const Ticket = require("../models/ticket.model");
+const Usuario = require("../models/usuario.model");
 
 exports.crearComentario = async (req, res) => {
     currentUserId = req.user.user_id;
-    const {asunto, ticket_id, contenido} = req.body;
-
-     await Comentario.create({
-        asunto: asunto,
-        ticket_id: ticket_id,
-        contenido: contenido,
-        creador_id: currentUserId
-    })
-    .then(()=>{
-        res.status(201).send("El comentario se creo exitosamente.")
-    })
-    .catch((err)=>{
-        res.status(400).send(err)
-    })
+    const {asunto, ticket, contenido} = req.body;
+    const comentario = new Comentario({
+        asunto,
+        ticket,
+        contenido,
+        creador: currentUserId
+    });
+    await comentario.save();
+    req.params.id = ticket;
+    try{
+        const commentByTicket = await getCommentByTicketId(ticket);
+        res.status(201).json({message: "Comentario creado exitosamente.", comentario: commentByTicket})
+    }catch(err){
+        res.status(400).json({message: "No se pudo crear el comentario."})
+    }
+    
 };
+
+const getCommentByTicketId = async (ticket_id) => {
+    const comentarios = await Comentario.find({ticket: ticket_id}).populate('creador').populate('ticket');
+    return comentarios;
+}
 
 exports.obtenerComentarios = async (req, res) => {
     const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
@@ -34,14 +43,12 @@ exports.obtenerComentarios = async (req, res) => {
 
 exports.obtenerComentarioByTicketId = async (req, res) => {
     const id = req.params.id;
-    await Comentario.find({ ticket: id })
-    .populate('usuario ticket')
-    .then(comentarios => {
-        res.status(200).send(comentarios);
-    })
-    .catch(err => {
-        res.status(400).send(`El ticket id: ${ticket} no tiene ningun comentario.`)
-    })
+    try{
+        const comentarios = await getCommentByTicketId(id);
+        res.status(200).json(comentarios);
+    }catch(err){
+        res.status(400).json({message: `El ticket id: ${id} no tiene ningun comentario.`})
+    }
 };
 
 exports.actualizarComentario = async (req, res) => {

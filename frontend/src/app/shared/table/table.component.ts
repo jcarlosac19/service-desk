@@ -31,6 +31,10 @@ export class TableComponent {
     return helpers.isNullOrUndefined(value);
   }
 
+  evaluateArray(value: any): boolean {
+    return helpers.isFullArray(value);
+  }
+
   constructor() {}
 }
 
