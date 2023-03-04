@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-auth-page',
   templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent implements OnInit {
   authType: string = '';
