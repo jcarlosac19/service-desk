@@ -11,7 +11,7 @@
                     <div class="user-info">
                         <div class="user-avatar">
                             <a class="edit-avatar" href="#"></a><img
-                                src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User">
+                                src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="User">
                         </div>
                         <div class="user-data">
                             <h4>{{ ticket.creador }}</h4><span>Joined February 06, 2017</span>
@@ -19,7 +19,7 @@
                     </div>
                 </aside>
                 <nav class="list-group">
-                    <a class="list-group-item" href="#"><i class="fa fa-user"></i>Ver Tickets</a>
+                    <a class="list-group-item" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</a>
                     <a class="list-group-item" href="#"><i class="fa fa-map"></i>Cambiar Estado</a>
                     <a class="list-group-item" href="#"><i class="fa fa-heart"></i>Reasignar</a>
                     <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Solucionar</a>
@@ -31,19 +31,19 @@
                     <table class="table margin-bottom-none">
                         <thead>
                             <tr>
-                                <th>Date Submitted</th>
-                                <th>Last Updated</th>
-                                <th>Type</th>
-                                <th>Category</th>
-                                <th>Priority</th>
-                                <th>Status</th>
+                                <th>Creado</th>
+                                <th>Creado Por</th>
+                                <th>Flujo</th>
+                                <th>Categoria</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td> {{ ticket.creado_a }} </td>
-                                <td> {{ ticket.actualizado_a }} </td>
-                                <td> {{ ticket.asunto }} </td>
+                                <td> {{ ticket.creador }} </td>
+                                <td> {{ ticket.flujo}} </td>
                                 <td> {{ticket.categoria}} </td>
                                 <td><span class="text-warning"> {{ticket.prioridad}} </span></td>
                                 <td><span class="text-primary"> {{ ticket.estado }} </span></td>
@@ -52,29 +52,30 @@
                     </table>
                 </div>
                 <!-- Messages-->
-                <div class="comment-container">
-                    <div class="comment">
-                        <div class="comment-author-ava"><img src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                alt="User"></div>
-                        <div class="comment-body">
-                            <p class="comment-text"> {{ticket.contenido}} </p>
-                            <div class="comment-footer"><span class="comment-meta">{{ ticket.creador }}</span></div>
-                        </div>
+
+                <div class="comment">
+                    <div class="content-body">
+                        <p><span class="content-meta">Asunto: {{ ticket.asunto }}</span></p>
+                        <p class="comment-text">{{ticket.contenido}}</p>
+                        <div><span class="content-meta">Creado el: {{ ticket.creado_a }}</span></div>
                     </div>
+                </div>
+                
                     <div class="comment" *ngFor="let comment of comments">
+                        <div class="comment-author-ava"><img src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="Avatar"></div>
                         <div class="comment-body">
                             <p class="comment-text"> {{comment?.contenido}} .</p>
                             <div class="comment-footer"><span class="comment-meta"> {{comment.creador.nombres}}
                                     {{comment.creador.apellidos}}, Staff</span></div>
                         </div>
                     </div>
-                </div>
+
                 <!-- Reply Form-->
-                <h5 class="mb-30 padding-top-1x">Leave Message</h5>
+                <h5 class="mb-30 padding-top-1x">Comentar</h5>
                 <form method="post" (submit)="onSubmitComment($event)" >
                     <div class="form-group">
                         <textarea class="form-control form-control-rounded" id="review_text" rows="8"
-                            placeholder="Write your message here..." required="" [(ngModel)]="comment" [name]="comment"
+                            placeholder="Escribe tu mensaje aqui..." required="" [(ngModel)]="comment" [name]="comment"
                             [ngModelOptions]="{ standalone: true }" ></textarea>
                     </div>
                     <div class="text-right">

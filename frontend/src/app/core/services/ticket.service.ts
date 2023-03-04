@@ -39,7 +39,7 @@ export class TicketService {
       'x-access-token': `${token}`,
     });
 
-    return this.getService.getAll('/tickets-by-user',  new HttpParams(), headers);
+    return this.getService.getAll('/tickets',  new HttpParams(), headers);
   }
 
   getTicketById(id: string): Observable<TicketResponse> {
@@ -62,7 +62,7 @@ export class TicketService {
         contenido: ticketResponse.contenido,
         estado: ticketResponse.estado_id.nombre,
         prioridad: ticketResponse.prioridad_id.nombre,
-        creador: ticketResponse.creador_id.nombres + ' ' + ticketResponse.creador_id.apellidos,
+        creador: ticketResponse.creador_id.nombres.split(" ", 1) + ' ' + ticketResponse.creador_id.apellidos.split(" ",1),
         categoria: ticketResponse.categoria_id.nombre,
         flujo: ticketResponse.trabajo_flujo_id.nombre,
         modificador: ticketResponse.modificador_id?.email ?? '',
@@ -81,7 +81,7 @@ export class TicketService {
       contenido: response.contenido,
       estado: response.estado_id.nombre,
       prioridad: response.prioridad_id.nombre,
-      creador: response.creador_id.nombres + ' ' + response.creador_id.apellidos,
+      creador: response.creador_id.nombres.split(" ",1) + ' ' + response.creador_id.apellidos.split(" ",1),
       categoria: response.categoria_id.nombre,
       flujo: response.trabajo_flujo_id.nombre,
       modificador: response.modificador_id?.email ?? '',
