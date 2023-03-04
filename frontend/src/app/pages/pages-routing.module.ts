@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CategoriesComponent } from './categories/categories.component';
 import { CreateTicketsComponent } from './create-tickets/create-tickets.component';
 import { StatusComponent } from './estados/status.component';
+import { FlujosComponent } from './flujos/flujos.component';
 import { GroupsComponent } from './groups/groups.component';
 import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'tickets',
     component: TicketsComponent
+  },
+  {
+    path: 'flujos',
+    component: FlujosComponent
   }
 ];
 

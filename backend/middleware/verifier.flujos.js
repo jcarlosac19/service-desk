@@ -19,8 +19,8 @@ flujosOpciones.verifyIfWorkflowExist = async (req, res, next) =>{
 };
 
 flujosOpciones.verifyRequiredFields = (req, res, next) => {
-  const { nombre } = req.body;
-  hasRequestAllRequiredFields = nombre
+  const { nombre, tiempo_resolucion } = req.body;
+  hasRequestAllRequiredFields = nombre && tiempo_resolucion
   if (!hasRequestAllRequiredFields) {
       res.status(400).send("Todos los campos son requeridos.");
       return;

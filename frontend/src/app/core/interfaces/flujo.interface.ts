@@ -1,6 +1,8 @@
 export interface FlujoResponse {
   _id:            string;
   nombre:         string;
+  tiempo_resolucion: number;
+  creador_id:     string;
   modificador_id: string;
   esta_eliminado: boolean;
   creado_a:       Date;
@@ -11,6 +13,7 @@ export interface FlujoResponse {
 export interface Flujo {
   _id:            string;
   nombre:         string;
+  tiempo_resolucion: number;
   modificador_id: string;
   creado_a:       string;
   actualizado_a:  string;
@@ -20,11 +23,13 @@ export interface Flujo {
 export interface FlujoEdit {
   _id:            string;
   nombre:         string;
+  tiempo_resolucion: number;
   [key: string]: any;
 }
 
 export interface FlujoCreate {
   nombre:         string;
+  tiempo_resolucion: number;
   [key: string]: any;
 }
 export interface FlujoDelete {
@@ -33,4 +38,8 @@ export interface FlujoDelete {
 
 export const flujoNames = {
   compra: 'Compra',
+}
+
+export interface MessageResponse {
+  message: string;
 }

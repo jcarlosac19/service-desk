@@ -9,6 +9,7 @@ export interface CreateTicket {
 export interface TicketSelect {
   prioritiesSelect: string;
   categoriesSelect: string;
+  flujosSelect: string;
   contenido: string;
   asunto: string;
 }
