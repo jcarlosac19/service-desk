@@ -6,11 +6,19 @@ import * as helpers from '../../core/helpers';
   selector: 'app-table',
   templateUrl: './table.component.html',
   styles: [
-    `
-      .item {
-        flex-basis: calc(100% / 2);
-        flex-grow: 1;
-        flex-shrink: 1;
+    `    
+      td:nth-child(3) p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      td:nth-child(2) p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
     `,
   ],

@@ -24,13 +24,54 @@ import { FlujoService } from 'src/app/core/services/flujo.service';
     `
       .grid-container {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+      }
+
+      .select-style {
+        width: 100%;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        color: #000;
+        font-size: 1rem;
+        height: 1.8rem;
+        cursor: pointer;
+        box-shadow: -7px 4px 11px 2px rgb(0 0 0 / 5%);
+      }
+
+      .select-style:focus {
+        border: 1px solid #aaa;
+        box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+        box-shadow: 0 0 0 3px -moz-mac-focusring;
+        color: #000;
+        outline: none;
+      }
+      input[type='text'] {
+        
+        box-shadow: -7px 4px 11px 2px rgb(0 0 0 / 5%);
+      }
+      textarea {
+        box-shadow: -7px 4px 11px 2px rgb(0 0 0 / 5%);
+      }
+
+      .form-style {
+        display: flex;
+        flex-direction: column;
         gap: 1rem;
-        margin-bottom: 2rem;
+        box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
+        -webkit-box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
+        -moz-box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
+        padding: 1rem;
+        border-radius: 4px;
+
       }
 
       label {
         width: 100%;
+        font-size: 1.2rem;
+        font-weight: 600;
       }
     `,
   ],
