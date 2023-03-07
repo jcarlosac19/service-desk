@@ -104,3 +104,15 @@ export interface Ticket {
   actualizado_a:    string;
   [key: string]: any;
 }
+
+export interface HistoryResponse {
+  ticket_id: TicketResponse;
+  flujo_paso_id: string;
+  creador_id: CreadorIDClass;
+  compleado_a: Date;
+  asignado_id: CreadorIDClass;
+  esta_completado: boolean;
+  modificador_id: CreadorIDClass;
+  esta_eliminado: boolean;
+  message?: string;
+}

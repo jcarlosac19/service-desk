@@ -23,4 +23,9 @@ app.get("/historico",
     historicoController.obtenerHistorico
 );
 
+app.get("/historico/:id",
+    [ verifyAccessLevel.isUser ],
+    historicoController.obtenerHistoricoPorId
+);
+
 module.exports = app;

@@ -7,6 +7,7 @@ import {
   CommentResponse,
 } from 'src/app/core/interfaces/comment.interface';
 import {
+  HistoryResponse,
   Ticket,
 } from 'src/app/core/interfaces/ticket.interface';
 import { CommentService } from 'src/app/core/services/comment.service';
@@ -20,6 +21,9 @@ export class TicketsComponent implements OnInit {
   ticket: Ticket = {} as Ticket;
   comments: CommentResponse[] = [];
   comment: string = '';
+  showReasignModal: boolean = false;
+  history: HistoryResponse[] = [];
+  selectedHistory: HistoryResponse = {} as HistoryResponse;
 
   constructor(
     private ticketService: TicketService,
@@ -42,17 +46,25 @@ export class TicketsComponent implements OnInit {
     });
   }
 
-  onSubmitComment(event: any) {debugger;
+  onSubmitComment(event: any) {
     event.preventDefault();
     const request: CommentCreate = {
       asunto: this.ticket.asunto,
       contenido: this.comment,
       ticket: this.ticket._id,
     };
-    this.commentService.createComment(request).subscribe((comment) => {debugger;
+    this.commentService.createComment(request).subscribe((comment) => {
       this.toastr.success(comment.message, 'Exito');
       this.comments = comment.comentario;
       this.comment = '';
     });
   }
+
+  onShowReasignModal():void{
+    this.showReasignModal = true;
+  }
+
+  onReasignTicket(){
+
+  }     
 }

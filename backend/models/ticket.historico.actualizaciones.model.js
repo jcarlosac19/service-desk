@@ -5,11 +5,11 @@ const ticketHistoricoActualizaciones = new mongoose.Schema(
   {
     ticket_id             : {type: Number, ref: 'tickets', required: true},
     flujo_paso_id         : {type: ObjectId, default: null},
-    creador_id            : {type: ObjectId, default: null},
+    creador_id            : {type: ObjectId, ref: 'usuario', default: null},
     compleado_a           : {type: Date, default: null},
-    asignado_id           : {type: ObjectId, default: null},
+    asignado_id           : {type: ObjectId, ref: 'usuario', default: null},
     esta_completado       : {type: Boolean, default: null},
-    modificador_id        : {type: ObjectId, default: null},
+    modificador_id        : {type: ObjectId, ref: 'usuario', default: null},
     esta_eliminado        : {type: Boolean, default: null}
   },
   {

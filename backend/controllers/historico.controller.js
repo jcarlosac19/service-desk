@@ -1,4 +1,6 @@
 const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
+const Ticket = require("../models/ticket.model");   
+const Usuario = require("../models/usuario.model");
 
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
@@ -33,15 +35,20 @@ exports.obtenerHistorico = async (req, res) => {
   };
   
 exports.obtenerHistoricoPorId = async (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    await TicketHistorico.find({ticket_id: id})
-    .then(historico => {
-        res.status(200).send(historico);
-    })
-    .catch(err => {
-        res.status(400).send(`El ticket id: ${id} no se pudo encontrar.`)
-    })
-  };
+  try {
+    const historyByTicket = await TicketHistorico.find({ ticket_id: id })
+      .populate('ticket_id')
+      .populate('creador_id')
+      .populate('asignado_id')
+      .populate('modificador_id');
+    res.status(200).json(historyByTicket);
+  } catch (err) {
+    res
+      .status(400)
+      .json({ message: `El ticket id: ${id} no tiene ningun comentario.` });
+  }
+};
 
   

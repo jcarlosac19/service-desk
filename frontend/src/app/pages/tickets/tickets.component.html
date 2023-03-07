@@ -21,7 +21,7 @@
                 <nav class="list-group">
                     <a class="list-group-item" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</a>
                     <a class="list-group-item" href="#"><i class="fa fa-map"></i>Cambiar Estado</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-heart"></i>Reasignar</a>
+                    <li class="list-group-item" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-heart"></i>Reasignar</li>
                     <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Solucionar</a>
                 </nav>
             </div>
@@ -85,5 +85,39 @@
             </div>
         </div>
     </div>
+
+    <p-dialog
+        [(visible)]="showReasignModal"
+        [transitionOptions]="'300ms'"
+        [modal]="true"
+        header="Reasignar Ticket"
+        [draggable]="false"
+    >
+
+    <form
+      class="form-group"
+      style="width: 500px; background: #071426;"
+    >
+        <div>
+            <p-dropdown [options]="history" [(ngModel)]="selectedHistory" placeholder="Select Item" optionLabel="name" [showClear]="true"></p-dropdown>
+        </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button
+          type="button"
+          label="Reasignar"
+          class="p-button-success"
+          (onClick)="onReasignTicket()"
+        ></p-button>
+        <button
+          pButton
+          type="button"
+          label="Cancelar"
+          class="p-button-danger"
+          (click)="showReasignModal= false"
+        ></button>
+      </ng-template>
+    </p-dialog>
 
 </main>
