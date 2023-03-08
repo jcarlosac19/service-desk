@@ -325,5 +325,9 @@ a.list-group-item, .list-group-item-action {
 }
 
 .mt-10 {
-    margin-top: 12rem;
+    margin-top: 0.80rem;
+}
+
+.capitalize {
+    text-transform:capitalize;
 }
