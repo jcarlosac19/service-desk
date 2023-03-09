@@ -1,4 +1,6 @@
 const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
+const Ticket = require("../models/ticket.model");   
+const Usuario = require("../models/usuario.model");
 
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
