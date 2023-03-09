@@ -18,7 +18,10 @@ export class TicketService {
     private jwtService: JwtService,
     private postService: ApiService<TicketPostResponse>,
     private getService: ApiService<TicketResponse>
-  ) {}
+  ) {
+  }
+
+  
 
   createTicket(request: CreateTicket): Observable<TicketPostResponse> {
     const token = this.jwtService.getToken();
@@ -62,7 +65,7 @@ export class TicketService {
         contenido: ticketResponse.contenido,
         estado: ticketResponse.estado_id.nombre,
         prioridad: ticketResponse.prioridad_id.nombre,
-        creador: ticketResponse.creador_id.nombres.toUpperCase().split(" ", 1) + ' ' + ticketResponse.creador_id.apellidos.toUpperCase().split(" ",1),
+        creador: ticketResponse.creador_id.nombres.split(" ", 1) + ' ' + ticketResponse.creador_id.apellidos.split(" ",1),
         categoria: ticketResponse.categoria_id.nombre,
         flujo: ticketResponse.trabajo_flujo_id.nombre,
         modificador: ticketResponse.modificador_id?.email ?? '',
@@ -81,7 +84,7 @@ export class TicketService {
       contenido: response.contenido,
       estado: response.estado_id.nombre,
       prioridad: response.prioridad_id.nombre,
-      creador: response.creador_id.nombres.toUpperCase().split(" ",1) + ' ' + response.creador_id.apellidos.toUpperCase().split(" ",1),
+      creador: response.creador_id.nombres.split(" ",1) + ' ' + response.creador_id.apellidos.split(" ",1),
       categoria: response.categoria_id.nombre,
       flujo: response.trabajo_flujo_id.nombre,
       modificador: response.modificador_id?.email ?? '',

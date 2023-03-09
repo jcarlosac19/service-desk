@@ -1,19 +1,19 @@
 <main class="main-content-ticket-detail">
     <div class="mb-5">
-        <div class="d-flex">
+        <div class="d-flex mt-10">
             <div class="col-lg-4">
                 <aside class="user-info-wrapper">
                     <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
                         <div class="info-label" data-toggle="tooltip" title=""
                             data-original-title="You currently have 290 Reward Points to spend"><i
-                                class="icon-medal"></i>Ticket # {{ticket._id}}</div>
+                                class="icon-medal"></i>Ticket # {{ticketPadded}}</div>
                     </div>
                     <div class="user-info">
                         <div class="user-avatar">
                             <a class="edit-avatar" href="#"></a><img
                                 src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="User">
                         </div>
-                        <div class="user-data">
+                        <div class="user-data capitalize">
                             <h4>{{ ticket.creador }}</h4><span>Joined February 06, 2017</span>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                     <a class="list-group-item" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</a>
                     <a class="list-group-item" href="#"><i class="fa fa-map"></i>Cambiar Estado</a>
                     <li class="list-group-item" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-heart"></i>Reasignar</li>
-                    <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Solucionar</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Actividad</a>
                 </nav>
             </div>
             <div class="col-lg-8">
@@ -40,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr class="capitalize">
                                 <td> {{ ticket.creado_a }} </td>
                                 <td> {{ ticket.creador }} </td>
                                 <td> {{ ticket.flujo}} </td>
@@ -65,7 +65,7 @@
                         <div class="comment-author-ava"><img src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="Avatar"></div>
                         <div class="comment-body">
                             <p class="comment-text"> {{comment?.contenido}} .</p>
-                            <div class="comment-footer"><span class="comment-meta"> {{comment.creador.nombres}}
+                            <div class="comment-footer capitalize"><span class="comment-meta"> {{comment.creador.nombres}}
                                     {{comment.creador.apellidos}}, Staff, {{comment.creado_a}}</span></div>
                         </div>
                     </div>

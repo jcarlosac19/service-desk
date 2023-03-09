@@ -16,7 +16,7 @@ const pasosRoutes = require('./routes/flujos.pasos.routes');
 const estadosRoutes = require('./routes/estados.routes');
 const comentariosRoutes = require('./routes/comentarios.routes');
 const historicoRoutes = require('./routes/historico.routes');
-
+const departamentosRoutes = require('./routes/departamentos.routes');
 //Middlewares
 const verifyAccessLevel = require('./middleware/access.level');
 const verifyToken = require('./middleware/jwt.auth');
@@ -50,7 +50,8 @@ app.use(urlPrefix,
         pasosRoutes,
         estadosRoutes,
         comentariosRoutes,
-        historicoRoutes
+        historicoRoutes,
+        departamentosRoutes
       ]
 );
 

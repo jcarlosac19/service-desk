@@ -25,6 +25,8 @@ export class TicketsComponent implements OnInit {
   history: HistoryResponse[] = [];
   selectedHistory: HistoryResponse = {} as HistoryResponse;
 
+  ticketPadded: string = '';
+
   constructor(
     private ticketService: TicketService,
     private commentService: CommentService,
@@ -35,8 +37,8 @@ export class TicketsComponent implements OnInit {
   ngOnInit(): void {
     this.activeRoute.params.subscribe((params) => {
       this.ticketService.getTicketById(params['id']).subscribe((ticket) => {
-        this.ticket =
-          this.ticketService.materializeResponseToTicketById(ticket);
+        this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
+        this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0")
       });
       this.commentService
         .getCommentsByTicketId(params['id'])
@@ -44,6 +46,10 @@ export class TicketsComponent implements OnInit {
           this.comments = comments;
         });
     });
+  }
+
+getTicketNumber(){
+    
   }
 
   onSubmitComment(event: any) {
