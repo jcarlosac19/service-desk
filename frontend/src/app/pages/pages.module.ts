@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { GroupsComponent } from './groups/groups.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -31,7 +32,8 @@ import { FlujosComponent } from './flujos/flujos.component';
     ReactiveFormsModule,
     SharedModule,
     DialogModule,
-    ButtonModule
+    ButtonModule,
+    DropdownModule
   ]
 })
 export class PagesModule { }
