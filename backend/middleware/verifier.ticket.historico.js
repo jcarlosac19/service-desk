@@ -6,9 +6,9 @@ const FlujosPasos = require("../models/flujos.pasos.model");
 let historicoOpciones = {}
 
 historicoOpciones.verifyAllRequiredFields = (req, res, next) => {
-    const { ticket_id, flujo_paso_id, asignado_id } = req.body
+    const { ticket_id, departamento_id, asignado_id } = req.body
 
-    hasRequestAllRequiredFields = ticket_id && flujo_paso_id  && asignado_id
+    hasRequestAllRequiredFields = ticket_id && departamento_id  && asignado_id
     if (!hasRequestAllRequiredFields) {
         res.status(400).send("Todos los campos son requeridos.");
         return;

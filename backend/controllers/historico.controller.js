@@ -3,11 +3,11 @@ const TicketHistorico = require("../models/ticket.historico.actualizaciones.mode
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
 
-    const { ticket_id, flujo_paso_id, asignado_id } = req.body;
+    const { ticket_id, departamento_id, asignado_id } = req.body;
 
      await TicketHistorico.create({
         ticket_id: ticket_id,
-        flujo_paso_id: flujo_paso_id,
+        departamento_id: departamento,
         completado_a: null,
         asignado_id: asignado_id,
         esta_completado: false,
