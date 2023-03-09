@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { ApiService, JwtService } from './';
 import { map, distinctUntilChanged } from 'rxjs/operators';
-import { GetUserResponse, UserResponse } from '../interfaces/user.interface';
+import { GetAllUserResponse, GetUserResponse, UserResponse } from '../interfaces/user.interface';
 import * as helper from '../helpers';
 import { HttpParams } from '@angular/common/http';
 
@@ -21,6 +21,7 @@ export class UserService {
   constructor(
     private apiService: ApiService<GetUserResponse>,
     private postApiService: ApiService<UserResponse>,
+    private getAllApiService: ApiService<GetAllUserResponse>,
     private jwtService: JwtService,
   ) {}
 
@@ -125,5 +126,9 @@ export class UserService {
         return data.user;
       })
     );
+  }
+
+  getAllUsers(): Observable<GetAllUserResponse[]> {
+    return this.getAllApiService.getAll('/get-all-users');
   }
 }

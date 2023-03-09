@@ -26,3 +26,16 @@ interface UserInfo  {
 export interface GetUserResponse {
   user: UserResponse
 }
+
+export interface GetAllUserResponse {
+  _id:              string;
+  nombres:          string;
+  apellidos:        string;
+  email:            string;
+  password:         string;
+  es_administrador: boolean;
+  es_usuario:       boolean;
+  esta_activo:      boolean;
+  creado_a:         Date;
+  actualizado_a:    Date;
+}

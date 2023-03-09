@@ -1,3 +1,5 @@
+import { Department } from "./department.interface";
+
 export interface CreateTicket {
   prioridad_id: string;
   categoria_id: string;
@@ -108,6 +110,7 @@ export interface Ticket {
 export interface HistoryResponse {
   ticket_id: TicketResponse;
   flujo_paso_id: string;
+  departamento_id: Department
   creador_id: CreadorIDClass;
   compleado_a: Date;
   asignado_id: CreadorIDClass;

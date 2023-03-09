@@ -91,3 +91,12 @@ exports.getUserByEmail = async(req, res) => {
     console.error(err);
   }
 }
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await Usuario.find();
+    res.status(200).json(users);
+  } catch (err) {
+    console.log(err);
+  }
+}
