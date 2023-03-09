@@ -22,6 +22,7 @@ app.post(
 );
 
 app.get('/get-user-by-email', controller.getUserByEmail);
+app.get('/get-all-users', controller.getAllUsers);
 
 module.exports = app;
 
