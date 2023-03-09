@@ -96,10 +96,13 @@
 
     <form
       class="form-group"
-      style="width: 500px; background: #071426;"
+      style="width: 500px; background: #071426; height: 500px;"
     >
         <div>
-            <p-dropdown [options]="history" [(ngModel)]="selectedHistory" placeholder="Select Item" optionLabel="name" [showClear]="true"></p-dropdown>
+            <p-dropdown [options]="flujos" [(ngModel)]="selectedFlujo" placeholder="Flujos" optionLabel="nombre" [showClear]="true"></p-dropdown>
+
+            <p-dropdown [options]="Departments" [(ngModel)]="selectedDepartment" placeholder="Departamentos" optionLabel="nombreDepartamento" [showClear]="true"></p-dropdown>
+            <p-dropdown [options]="Users" [(ngModel)]="selectedUser" placeholder="Usuarios" optionLabel="email" [showClear]="true"></p-dropdown>
         </div>
     </form>
 

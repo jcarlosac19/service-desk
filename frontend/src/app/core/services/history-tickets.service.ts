@@ -13,7 +13,7 @@ export class HistoryTicketsService {
 
   constructor(private jwtService: JwtService, private apiService: ApiService<HistoryResponse>) { }
 
-  getHistoryByTicket(ticket: number) :Observable<HistoryResponse> {
+  getHistoryByTicket(ticket: number) :Observable<HistoryResponse[]> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({
@@ -21,6 +21,6 @@ export class HistoryTicketsService {
       'x-access-token': `${token}`,
     });
 
-    return this.apiService.get(`/historico/${ticket}`, new HttpParams(), headers);
+    return this.apiService.getAll(`/historico/${ticket}`, new HttpParams(), headers);
   }
 }
