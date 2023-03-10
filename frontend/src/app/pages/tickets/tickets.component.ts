@@ -17,6 +17,7 @@ import { Flujo } from 'src/app/core/interfaces/flujo.interface';
 import { DepartmentsService } from 'src/app/core/services/departments.service';
 import { Department } from 'src/app/core/interfaces/department.interface';
 import { GetAllUserResponse } from 'src/app/core/interfaces/user.interface';
+import * as helper from '../../core/helpers';
 
 @Component({
   selector: 'app-tickets',
@@ -70,9 +71,8 @@ export class TicketsComponent implements OnInit {
     this.flujoService.getFlujos().subscribe((flujos) => {
       this.flujos = this.flujoService.materializeFlujos(flujos);
     });
-    this.departmentServices.getDepartments().subscribe((departments) => {debugger;
-      this.Departments = departments;
-      console.log(this.Departments);
+    this.departmentServices.getDepartments().subscribe((departments) => {
+      this.Departments = this.departmentServices.materializeResponseToDepartments(departments);
     });
     this.userService.getAllUsers().subscribe((users) => {
       this.Users = users;
@@ -103,6 +103,16 @@ export class TicketsComponent implements OnInit {
   }
 
   onReasignTicket(){
-
-  }     
+    const request = {
+      ticket_id: this.ticket._id,
+      departamento_id: this.selectedDepartment._id,
+      asignado_id: this.selectedUser._id,
+      flujoId: this.flujos.find(f => f.nombre === this.ticket.flujo)
+  };debugger;
+  if(!helper.isFullObjectAndValue(request)) return;
+  this.historyService.updateHistory(request).subscribe((response) => {
+    this.toastr.success(response.message, 'Exito');
+    this.showReasignModal = false;
+  });
+}     
 }
