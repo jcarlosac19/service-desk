@@ -1,8 +1,9 @@
 export const isNullOrUndefined = <T>(value: T):boolean => value === null || value === undefined || typeof value === 'undefined';
-export const isNullOrWhitespace = (value: string):boolean => isNullOrUndefined(value) || value?.trim()?.length === 0;
+export const isNullOrWhitespace = (value: any):boolean => isNullOrUndefined(value) || value?.toString().trim().length === 0;
 export const isFullObject = <T>(value: Object):boolean => typeof value === 'object' && Object.keys(value).length > 0;
 export const hasValue = <T>(value: T[]):boolean => !isNullOrUndefined(value) && value?.length > 0;
 export const formatDate = (date: Date):string => new Date(date).toLocaleDateString('es-ES');
 export const isFullArray = (value:any) => Array.isArray(value) && value.length > 0 && !isNullOrUndefined(value);
+export const isFullObjectAndValue = (value: Object) => isFullObject(value) && !isNullOrUndefined(value) && Object.values(value).length > 0 && Object.values(value).every((v) => !isNullOrWhitespace(v));
 
 export * from '../helpers/index';
