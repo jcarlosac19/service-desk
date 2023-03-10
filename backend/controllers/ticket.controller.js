@@ -1,13 +1,16 @@
 const Ticket = require("../models/ticket.model");
 const Flujo = require("../models/flujos.model");
 const Historico = require("../models/ticket.historico.actualizaciones.model");
-const mongoose = require('mongoose');
+const Estados = require('../models/ticket.estados.model');
 
 exports.crearTicket = async (req, res) => {
     const currentUserId = req.user.user_id;
     const { asunto, contenido, prioridad_id, categoria_id } = req.body
     const { trabajo_flujo_id } = req.body;
+    
     let counter = 0;
+
+    const estadoPorDefecto = await Estados.findOne({usado_por_defecto: true}).lean().exec();
 
     Ticket.countDocuments((err, count)=>{
       if (err) return;
@@ -18,7 +21,7 @@ exports.crearTicket = async (req, res) => {
       _id: counter,
       asunto: asunto,
       contenido: contenido,
-      estado_id: "63ed84d64aaa4014a8cf51d7",
+      estado_id: estadoPorDefecto._id,
       prioridad_id: prioridad_id,
       categoria_id: categoria_id,
       trabajo_flujo_id: trabajo_flujo_id,

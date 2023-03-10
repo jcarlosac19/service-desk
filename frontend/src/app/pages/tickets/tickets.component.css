@@ -340,3 +340,13 @@ a.list-group-item, .list-group-item-action {
     height: 220px; width: 480px;
     margin: .5rem 1rem 0  1rem;
 }
+
+.statusText {
+        background-color: #565656; 
+        font-weight: bold; 
+        padding-left: 20px; 
+        padding-right: 20px; 
+        padding-top: 5px; 
+        padding-bottom: 5px; 
+        border-radius: 30px;
+}

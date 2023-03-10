@@ -41,7 +41,7 @@ export class TicketsComponent implements OnInit {
   Departments: Department[]= [];
   selectedDepartment: Department = {} as Department;
 
-  selectedStatus: string;
+  selectedStatus: Status = {} as Status;
 
   selectedFlujo: Flujo = {} as Flujo;
   selectedHistory: HistoryResponse = {} as HistoryResponse;
@@ -53,6 +53,7 @@ export class TicketsComponent implements OnInit {
 
   ticketPadded: string = '';
   ticketResponse: TicketPostResponse = {} as TicketPostResponse;
+  ticketStatusColor: string = '';
 
   constructor(
     private ticketService: TicketService,
@@ -73,6 +74,7 @@ export class TicketsComponent implements OnInit {
   ngOnInit(): void {
     this.activeRoute.params.subscribe((params) => {
       this.ticketService.getTicketById(params['id']).subscribe((ticket) => {
+        this.ticketStatusColor = ticket.estado_id.color || '';
         this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
         this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0")
       });
@@ -140,13 +142,15 @@ onStatusChangeTicket():void{
   console.log(this.selectedStatus)
 
   let update: UpdateTicketStatus = {
-    estado_id: this.selectedStatus
+    estado_id: this.selectedStatus._id
   }
   this.ticketService.updateTicket(this.ticket._id, update)
   .subscribe({
     next: (response) => {
       this.ticketResponse = response;
       this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
+      this.ticket.estado = this.selectedStatus.nombre;
+      this.ticketStatusColor = this.selectedStatus.color;
       this.showChangeStatusModal = false;
     },
     error: (err) => {

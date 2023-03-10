@@ -46,7 +46,7 @@
                                 <td> {{ ticket.flujo}} </td>
                                 <td> {{ticket.categoria}} </td>
                                 <td><span class="text-warning"> {{ticket.prioridad}} </span></td>
-                                <td><span class="text-primary"> {{ ticket.estado }} </span></td>
+                                <td><span class="statusText" [ngStyle]="{'color': ticketStatusColor}">{{ ticket.estado }}</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -114,7 +114,7 @@
         <div class="grid-dropdown">
     
             <p-dropdown
-                [options]="statuses" [(ngModel)]="selectedStatus" optionLabel="nombre" optionValue="_id"
+                [options]="statuses" [(ngModel)]="selectedStatus" optionLabel="nombre"
                 nameplaceholder="Estados"
                 [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'"
                 [showClear]="true" scrollHeight="160px"

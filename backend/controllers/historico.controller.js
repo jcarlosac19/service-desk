@@ -8,6 +8,10 @@ exports.crearActualizacion = async (req, res) => {
 
     const { ticket_id, departamento_id, asignado_id } = req.body;
 
+    let actividadesDelTicket = await TicketHistorico.find({ticket_id: ticket_id, esta_completado: false}).lean().exec();
+
+    if(actividadesDelTicket.length > 0) return res.status(500).send({message: "Todas las actividades anteriores, deben de haber sido completada, para poder agregar una siguiente."})
+
      await TicketHistorico.create({
         ticket_id: ticket_id,
         departamento_id: departamento_id,
@@ -55,5 +59,40 @@ exports.obtenerHistoricoPorId = async (req, res) => {
         .json({ message: `El ticket id: ${id} no tiene ningun comentario.` });
     }
   };
+
+  exports.completarActividadHistorico = async (req, res) =>{
+    currentUserId = req.user.user_id;
+    const id = parseInt(req.params.id);
+    TicketHistorico.findOneAndUpdate({ ticket_id: id, esta_completado: false }, {
+      completado_a: new Date(0),
+      esta_completado: true,
+      modificador_id: currentUserId
+    })
+    .then(()=>{
+      res.status(201).send({message: "La actividad se actualizo correctament."})
+    })
+    .catch(err =>{
+      res.status(500).send({message: "Hubo un error, no se puedo actualizar la actividad."})
+    })
+  };
+
+  exports.reasignarActividadHistorico = async (req, res) =>{
+    const currentUserId = req.user.user_id;
+    const id = parseInt(req.params.id);
+    const { asignado_id } = req.body;
+
+    TicketHistorico.findOneAndUpdate({ ticket_id: id, esta_completado: false }, {
+      asignado_id: asignado_id,
+      modificador_id: currentUserId
+    })
+    .then(()=>{
+      res.status(201).send({message: "La actividad se reasigno correctament."})
+    })
+    .catch(err => {
+      res.status(500).send({message: "Hubo un error, no se pudo reasignar el ticket."})
+    })
+  }
+
+
 
   
