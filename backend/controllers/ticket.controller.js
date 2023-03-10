@@ -1,35 +1,52 @@
 const Ticket = require("../models/ticket.model");
-const Pasos = require("../models/flujos.pasos.model");
+const Flujo = require("../models/flujos.model");
+const Historico = require("../models/ticket.historico.actualizaciones.model");
+const mongoose = require('mongoose');
 
 exports.crearTicket = async (req, res) => {
-
     const currentUserId = req.user.user_id;
-
     const { asunto, contenido, prioridad_id, categoria_id } = req.body
     const { trabajo_flujo_id } = req.body;
+    let counter = 0;
 
-    const ticket = {
-      asunto,
-      contenido,
+    Ticket.countDocuments((err, count)=>{
+      if (err) return;
+      counter = count + 1;
+    });
+
+    const ticket = new Ticket({
+      _id: counter,
+      asunto: asunto,
+      contenido: contenido,
       estado_id: "63ed84d64aaa4014a8cf51d7",
-      prioridad_id,
-      categoria_id,
-      trabajo_flujo_id,
+      prioridad_id: prioridad_id,
+      categoria_id: categoria_id,
+      trabajo_flujo_id: trabajo_flujo_id,
       creador_id      : currentUserId,
       modificador_id  : null,
       esta_eliminado  : false
-  };
-
-  Ticket.create(ticket)
-  .then(() => {
-    res.status(200).send({message: "Se creo el ticket exitosamente."});
-  })
-  .catch(err => {
-    res.status(400).send({error: err, message: "No se pudo crear el ticket."})
   });
 
-  };
+  const flujo = await Flujo.findOne({_id: trabajo_flujo_id}).lean().exec();
 
+  ticket.save(async (err)=>{
+    console.log(err);
+    if(err) return res.status(500).send({message: "Hubo un error, no se pudo crear el ticket."});
+    await Historico.create({
+      ticket_id: ticket._id,
+      departamento_id: flujo.departamento,
+      creador_id: currentUserId,
+      asignado_id: null,
+      esta_completado: false,
+      modificador_id: null,
+      esta_eliminado: false
+    })
+    .catch(err=>{
+      res.status(500).send({message: "Hubo un error, no se pudo crear el ticket y su historico."})
+    });
+    res.status(201).send({message: "Se ha creado el ticket!"})
+  })
+  };
 
 exports.obtenerTickets = async (req, res) => {
     // const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
@@ -79,8 +96,10 @@ exports.obtenerTicketPorId = async (req, res) => {
 };
 
 exports.actualizarTicket = async (req, res) => {
-  const filter  = req.params.id;
+  
   const { asunto, contenido, estado_id, prioridad_id, categoria_id } = req.body;
+
+  console.log(req.body);
   
   let update = {
     ...( asunto         && { asunto         }),
@@ -93,11 +112,13 @@ exports.actualizarTicket = async (req, res) => {
   const modificador = req.user.user_id;
   update.modificador_id = modificador;
 
+  const filter  = {_id: req.params.id};
+
   await Ticket.findOneAndUpdate(
       filter, update, {
       new: true
   }).then(doc => {
-      res.status(200).send(doc);
+      res.status(200).send({message: "Se modificaron los registros exitosamente."});
   }).catch(err => {
       res.status(400).send("No se pudo modificar el documento.")
   })

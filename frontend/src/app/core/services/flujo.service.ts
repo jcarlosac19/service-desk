@@ -64,6 +64,7 @@ export class FlujoService {
         _id: flujo._id,
         nombre: flujo.nombre,
         tiempo_resolucion: flujo.tiempo_resolucion,
+        departamento: flujo.departamento.nombreDepartamento,
         modificador_id: flujo.modificador_id,
         creado_a: helper.formatDate(flujo.creado_a),
         actualizado_a: helper.formatDate(flujo.actualizado_a),

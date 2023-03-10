@@ -25,6 +25,7 @@ exports.obtenerFlujos = async (req, res) => {
     const filtro = { esta_eliminado: { $in: [activos, eliminados] } };
 
     await Flujos.find(filtro)
+    .populate('departamento')
     .then(flujos =>{
         res.status(200).send(flujos);
     })

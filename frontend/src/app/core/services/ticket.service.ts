@@ -5,6 +5,7 @@ import {
   Ticket,
   TicketPostResponse,
   TicketResponse,
+  UpdateTicketStatus
 } from '../interfaces/ticket.interface';
 import { ApiService, JwtService } from './';
 import * as helper from '../helpers';
@@ -32,6 +33,17 @@ export class TicketService {
     });
 
     return this.postService.post('/tickets', request, { headers });
+  }
+
+  updateTicket(id: number, request: UpdateTicketStatus): Observable<TicketPostResponse> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+
+    return this.postService.put(`/tickets/${id}`, request, { headers });
   }
 
   getTickets(): Observable<TicketResponse[]> {

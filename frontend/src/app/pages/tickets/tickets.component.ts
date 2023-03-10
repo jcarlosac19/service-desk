@@ -9,6 +9,9 @@ import {
 import {
   HistoryResponse,
   Ticket,
+  TicketResponse,
+  TicketPostResponse, 
+  UpdateTicketStatus
 } from 'src/app/core/interfaces/ticket.interface';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { FlujoService } from 'src/app/core/services/flujo.service';
@@ -18,6 +21,8 @@ import { DepartmentsService } from 'src/app/core/services/departments.service';
 import { Department } from 'src/app/core/interfaces/department.interface';
 import { GetAllUserResponse } from 'src/app/core/interfaces/user.interface';
 import * as helper from '../../core/helpers';
+import { Status } from 'src/app/core/interfaces/status.interface';
+import { StatusService } from 'src/app/core/services/status.service';
 
 @Component({
   selector: 'app-tickets',
@@ -29,16 +34,25 @@ export class TicketsComponent implements OnInit {
   comments: CommentResponse[] = [];
   comment: string = '';
   showReasignModal: boolean = false;
+
+  showChangeStatusModal: boolean = false;
   history: HistoryResponse[] = [];
   flujos: Flujo[] = [];
   Departments: Department[]= [];
   selectedDepartment: Department = {} as Department;
+
+  selectedStatus: string;
+
   selectedFlujo: Flujo = {} as Flujo;
   selectedHistory: HistoryResponse = {} as HistoryResponse;
   Users: GetAllUserResponse[] = []
+
+  statuses: Status[] = [];
+
   selectedUser: GetAllUserResponse = {} as GetAllUserResponse;
 
   ticketPadded: string = '';
+  ticketResponse: TicketPostResponse = {} as TicketPostResponse;
 
   constructor(
     private ticketService: TicketService,
@@ -48,8 +62,13 @@ export class TicketsComponent implements OnInit {
     private departmentServices: DepartmentsService,
     private userService: UserService,
     private activeRoute: ActivatedRoute,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private statusService: StatusService
+  ) {
+    this.statusService.getStatuses().subscribe(estados=>{
+      this.statuses = this.statusService.materializeStatus(estados);
+    });
+  }
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe((params) => {
@@ -77,7 +96,6 @@ export class TicketsComponent implements OnInit {
     this.userService.getAllUsers().subscribe((users) => {
       this.Users = users;
     });
-
   }
 
   getTicketNumber(){
@@ -114,5 +132,33 @@ export class TicketsComponent implements OnInit {
     this.toastr.success(response.message, 'Exito');
     this.showReasignModal = false;
   });
-}     
+}
+
+
+onStatusChangeTicket():void{
+
+  console.log(this.selectedStatus)
+
+  let update: UpdateTicketStatus = {
+    estado_id: this.selectedStatus
+  }
+  this.ticketService.updateTicket(this.ticket._id, update)
+  .subscribe({
+    next: (response) => {
+      this.ticketResponse = response;
+      this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
+      this.showChangeStatusModal = false;
+    },
+    error: (err) => {
+      this.toastr.error(err?.message, 'Error al crear ticket');
+      this.showChangeStatusModal = false;
+    },
+  });
+}
+
+onShowStatusChangeModal():void{
+  this.showChangeStatusModal = true;
+}
+
+
 }

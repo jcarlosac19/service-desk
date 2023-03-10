@@ -20,7 +20,7 @@
                 </aside>
                 <nav class="list-group">
                     <a class="list-group-item" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-map"></i>Cambiar Estado</a>
+                    <a class="list-group-item" (click)="onShowStatusChangeModal()"><i class="fa fa-map"></i>Cambiar Estado</a>
                     <li class="list-group-item" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-heart"></i>Reasignar</li>
                     <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Actividad</a>
                 </nav>
@@ -93,11 +93,11 @@
             <p-dropdown [options]="Departments" [(ngModel)]="selectedDepartment" placeholder="Departamentos"
                 optionLabel="nombreDepartamento" [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'"
                 [showClear]="true" scrollHeight="160px"
-                style="background: #071431; display: flex; align-items: center; flex-direction: column; flex-wrap: wrap;">
+                >
             </p-dropdown>
             <p-dropdown [options]="Users" [(ngModel)]="selectedUser" placeholder="Usuarios" optionLabel="email"
                 [showClear]="true" [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'" scrollHeight="160px"
-                style="background: #071431; display: flex; align-items: center; flex-direction: column; flex-wrap: wrap;">
+                >
             </p-dropdown>
     
         </div>
@@ -105,6 +105,26 @@
             <p-button type="button" label="Reasignar" class="p-button-success" (onClick)="onReasignTicket()"></p-button>
             <button pButton type="button" label="Cancelar" class="p-button-danger"
                 (click)="showReasignModal= false"></button>
+        </ng-template>
+    </p-dialog>
+
+
+    <p-dialog [(visible)]="showChangeStatusModal" [transitionOptions]="'300ms'" [modal]="true" header="Cambiar Estado de Ticket"
+        [draggable]="true">
+        <div class="grid-dropdown">
+    
+            <p-dropdown
+                [options]="statuses" [(ngModel)]="selectedStatus" optionLabel="nombre" optionValue="_id"
+                nameplaceholder="Estados"
+                [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'"
+                [showClear]="true" scrollHeight="160px"
+                >
+            </p-dropdown>   
+        </div>
+        <ng-template pTemplate="footer">
+            <p-button type="button" label="Actualizar" class="p-button-success" (onClick)="onStatusChangeTicket()"></p-button>
+            <button pButton type="button" label="Cancelar" class="p-button-danger"
+                (click)="showChangeStatusModal = false"></button>
         </ng-template>
     </p-dialog>
 

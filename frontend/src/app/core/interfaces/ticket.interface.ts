@@ -8,6 +8,11 @@ export interface CreateTicket {
   estado_id: string;
   trabajo_flujo_id: string;
 }
+
+export interface UpdateTicketStatus {
+  estado_id: string;
+}
+
 export interface TicketSelect {
   prioritiesSelect: string;
   categoriesSelect: string;

@@ -31,11 +31,13 @@ export class FlujosComponent {
   rowCreate: FlujoCreate = {
     nombre: '',
     tiempo_resolucion: 0,
+    departamento: ''
   };
   rowSelectedEdit: FlujoEdit = {
     _id: '',
     nombre: '',
     tiempo_resolucion: 0,
+    departamento: '',
     creador_id: '',
     modificador_id: '',
     actualizado_a: new Date(),
@@ -59,6 +61,13 @@ export class FlujosComponent {
     {
       name: 'Tiempo de Resolucion',
       key: 'tiempo_resolucion',
+      show: true,
+      isAvailableOnCreation: true,
+      isAvailableOnEdit: true,
+    },
+    {
+      name: 'Departamento',
+      key: 'departamento',
       show: true,
       isAvailableOnCreation: true,
       isAvailableOnEdit: true,
@@ -163,11 +172,12 @@ export class FlujosComponent {
 
   materializeFlujos(flujos: FlujoResponse[]): Flujo[] {
     const flujoMaterialized: Flujo[] = [];
-    flujos.forEach((flujo) => {
+    flujos.forEach((flujo: FlujoResponse) => {
       flujoMaterialized.push({
         _id: flujo._id,
         nombre: flujo.nombre,
         tiempo_resolucion: flujo.tiempo_resolucion,
+        departamento: flujo.departamento.nombreDepartamento,
         creador_id: flujo.creador_id,
         modificador_id: flujo.modificador_id,
         creado_a: new Date(flujo.creado_a).toLocaleDateString('es-ES'),
