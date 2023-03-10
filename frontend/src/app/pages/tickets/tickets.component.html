@@ -86,41 +86,26 @@
         </div>
     </div>
 
-    <p-dialog
-        [(visible)]="showReasignModal"
-        [transitionOptions]="'300ms'"
-        [modal]="true"
-        header="Reasignar Ticket"
-        [draggable]="false"
-    >
-
-    <form
-      class="form-group"
-      style="width: 500px; background: #071426; height: 500px;"
-    >
-        <div>
-            <p-dropdown [options]="flujos" [(ngModel)]="selectedFlujo" placeholder="Flujos" optionLabel="nombre" [showClear]="true"></p-dropdown>
-
-            <p-dropdown [options]="Departments" [(ngModel)]="selectedDepartment" placeholder="Departamentos" optionLabel="nombreDepartamento" [showClear]="true"></p-dropdown>
-            <p-dropdown [options]="Users" [(ngModel)]="selectedUser" placeholder="Usuarios" optionLabel="email" [showClear]="true"></p-dropdown>
+    <p-dialog [(visible)]="showReasignModal" [transitionOptions]="'300ms'" [modal]="true" header="Reasignar Ticket"
+        [draggable]="false">
+        <div class="grid-dropdown">
+    
+            <p-dropdown [options]="Departments" [(ngModel)]="selectedDepartment" placeholder="Departamentos"
+                optionLabel="nombreDepartamento" [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'"
+                [showClear]="true" scrollHeight="160px"
+                style="background: #071431; display: flex; align-items: center; flex-direction: column; flex-wrap: wrap;">
+            </p-dropdown>
+            <p-dropdown [options]="Users" [(ngModel)]="selectedUser" placeholder="Usuarios" optionLabel="email"
+                [showClear]="true" [showTransitionOptions]="'200ms'" [hideTransitionOptions]="'200ms'" scrollHeight="160px"
+                style="background: #071431; display: flex; align-items: center; flex-direction: column; flex-wrap: wrap;">
+            </p-dropdown>
+    
         </div>
-    </form>
-
-    <ng-template pTemplate="footer">
-        <p-button
-          type="button"
-          label="Reasignar"
-          class="p-button-success"
-          (onClick)="onReasignTicket()"
-        ></p-button>
-        <button
-          pButton
-          type="button"
-          label="Cancelar"
-          class="p-button-danger"
-          (click)="showReasignModal= false"
-        ></button>
-      </ng-template>
+        <ng-template pTemplate="footer">
+            <p-button type="button" label="Reasignar" class="p-button-success" (onClick)="onReasignTicket()"></p-button>
+            <button pButton type="button" label="Cancelar" class="p-button-danger"
+                (click)="showReasignModal= false"></button>
+        </ng-template>
     </p-dialog>
 
 </main>
