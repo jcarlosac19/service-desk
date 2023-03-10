@@ -16,7 +16,7 @@ app.post("/historico",
     historicoController.crearActualizacion
 );
 
-app.put("historico/actividad/:id",  [
+app.put("historico/completar/:id",  [
     verifyAccessLevel.isUser
     ],
     historicoController.completarActividadHistorico);
