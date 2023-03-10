@@ -13,12 +13,13 @@ exports.crearActualizacion = async (req, res) => {
         departamento_id: departamento_id,
         completado_a: null,
         asignado_id: asignado_id,
+        creador_id: currentUserId,
         esta_completado: false,
         modificador_id: null,
         esta_eliminado: false
     })
     .then(()=>{
-        res.status(201).send("La actualizacion se creo exitosamente.")
+        res.status(201).send({message: "Actualizacion creada correctamente."})
     })
     .catch((err)=>{
         res.status(400).send({error: err, message: "Hubo un error al crear la actualizacion."})

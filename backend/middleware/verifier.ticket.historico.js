@@ -1,6 +1,6 @@
 const Ticket = require("../models/ticket.model");
 const User = require("../models/usuario.model");
-const FlujosPasos = require("../models/flujos.pasos.model");
+const Flujo = require("../models/flujos.model");
 
 
 let historicoOpciones = {}
@@ -41,8 +41,8 @@ historicoOpciones.verifyIfUserExiste = async (req, res, next) =>{
 };    
 
 historicoOpciones.verifyIfWorkflowStepExist = async (req, res, next) =>{
-    const { flujo_paso_id } = req.body;
-    await FlujosPasos.findOne({ _id: flujo_paso_id })
+    const { flujoId } = req.body;
+    await Flujo.findOne({ _id: flujoId })
     .then(() =>{
       next();
     })
