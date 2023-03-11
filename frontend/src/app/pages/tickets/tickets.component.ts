@@ -52,7 +52,7 @@ export class TicketsComponent implements OnInit {
   Users: GetAllUserResponse[] = []
 
   statuses: Status[] = [];
-
+  totalTimeResolution: string = '';
   selectedUser: GetAllUserResponse = {} as GetAllUserResponse;
 
   ticketPadded: string = '';
@@ -162,6 +162,12 @@ export class TicketsComponent implements OnInit {
   showHistoryTicket() {
     this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
       this.historyTable = this.historyService.assignTimeResolution(history, this.flujos, this.ticket);
+      this.totalTimeResolution = this.historyTable.map(h => {
+        if(h.tiempoRealResolucion){
+          return parseFloat(h.tiempoRealResolucion);
+        }
+        return 0;
+      }).reduce((a,b) => a + b, 0).toFixed(2);
       this.showHistoryModal = true;
     });
   }
