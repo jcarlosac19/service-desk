@@ -3,10 +3,11 @@ const FlujosPasos = require("../models/flujos.pasos.model");
 
 exports.crearFlujo = async (req, res) => {
     currentUserId = req.user.user_id;
-    const { nombre, tiempo_resolucion } = req.body;
+    const { nombre, tiempo_resolucion, departamento } = req.body;
      await Flujos.create({
         nombre: nombre,
         creador_id: currentUserId,
+        departamento: departamento,
         tiempo_resolucion: tiempo_resolucion,
         modificador_id: null,
         esta_eliminado: false

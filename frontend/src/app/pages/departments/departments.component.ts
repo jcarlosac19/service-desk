@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/core';
 import {
-  Flujo,
-  FlujoCreate,
-  FlujoDelete,
-  FlujoEdit,
-  FlujoResponse,
-} from 'src/app/core/interfaces/flujo.interface';
+  Department,
+  DepartmentCreate,
+  DepartmentDelete,
+  DepartmentEdit,
+  DepartmentResponse,
+} from 'src/app/core/interfaces/department.interface';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
-import { FlujoService } from 'src/app/core/services/flujo.service';
+import { DepartmentsService } from 'src/app/core/services/departments.service';
 import { PrimeIcons } from 'primeng/api';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-flujos',
-  templateUrl: './flujos.component.html',
+  selector: 'app-departments',
+  templateUrl: './departments.component.html',
 })
-export class FlujosComponent {
-  private flujos: Flujo[] = [];
-  get getFlujos(): Flujo[] {
-    return [...this.flujos];
+export class DepartmentsComponent {
+  private departments: Department[] = [];
+  get getDepartments(): Department[] {
+    return [...this.departments];
   }
   visibleModal: boolean = false;
   deleteModal: boolean = false;
@@ -28,21 +28,19 @@ export class FlujosComponent {
   action: string = '';
   message: string = '';
   messageResponse: string = '';
-  rowCreate: FlujoCreate = {
-    nombre: '',
-    tiempo_resolucion: 0,
-    departamento: ''
+  rowCreate: DepartmentCreate = {
+    nombreDepartamento: '',
+    descripcion: '',
   };
-  rowSelectedEdit: FlujoEdit = {
+  rowSelectedEdit: DepartmentEdit = {
     _id: '',
-    nombre: '',
-    tiempo_resolucion: 0,
-    departamento: '',
+    nombreDepartamento: '',
+    descripcion: '',
     creador_id: '',
     modificador_id: '',
     actualizado_a: new Date(),
   };
-  rowSelectedDelete: FlujoDelete = { _id: ''};
+  rowSelectedDelete: DepartmentDelete = { _id: ''};
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -53,21 +51,14 @@ export class FlujosComponent {
     },
     {
       name: 'Nombre',
-      key: 'nombre',
+      key: 'nombreDepartamento',
       show: true,
       isAvailableOnCreation: true,
       isAvailableOnEdit: true,
     },
     {
-      name: 'Tiempo de Resolucion',
-      key: 'tiempo_resolucion',
-      show: true,
-      isAvailableOnCreation: true,
-      isAvailableOnEdit: true,
-    },
-    {
-      name: 'Departamento',
-      key: 'departamento',
+      name: 'Descripcion',
+      key: 'descripcion',
       show: true,
       isAvailableOnCreation: true,
       isAvailableOnEdit: true,
@@ -109,25 +100,25 @@ export class FlujosComponent {
       hasEditButton: true,
       hasRemoveButton: true,
       hasCreateButton: true,
-      edit: (row: FlujoEdit) => {
+      edit: (row: DepartmentEdit) => {
         this.rowSelectedEdit = row;
         this.visibleModal = true;
         this.label = 'Guardar Cambios';
-        this.header = 'Editar grupo';
+        this.header = 'Editar departamento';
         this.action = 'edit';
       },
-      remove: (row: FlujoDelete) => {
+      remove: (row: DepartmentDelete) => {
         this.rowSelectedDelete = row;
         this.label = 'Eliminar';
-        this.header = 'Eliminar grupo';
+        this.header = 'Eliminar departamento';
         this.action = 'delete';
-        this.message = `¿Está seguro que desea eliminar el flujo: ${row._id}?`;
+        this.message = `¿Está seguro que desea eliminar el departamento: ${row._id}?`;
         this.deleteModal = true;
       },
       create: () => {
         this.action = 'create';
         this.visibleModal = true;
-        this.header = 'Crear Flujo';
+        this.header = 'Crear departamento';
         this.label = 'Crear';
       },
       createIcon: PrimeIcons.PLUS,
@@ -139,20 +130,19 @@ export class FlujosComponent {
 
   constructor(
     private userService: UserService,
-    private flujoService: FlujoService,
+    private departmentService: DepartmentsService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.userService.populate();
-    this.fetchFlujos();
+    this.fetchGroups();
   }
 
-  fetchFlujos(): void {
-    this.flujoService.getFlujos().subscribe({
+  fetchGroups(): void {
+    this.departmentService.obtenerDepartamento().subscribe({
       next: (response) => {
-        this.flujos = this.materializeFlujos(response);
-
+        this.departments = this.materializeDepartments(response);
       },
       error: (error) => console.error(error),
     });
@@ -161,67 +151,68 @@ export class FlujosComponent {
   createNewRecord(): void {
     this.action = 'create';
     this.visibleModal = true;
-    this.header = 'Crear flujo';
+    this.header = 'Crear grupo';
     this.label = 'Crear';
   }
 
   filteredColums(): ColumnTable[] {
     let filteredColumns = this.columns.filter((column: ColumnTable) => column.show === true);
+
     return filteredColumns
   };
 
-  materializeFlujos(flujos: FlujoResponse[]): Flujo[] {
-    const flujoMaterialized: Flujo[] = [];
-    flujos.forEach((flujo: FlujoResponse) => {
-      flujoMaterialized.push({
-        _id: flujo._id,
-        nombre: flujo.nombre,
-        tiempo_resolucion: flujo.tiempo_resolucion,
-        departamento: flujo.departamento.nombreDepartamento,
-        creador_id: flujo.creador_id,
-        modificador_id: flujo.modificador_id,
-        creado_a: new Date(flujo.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(flujo.actualizado_a).toLocaleDateString('es-ES'),
+  materializeDepartments(department: DepartmentResponse[]): Department[] {
+    const departmentsMaterialized: Department[] = [];
+    department.forEach((dept) => {
+      departmentsMaterialized.push({
+        _id: dept._id,
+        nombreDepartamento: dept.nombreDepartamento,
+        descripcion: dept.descripcion,
+        creador_id: dept.creador_id,
+        modificador_id: dept.modificador_id,
+        creado_a: new Date(dept.creado_a).toLocaleDateString('es-ES'),
+        actualizado_a: new Date(dept.actualizado_a).toLocaleDateString('es-ES'),
+        esta_eliminado: dept.esta_eliminado
       });
     }
     );
-    return flujoMaterialized;
+    return departmentsMaterialized;
   }
 
-  onSubmitFlujo(): void {
+  onSubmitGroup(): void {
     this.visibleModal = false;
     this.deleteModal = false;
     if (this.action === 'edit') {
-      this.flujoService.editFlujo(this.rowSelectedEdit).subscribe({
+      this.departmentService.editDepartment(this.rowSelectedEdit).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      this.rowSelectedEdit = {} as FlujoEdit;
+      this.rowSelectedEdit = {} as DepartmentEdit;
     }
     if (this.action === 'create') {
-      this.flujoService.createFlujo(this.rowCreate).subscribe({
+      this.departmentService.createDepartment(this.rowCreate).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
-          this.fetchFlujos();
+          this.fetchGroups();
         },
       });
-      this.rowCreate = {} as FlujoCreate;
+      this.rowCreate = {} as DepartmentCreate;
     }
     if(this.action === 'delete'){
-      this.flujoService.deleteFlujo(this.rowSelectedDelete._id).subscribe({
+      this.departmentService.deleteDepartment(this.rowSelectedDelete._id).subscribe({
         next: (response) => {
           this.toastr.success(response.message, 'Éxito');
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      this.rowSelectedDelete = {} as FlujoDelete;
+      this.rowSelectedDelete = {} as DepartmentDelete;
     }
-    this.fetchFlujos();
+    this.fetchGroups();
   }
 
-  getObjectByAction(): FlujoEdit | FlujoCreate {
+  getObjectByAction(): DepartmentEdit | DepartmentCreate {
     return this.action === 'edit'  ? this.rowSelectedEdit : this.rowCreate;
   }
 

@@ -33,7 +33,7 @@ export class HistoryTicketsService {
     );
   }
 
-  updateHistory(request: Object = {}): Observable<MessageResponse> {
+  crearNuevaActividad(request: Object = {}): Observable<MessageResponse> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({
@@ -55,7 +55,7 @@ export class HistoryTicketsService {
     return this.postService.put(`/historico/reasignar/${request.ticket_id}`, request, { headers });
   }
 
-  closeTicket(id: number): Observable<MessageResponse>{
+  completeTicketActivity(id: number): Observable<MessageResponse>{
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
     const headers = new HttpHeaders({
@@ -76,15 +76,17 @@ export class HistoryTicketsService {
         departamento_id: element.departamento_id.nombreDepartamento,
         creador_id: element.creador_id.email,
         compleado_a: new Date(element.compleado_a).toLocaleDateString('es-ES'),
-        asignado_id: element.asignado_id.email,
-        modificador_id: element.modificador_id.email,
+        asignado_id: element.asignado_id != undefined ? element.asignado_id.email: '',
+        modificador_id: element.modificador_id != undefined ? element.modificador_id.email: '',
         creado_a: new Date(element.creado_a).toLocaleDateString('es-ES'),
         actualizado_a: new Date(element.actualizado_a).toLocaleDateString('es-ES'),
         tiempoEstimadoResolucion: (ticketFlujo?.tiempo_resolucion || 0).toString() + ' horas',
-        tiempoRealResolucion: helper.getDiffInHours(element.creado_a, element.compleado_a) + ' horas',
+        tiempoRealResolucion: element.compleado_a != undefined ? helper.getDiffInHours(element.creado_a, element.compleado_a) + ' horas' : '',
       }
       historyList.push(history);
     })
+
+    console.log(history);
 
     return historyList;
   }

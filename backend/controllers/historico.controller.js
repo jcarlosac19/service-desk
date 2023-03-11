@@ -10,7 +10,7 @@ exports.crearActualizacion = async (req, res) => {
 
     let actividadesDelTicket = await TicketHistorico.find({ticket_id: ticket_id, esta_completado: false}).lean().exec();
 
-    if(actividadesDelTicket.length > 0) return res.status(500).send({message: "Todas las actividades anteriores, deben de haber sido completada, para poder agregar una siguiente."})
+    if(actividadesDelTicket.length > 1) return res.status(500).send({message: "Todas las actividades anteriores, deben de haber sido completada, para poder agregar una siguiente."})
 
      await TicketHistorico.create({
         ticket_id: ticket_id,
@@ -50,19 +50,15 @@ exports.obtenerHistoricoPorId = async (req, res) => {
         .populate('creador_id')
         .populate('asignado_id')
         .populate('modificador_id');
-        
       res.status(200).json(historyByTicket);
     } catch (err) {
-      console.log(err);
-      res
-        .status(400)
-        .json({ message: `El ticket id: ${id} no tiene ningun comentario.` });
+      res.status(400).json({ message: `El ticket id: ${id} no tiene ningun comentario.` });
     }
   };
 
   exports.completarActividadHistorico = async (req, res) =>{
     currentUserId = req.user.user_id;
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     TicketHistorico.findOneAndUpdate({ ticket_id: id, esta_completado: false }, {
       compleado_a: new Date(Date.now()),
       esta_completado: true,
@@ -72,7 +68,7 @@ exports.obtenerHistoricoPorId = async (req, res) => {
       res.status(201).send({message: "La actividad se actualizo correctament."})
     })
     .catch(err =>{
-      res.status(500).send({message: "Hubo un error, no se puedo actualizar la actividad."})
+      res.status(500).send({error: err, message: "Hubo un error, no se puedo actualizar la actividad."})
     })
   };
 

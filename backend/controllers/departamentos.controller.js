@@ -2,12 +2,12 @@ const DepartamentosModel = require('../models/departamentos.model');
 
 exports.crearDepartamento = async (req, res) => {
     currentUserId = req.user.user_id;
-    const { nombre, descripcion } = req.body;
+    const { nombreDepartamento, descripcion } = req.body;
 
-    if(!nombre) return res.statu(401).send({message: "Debe de agregar el nombre del departamento."});
+    if(!nombreDepartamento) return res.status(401).send({message: "Debe de agregar el nombre del departamento."});
 
      await DepartamentosModel.create({
-        nombre: nombre,
+        nombreDepartamento: nombreDepartamento,
         descripcion: descripcion ? descripcion : null,
         creador_id: currentUserId,
         modificador_id: null,
