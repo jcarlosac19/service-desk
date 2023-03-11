@@ -14,15 +14,15 @@
                                 src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="User">
                         </div>
                         <div class="user-data capitalize">
-                            <h4>{{ ticket.creador }}</h4><span>Joined February 06, 2017</span>
+                            <h4>{{ ticket.creador }}</h4><span>Joined {{getDateCreatorJoined()}}</span>
                         </div>
                     </div>
                 </aside>
                 <nav class="list-group">
-                    <a class="list-group-item" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</a>
-                    <a class="list-group-item" (click)="onShowStatusChangeModal()"><i class="fa fa-map"></i>Cambiar Estado</a>
-                    <li class="list-group-item" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-heart"></i>Reasignar</li>
-                    <a class="list-group-item" href="#"><i class="fa fa-tag"></i>Actividad</a>
+                    <li class="list-group-item hover-link" style="cursor: pointer;" routerLink="/my-tickets"><i class="fa fa-user"></i>Ver Tickets</li>
+                    <li class="list-group-item hover-link" style="cursor: pointer;" (click)="onShowStatusChangeModal()"><i class="fa fa-map"></i>Cambiar Estado</li>
+                    <li class="list-group-item hover-link" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-heart"></i>Reasignar</li>
+                    <li class="list-group-item hover-link" style="cursor: pointer;" (click)="showHistoryTicket()" ><i class="fa fa-tag"></i>Actividad</li>
                 </nav>
             </div>
             <div class="col-lg-8">
@@ -30,7 +30,7 @@
                 <div class="table-responsive margin-bottom-2x">
                     <table class="table margin-bottom-none">
                         <thead>
-                            <tr>
+                            <tr class="text-center" >
                                 <th>Creado</th>
                                 <th>Creado Por</th>
                                 <th>Flujo</th>
@@ -40,12 +40,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="capitalize">
+                            <tr class="capitalize text-center">
                                 <td> {{ ticket.creado_a }} </td>
                                 <td> {{ ticket.creador }} </td>
                                 <td> {{ ticket.flujo}} </td>
                                 <td> {{ticket.categoria}} </td>
-                                <td><span class="text-warning"> {{ticket.prioridad}} </span></td>
+                                <td><span class="text-warning priority-text "> {{ticket.prioridad}} </span></td>
                                 <td><span class="statusText" [ngStyle]="{'color': ticketStatusColor}">{{ ticket.estado }}</span></td>
                             </tr>
                         </tbody>
@@ -55,7 +55,7 @@
 
                 <div class="comment">
                     <div class="content-body">
-                        <p><span class="content-meta">Asunto: {{ ticket.asunto }}</span></p>
+                        <h6>Asunto: {{ ticket.asunto }}</h6>
                         <p class="comment-text">{{ticket.contenido}}</p>
                         <div><span class="content-meta">Creado el: {{ ticket.creado_a }}</span></div>
                     </div>
@@ -74,7 +74,7 @@
                 <h5 class="mb-30 padding-top-1x">Comentar</h5>
                 <form method="post" (submit)="onSubmitComment($event)" >
                     <div class="form-group">
-                        <textarea class="form-control form-control-rounded" id="review_text" rows="8"
+                        <textarea class="form-control form-control-rounded p-3" id="review_text" rows="8"
                             placeholder="Escribe tu mensaje aqui..." required="" [(ngModel)]="comment" [name]="comment"
                             [ngModelOptions]="{ standalone: true }" ></textarea>
                     </div>
@@ -126,6 +126,13 @@
             <button pButton type="button" label="Cancelar" class="p-button-danger"
                 (click)="showChangeStatusModal = false"></button>
         </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="showHistoryModal" [transitionOptions]="'300ms'" [modal]="true" header="Historico Ticket"
+        [draggable]="true">
+        <div>
+            <app-table [columns]="filteredColums()" [data]="getHistory" [classes]="'table table-bordered table-striped text-light'" ></app-table>
+        </div>
     </p-dialog>
 
 </main>

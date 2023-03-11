@@ -63,7 +63,6 @@ import { FlujoService } from 'src/app/core/services/flujo.service';
         box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
         -webkit-box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
         -moz-box-shadow: -6px 9px 18px 0px rgba(75,75,75,0.52);
-        padding: 1rem;
         border-radius: 4px;
 
       }
@@ -72,6 +71,11 @@ import { FlujoService } from 'src/app/core/services/flujo.service';
         width: 100%;
         font-size: 1.2rem;
         font-weight: 600;
+      }
+
+      .header-form {
+        padding: .5rem 1rem;
+        border-radius: 4px 4px 0 0;
       }
     `,
   ],
@@ -141,7 +145,6 @@ export class CreateTicketsComponent {
 
   onSubmitTicket() {
     const ticketRequest: TicketSelect = this.ticketForm.value;
-    console.log(ticketRequest);
     const request: CreateTicket = this.materializeTicketRequest(ticketRequest);
     this.ticketService.createTicket(request).subscribe({
       next: (response) => {

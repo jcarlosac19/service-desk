@@ -16,12 +16,12 @@ app.post("/historico",
     historicoController.crearActualizacion
 );
 
-app.put("historico/completar/:id",  [
+app.put("/historico/completar/:id",  [
     verifyAccessLevel.isUser
     ],
     historicoController.completarActividadHistorico);
 
-app.put("historico/reasignar/:id",  [
+app.put("/historico/reasignar/:id",  [
     verifyAccessLevel.isUser
     ],
     historicoController.reasignarActividadHistorico);

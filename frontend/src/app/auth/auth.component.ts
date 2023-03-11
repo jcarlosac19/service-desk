@@ -96,7 +96,7 @@ export class AuthComponent implements OnInit {
           this.toastr.success(this.userResponse.message, 'Login exitoso');
           this.router.navigateByUrl('/my-tickets');
         },
-        error: (err) => console.log(err),
+        error: (err) => this.toastr.error(err),
       });
 
       return;
@@ -116,7 +116,7 @@ export class AuthComponent implements OnInit {
           this.userResponse = data;
           this.router.navigateByUrl('/my-tickets');
         },
-        error: (err) => console.log(err),
+        error: (err) => this.toastr.error(err),
       });
   }
 }

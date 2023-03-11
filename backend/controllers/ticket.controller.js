@@ -7,18 +7,10 @@ exports.crearTicket = async (req, res) => {
     const currentUserId = req.user.user_id;
     const { asunto, contenido, prioridad_id, categoria_id } = req.body
     const { trabajo_flujo_id } = req.body;
-    
-    let counter = 0;
 
     const estadoPorDefecto = await Estados.findOne({usado_por_defecto: true}).lean().exec();
 
-    Ticket.countDocuments((err, count)=>{
-      if (err) return;
-      counter = count + 1;
-    });
-
     const ticket = new Ticket({
-      _id: counter,
       asunto: asunto,
       contenido: contenido,
       estado_id: estadoPorDefecto._id,
@@ -52,8 +44,6 @@ exports.crearTicket = async (req, res) => {
   };
 
 exports.obtenerTickets = async (req, res) => {
-    // const eliminados = Boolean((req.query.eliminados || "").replace(/\s*(false|null|undefined|0)\s*/i, ""));
-    // const activos = false;
     Ticket.find({esta_eliminado: false})
           .populate('estado_id')
           .populate('prioridad_id')

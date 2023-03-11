@@ -178,7 +178,6 @@ export class PrioridadesComponent {
         },
         error: (error) => this.toastr.error(error?.error?.message, 'Error'),
       });
-      console.log(this.rowSelectedEdit);
       this.rowSelectedEdit = {} as PriorityEdit;
     }
     if (this.action === 'create') {

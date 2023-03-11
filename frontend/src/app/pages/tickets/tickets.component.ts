@@ -11,7 +11,9 @@ import {
   Ticket,
   TicketResponse,
   TicketPostResponse, 
-  UpdateTicketStatus
+  UpdateTicketStatus,
+  historyRequest,
+  HistoryTable
 } from 'src/app/core/interfaces/ticket.interface';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { FlujoService } from 'src/app/core/services/flujo.service';
@@ -23,6 +25,7 @@ import { GetAllUserResponse } from 'src/app/core/interfaces/user.interface';
 import * as helper from '../../core/helpers';
 import { Status } from 'src/app/core/interfaces/status.interface';
 import { StatusService } from 'src/app/core/services/status.service';
+import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 
 @Component({
   selector: 'app-tickets',
@@ -34,9 +37,10 @@ export class TicketsComponent implements OnInit {
   comments: CommentResponse[] = [];
   comment: string = '';
   showReasignModal: boolean = false;
-
+  showHistoryModal: boolean = false;
   showChangeStatusModal: boolean = false;
   history: HistoryResponse[] = [];
+  historyTable: HistoryTable[] = []
   flujos: Flujo[] = [];
   Departments: Department[]= [];
   selectedDepartment: Department = {} as Department;
@@ -54,6 +58,62 @@ export class TicketsComponent implements OnInit {
   ticketPadded: string = '';
   ticketResponse: TicketPostResponse = {} as TicketPostResponse;
   ticketStatusColor: string = '';
+  columns: ColumnTable[] = [
+    {
+      name: 'Ticket Id',
+      key: 'ticket_id',
+      show: true,
+    },
+    {
+      name: 'Departamento',
+      key: 'departamento_id',
+      show: true,
+    },
+    {
+      name: 'Creador',
+      key: 'creador_id',
+      show: false,
+    },
+    {
+      name: 'Completado',
+      key: 'completado_a',
+      show: false,
+    },
+    {
+      name: 'Asignado A',
+      key: 'asinado_a',
+      show: false,
+    },
+    {
+      name: 'Modificador',
+      key: 'modificador_id',
+      show: false,
+    },
+    {
+      name: 'Creado',
+      key: 'creado_a',
+      show: true,
+    },
+    {
+      name: 'Actualizado',
+      key: 'actualizado_a',
+      show: true,
+    },
+    {
+      name: 'Tiempo Estimado Resolucion',
+      key: 'tiempoEstimadoResolucion',
+      show: true,
+    },
+    {
+      name: 'Tiempo Real Resolucion',
+      key: 'tiempoRealResolucion',
+      show: true,
+    }
+  ];
+
+  get getHistory(): HistoryTable[] {
+    return [...this.historyTable];
+  }
 
   constructor(
     private ticketService: TicketService,
@@ -85,7 +145,6 @@ export class TicketsComponent implements OnInit {
         });
       this.historyService.getHistoryByTicket(parseInt(params['id'])).subscribe((history) => {
         this.history = history;
-        console.log(this.history);
       });
     });
 
@@ -100,8 +159,15 @@ export class TicketsComponent implements OnInit {
     });
   }
 
-  getTicketNumber(){
-    
+  showHistoryTicket() {
+    this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
+      this.historyTable = this.historyService.assignTimeResolution(history, this.flujos, this.ticket);
+      this.showHistoryModal = true;
+    });
+  }
+
+  filteredColums(){
+    return this.columns.filter((column: ColumnTable) => column.show);
   }
 
   onSubmitComment(event: any) {
@@ -122,27 +188,53 @@ export class TicketsComponent implements OnInit {
     this.showReasignModal = true;
   }
 
-  onReasignTicket(){
-    const request = {
+  onReasignTicket() {
+    const isSelectedDepartment = helper.isFullObjectAndValue(this.selectedDepartment)
+      && !helper.isNullOrWhitespace(this.selectedDepartment);
+    const request: historyRequest = {
       ticket_id: this.ticket._id,
-      departamento_id: this.selectedDepartment._id,
+      departamento_id: this.getDepartmentId(isSelectedDepartment),
       asignado_id: this.selectedUser._id,
-      flujoId: this.flujos.find(f => f.nombre === this.ticket.flujo)
-  };debugger;
-  if(!helper.isFullObjectAndValue(request)) return;
-  this.historyService.updateHistory(request).subscribe((response) => {
-    this.toastr.success(response.message, 'Exito');
-    this.showReasignModal = false;
-  });
-}
+    };
+    if (!isSelectedDepartment) {
+      this.historyService.reasignTicketToUser(request).subscribe((response) => {
+        this.toastr.success(response.message, 'Exito');
+        this.showReasignModal = false;
+      });
+      return;
+    }
+
+    if (!helper.isFullObjectAndValue(request)) return;
+    this.historyService.updateHistory(request).subscribe((response) => {
+      this.toastr.success(response.message, 'Exito');
+      this.showReasignModal = false;
+    });
+  }
+
+  getDepartmentId(isSelectedDepartment: boolean):string{
+    if(!isSelectedDepartment){
+      const historyCopy = [...this.history];
+      const getDepartmentDefault = historyCopy.filter(h => h.ticket_id._id === this.ticket._id)
+        .sort((a,b) => a.actualizado_a > b.actualizado_a ? -1 : 1)
+        .reverse()[0]?.departamento_id._id;
+
+      return getDepartmentDefault;
+    }
+    return this.selectedDepartment._id;
+  }
 
 
 onStatusChangeTicket():void{
-
-  console.log(this.selectedStatus)
-
   let update: UpdateTicketStatus = {
     estado_id: this.selectedStatus._id
+  }
+  if(this.selectedStatus.nombre === 'Completado' ){
+    this.historyService.closeTicket(this.ticket._id).subscribe({
+      next: (response) => {
+        this.toastr.success(response.message, 'Ticket cerrado'); 
+      },
+      error: (err) => this.toastr.error(err?.message, 'Error al cerrar ticket')
+    });
   }
   this.ticketService.updateTicket(this.ticket._id, update)
   .subscribe({
@@ -164,5 +256,10 @@ onShowStatusChangeModal():void{
   this.showChangeStatusModal = true;
 }
 
+  getDateCreatorJoined(): string {debugger;
+    const names = this.ticket.creador.split(' ');
+    const users = this.Users.find(user => names.includes(user.nombres) || names.includes(user.apellidos));
+    return new Date(users?.creado_a!).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric'});
+  }
 
 }

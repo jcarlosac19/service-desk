@@ -122,5 +122,29 @@ export interface HistoryResponse {
   esta_completado: boolean;
   modificador_id: CreadorIDClass;
   esta_eliminado: boolean;
+  creado_a: Date;
+  actualizado_a: Date;
   message?: string;
+  tiempoEstimadoResolucion?: number;
+  tiempoRealResolucion?: number;
+}
+
+export interface HistoryTable {
+  ticket_id: string;
+  flujo_paso_id?: string;
+  departamento_id: string
+  creador_id: string;
+  compleado_a: string;
+  asignado_id: string;
+  modificador_id: string;
+  creado_a: string;
+  actualizado_a: string;
+  message?: string;
+  tiempoEstimadoResolucion?: string;
+  tiempoRealResolucion?: string;
+}
+export interface historyRequest {
+  ticket_id: number,
+  departamento_id: string,
+  asignado_id: string
 }
