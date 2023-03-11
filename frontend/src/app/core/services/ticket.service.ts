@@ -22,8 +22,6 @@ export class TicketService {
   ) {
   }
 
-  
-
   createTicket(request: CreateTicket): Observable<TicketPostResponse> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');
