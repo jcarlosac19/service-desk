@@ -188,7 +188,7 @@ a.list-group-item, .list-group-item-action {
     display: block;
     position: relative;
     margin-bottom: 30px;
-    padding-left: 66px
+    padding: 1.5rem 1.8rem;
 }
 
 .comment .comment-author-ava {
@@ -216,7 +216,7 @@ a.list-group-item, .list-group-item-action {
 
 .content-body {
     position: relative;
-    padding: 24px;
+    padding: 1.8rem 2rem;
     border: 1px solid #a6a9b0;
     border-radius: 7px;
     background-color: #eaeee0
@@ -255,7 +255,8 @@ a.list-group-item, .list-group-item-action {
 }
 
 .comment .comment-text {
-    margin-bottom: 12px
+    margin-bottom: 12px;
+    font-size: .9rem;
 }
 
 .comment .comment-footer {
@@ -278,8 +279,8 @@ a.list-group-item, .list-group-item-action {
 }
 
 .content-meta {
-    color: #074121;
-    font-size: 13px
+    color: #717171;
+    font-size: .8rem
 }
 
 .comment .reply-link {
@@ -342,11 +343,23 @@ a.list-group-item, .list-group-item-action {
 }
 
 .statusText {
-        background-color: #565656; 
-        font-weight: bold; 
-        padding-left: 20px; 
-        padding-right: 20px; 
-        padding-top: 5px; 
-        padding-bottom: 5px; 
-        border-radius: 30px;
+    background-color: #091a32; 
+    font-weight: bold; 
+    padding: 5px 20px; 
+    border-radius: 30px;
+}
+.priority-text {
+    background-color: #091a32; 
+    font-weight: bold; 
+    padding: 5px 20px; 
+    border-radius: 30px;
+}
+
+.hover-link {
+    transition: all 200ms ease-in-out;
+}
+
+.hover-link:hover {
+    color: #0d98c7;
+    border-left: 4px solid #0d98c7;
 }
