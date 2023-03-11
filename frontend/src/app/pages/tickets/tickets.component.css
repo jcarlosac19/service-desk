@@ -188,7 +188,7 @@ a.list-group-item, .list-group-item-action {
     display: block;
     position: relative;
     margin-bottom: 30px;
-    padding: 1.5rem 1.8rem;
+    padding-left: 66px;
 }
 
 .comment .comment-author-ava {
