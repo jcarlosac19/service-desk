@@ -153,12 +153,12 @@ export class CategoriesComponent {
     return filteredColumns;
   }
 
-  onSubmitCategory(): void {debugger;
+  onSubmitCategory(): void {
     this.visibleModal = false;
     this.deleteModal = false;
     if (this.action === 'edit') {
       this.categoryService.editCategory(this.rowSelectedEdit).subscribe({
-        next: (response) => {debugger;
+        next: (response) => {
           this.toastr.success('Se modifico el registro', 'Éxito');
           this.categories = this.categories.map(category => {
             if (category._id === response._id) {
@@ -178,7 +178,7 @@ export class CategoriesComponent {
             return category;
           });
         },
-        error: (error) => {debugger;
+        error: (error) => {
           this.toastr.error(error?.message, 'Error');
         },
       });

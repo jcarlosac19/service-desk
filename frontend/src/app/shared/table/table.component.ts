@@ -26,6 +26,7 @@ import * as helpers from '../../core/helpers';
 export class TableComponent {
   @Input('columns') columns: ColumnTable[] = [];
   @Input('data') data: any[] = [];
+  @Input('classes') classes: string = '';
   buttons: number = 3;
 
   actionsContainer = {
