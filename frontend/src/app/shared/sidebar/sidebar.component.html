@@ -7,7 +7,15 @@
   <div class="pages-container mt-5">
     <ul>
       <li *ngFor="let link of links" class="li-items">
-        <a [routerLink]="link?.routerName" class="nav-link text-light nav-center"> {{link?.name}} </a>
+        <a
+          [routerLink]="link?.routerName"
+          class="nav-link-item text-light nav-center"
+          ><i
+            [class]="link?.icon"
+            style="font-size: 0.9rem; margin-right: 0.5rem"
+          ></i>
+          <span>{{ link?.name }}</span>
+        </a>
       </li>
     </ul>
   </div>

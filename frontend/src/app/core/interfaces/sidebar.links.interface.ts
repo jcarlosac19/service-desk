@@ -1,6 +1,7 @@
 export interface SidebarLinks {
   name: string;
   routerName: string;
+  icon?: string;
 }
 
 export interface KeyMap {

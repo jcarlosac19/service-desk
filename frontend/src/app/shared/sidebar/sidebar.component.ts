@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SidebarLinks } from 'src/app/core/interfaces/sidebar.links.interface';
+import { PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,35 +11,43 @@ export class SidebarComponent {
   links: SidebarLinks[] = [
     {
       name: 'Tickets',
-      routerName: '/my-tickets'
+      routerName: '/my-tickets',
+      icon: PrimeIcons.TICKET
     },
     {
       name: 'Create Tickets',
-      routerName: '/create-tickets'
+      routerName: '/create-tickets',
+      icon: PrimeIcons.PLUS_CIRCLE
     },
     {
       name: 'Grupo',
-      routerName: '/groups'
+      routerName: '/groups',
+      icon: 'fa fa-users'
     },
     {
       name: 'Categorias',
-      routerName: '/category'
+      routerName: '/category',
+      icon: 'fa fa-cogs'
     },
     {
       name: 'Flujos',
-      routerName: '/flujos'
+      routerName: '/flujos',
+      icon: 'fa fa-sort-amount-asc'
     },
     {
       name: 'Equipos de Trabajo',
-      routerName: '/equipos'
+      routerName: '/equipos',
+      icon: PrimeIcons.USERS
     },
     {
       name: 'Prioridades',
-      routerName: '/priorities'
+      routerName: '/priorities',
+      icon: 'fa fa-list-ol'
     },
     {
       name: 'Estados',
-      routerName: '/status'
+      routerName: '/status',
+      icon: PrimeIcons.STAR_FILL
     },
   ]
 }
