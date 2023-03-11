@@ -192,8 +192,6 @@ export class TicketsComponent implements OnInit {
 
     const isSelectedDepartment = this.selectedDepartment != undefined;
 
-    console.log(isSelectedDepartment);
-
     const request: historyRequest = {
       ticket_id: this.ticket._id,
       departamento_id: this.getDepartmentId(isSelectedDepartment),
@@ -218,10 +216,6 @@ export class TicketsComponent implements OnInit {
       });
 
     });
-
-    
-
-
   }
 
   // Tabla Historico:
@@ -276,8 +270,9 @@ onShowStatusChangeModal():void{
 }
 
   getDateCreatorJoined(): string {
-    const names = this.ticket.creador.split(' ');
-    const users = this.Users.find(user => names.includes(user.nombres) || names.includes(user.apellidos));
+    const names = this.ticket?.creador?.split(' ');
+    if(helper.isNullOrWhitespace(names)) return ''; 
+    const users = this.Users?.find(user => names.includes(user.nombres) || names.includes(user.apellidos));
     return new Date(users?.creado_a!).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric'});
   }
 

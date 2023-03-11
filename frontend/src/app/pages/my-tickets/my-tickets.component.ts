@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService, UserService } from 'src/app/core';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
-import { Ticket, TicketResponse } from 'src/app/core/interfaces/ticket.interface';
+import { Status } from 'src/app/core/interfaces/status.interface';
+import { Ticket } from 'src/app/core/interfaces/ticket.interface';
+import { StatusService } from 'src/app/core/services/status.service';
+import * as helper from '../../core/helpers';
 
 @Component({
   selector: 'app-my-tickets',
@@ -14,7 +17,11 @@ export class MyTicketsComponent implements OnInit {
   get getTickets(): Ticket[] {
     return [...this.tickets];
   }
-  constructor(private ticketService: TicketService, private userService:UserService) { }  
+  
+  statuses: Status[] = [];
+  selectedStatus: Status = {} as Status;
+
+  constructor(private ticketService: TicketService, private userService:UserService, private status: StatusService) { }  
   columns: ColumnTable[] = [
     {
       name: 'Id',
@@ -61,6 +68,14 @@ export class MyTicketsComponent implements OnInit {
   
   ngOnInit(): void {
     this.userService.populate();
+    this.fetchTickets();
+    this.status.getStatuses().subscribe({
+      next: (response) => {
+        this.statuses= this.status.materializeStatus(response);
+      }
+    })
+  }
+  fetchTickets(): void {
     this.ticketService.getTickets().subscribe({
       next: (response) => {
         this.tickets = this.ticketService.materializeResponseToTicket(response);        
@@ -68,5 +83,11 @@ export class MyTicketsComponent implements OnInit {
     });
   }
 
-  
+  filterByStatus() : Ticket[] {
+    if(!helper.isFullObjectAndValue(this.selectedStatus) 
+      || helper.isNullOrUndefined(this.selectedStatus)) {
+        return [...this.getTickets];
+      }
+    return [...this.getTickets.filter(ticket => ticket.estado === this.selectedStatus.nombre)];
+  } 
 }

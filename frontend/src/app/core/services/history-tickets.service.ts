@@ -84,10 +84,7 @@ export class HistoryTicketsService {
         tiempoRealResolucion: element.compleado_a != undefined ? helper.getDiffInHours(element.creado_a, element.compleado_a) + ' horas' : '',
       }
       historyList.push(history);
-    })
-
-    console.log(history);
-
+    });
     return historyList;
   }
 }
