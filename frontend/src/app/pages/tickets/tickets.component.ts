@@ -80,9 +80,9 @@ export class TicketsComponent implements OnInit {
       show: false,
     },
     {
-      name: 'Asignado A',
-      key: 'asinado_a',
-      show: false,
+      name: 'Asignado',
+      key: 'asignado_id',
+      show: true,
     },
     {
       name: 'Modificador',
@@ -102,7 +102,7 @@ export class TicketsComponent implements OnInit {
     {
       name: 'Tiempo Estimado Resolucion',
       key: 'tiempoEstimadoResolucion',
-      show: true,
+      show: false,
     },
     {
       name: 'Tiempo Real Resolucion',
@@ -188,14 +188,18 @@ export class TicketsComponent implements OnInit {
     this.showReasignModal = true;
   }
 
-  onReasignTicket() {
-    const isSelectedDepartment = helper.isFullObjectAndValue(this.selectedDepartment)
-      && !helper.isNullOrWhitespace(this.selectedDepartment);
+  async onReasignTicket() {
+
+    const isSelectedDepartment = this.selectedDepartment != undefined;
+
+    console.log(isSelectedDepartment);
+
     const request: historyRequest = {
       ticket_id: this.ticket._id,
       departamento_id: this.getDepartmentId(isSelectedDepartment),
       asignado_id: this.selectedUser._id,
     };
+
     if (!isSelectedDepartment) {
       this.historyService.reasignTicketToUser(request).subscribe((response) => {
         this.toastr.success(response.message, 'Exito');
@@ -205,11 +209,26 @@ export class TicketsComponent implements OnInit {
     }
 
     if (!helper.isFullObjectAndValue(request)) return;
-    this.historyService.updateHistory(request).subscribe((response) => {
-      this.toastr.success(response.message, 'Exito');
+    this.historyService.completeTicketActivity(this.ticket._id).subscribe((res) => {
       this.showReasignModal = false;
+
+      this.historyService.crearNuevaActividad(request).subscribe((response) => {
+        this.toastr.success(response.message, 'Exito');
+        this.showReasignModal = false;
+      });
+
     });
+
+    
+
+
   }
+
+  // Tabla Historico:
+  // Reasignar el ticket: assignee_id, usamos un put, no agregamos registro. No se crea nuevo registro.
+  // Reasignar el ticket: department_id, 
+  //     * Completar el registro anterior, con la funcion completeTicketActivity
+  //     * Crear el nuevo registro con el nuevo departamento con la funcion en la ruta post | historico/
 
   getDepartmentId(isSelectedDepartment: boolean):string{
     if(!isSelectedDepartment){
@@ -229,7 +248,7 @@ onStatusChangeTicket():void{
     estado_id: this.selectedStatus._id
   }
   if(this.selectedStatus.nombre === 'Completado' ){
-    this.historyService.closeTicket(this.ticket._id).subscribe({
+    this.historyService.completeTicketActivity(this.ticket._id).subscribe({
       next: (response) => {
         this.toastr.success(response.message, 'Ticket cerrado'); 
       },
@@ -256,7 +275,7 @@ onShowStatusChangeModal():void{
   this.showChangeStatusModal = true;
 }
 
-  getDateCreatorJoined(): string {debugger;
+  getDateCreatorJoined(): string {
     const names = this.ticket.creador.split(' ');
     const users = this.Users.find(user => names.includes(user.nombres) || names.includes(user.apellidos));
     return new Date(users?.creado_a!).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric'});

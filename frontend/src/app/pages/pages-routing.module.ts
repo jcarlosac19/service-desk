@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CategoriesComponent } from './categories/categories.component';
 import { CreateTicketsComponent } from './create-tickets/create-tickets.component';
+import { DepartmentsComponent } from './departments/departments.component';
 import { StatusComponent } from './estados/status.component';
 import { FlujosComponent } from './flujos/flujos.component';
 import { GroupsComponent } from './groups/groups.component';
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: 'flujos',
     component: FlujosComponent
+  },
+  {
+    path: 'departments',
+    component: DepartmentsComponent
   }
 ];
 

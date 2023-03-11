@@ -35,8 +35,8 @@ export class SidebarComponent {
       icon: 'fa fa-sort-amount-asc'
     },
     {
-      name: 'Equipos de Trabajo',
-      routerName: '/equipos',
+      name: 'Departamentos',
+      routerName: '/departments',
       icon: PrimeIcons.USERS
     },
     {

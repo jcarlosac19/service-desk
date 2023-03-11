@@ -14,6 +14,7 @@ import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { FlujosComponent } from './flujos/flujos.component';
+import { DepartmentsComponent } from './departments/departments.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FlujosComponent } from './flujos/flujos.component';
     StatusComponent,
     CategoriesComponent,
     TicketsComponent,
-    FlujosComponent
+    FlujosComponent,
+    DepartmentsComponent
   ],
   imports: [
     CommonModule,
