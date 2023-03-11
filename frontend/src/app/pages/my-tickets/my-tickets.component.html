@@ -1,7 +1,24 @@
-<main class="main-content overflow-auto">
+<main class="main-content">
   <h3 class="text-center">Tickets</h3>
-  <hr class="mb-5">
-  <section class="container table-responsive-md">
-    <app-table [columns]="columns" [data]="getTickets" [classes]="'table table-bordered table-striped table-hover'" ></app-table>
+  <hr class="mb-3" />
+  <header class="container mb-3">
+    <p-dropdown
+      [options]="statuses"
+      [(ngModel)]="selectedStatus"
+      placeholder="Estados"
+      optionLabel="nombre"
+      [showTransitionOptions]="'200ms'"
+      [hideTransitionOptions]="'200ms'"
+      [showClear]="true"
+      scrollHeight="160px"
+    >
+    </p-dropdown>
+  </header>
+  <section class="container table-responsive-md overflow-y-scroll">
+    <app-table
+      [columns]="columns"
+      [data]="filterByStatus()"
+      [classes]="'table table-bordered table-striped table-hover'"
+    ></app-table>
   </section>
 </main>
