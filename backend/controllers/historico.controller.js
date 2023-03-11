@@ -64,7 +64,7 @@ exports.obtenerHistoricoPorId = async (req, res) => {
     currentUserId = req.user.user_id;
     const id = parseInt(req.params.id);
     TicketHistorico.findOneAndUpdate({ ticket_id: id, esta_completado: false }, {
-      completado_a: new Date(0),
+      compleado_a: new Date(Date.now()),
       esta_completado: true,
       modificador_id: currentUserId
     })
