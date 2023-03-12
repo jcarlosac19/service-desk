@@ -53,7 +53,7 @@ body  {
   /* background: rgb(3,13,94);
   background: linear-gradient(149deg, rgba(3,13,94,1) 0%, rgba(9,9,121,1) 26%, rgba(0,138,255,1) 100%); */
   background-image: url("https://hf-static.s3.amazonaws.com/hf-support-center/sc-workflow-banner.svg");
-  background-size: 100%;
+  background-size: cover;
   background-position: left;
   min-height: 15rem; 
   text-align: center; 
@@ -62,6 +62,21 @@ body  {
   justify-content: center;
   color: white;
   text-align: center;
+}
+
+.table-custom-style {
+  max-height: 57vh;
+}
+
+@media (max-width: 1490px) {
+  .banner {
+    background-position: center center;
+    min-height: 10rem;
+  }
+
+  .table-custom-style {
+    max-height: 50vh;
+  }
 }
 
 .centered-page{
