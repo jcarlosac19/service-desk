@@ -1,24 +1,35 @@
-<main class="main-content">
-  <h3 class="text-center">Tickets</h3>
-  <hr class="mb-3" />
-  <header class="container mb-3">
-    <p-dropdown
-      [options]="statuses"
-      [(ngModel)]="selectedStatus"
-      placeholder="Estados"
-      optionLabel="nombre"
-      [showTransitionOptions]="'200ms'"
-      [hideTransitionOptions]="'200ms'"
-      [showClear]="true"
-      scrollHeight="160px"
-    >
-    </p-dropdown>
-  </header>
-  <section class="container table-responsive-md overflow-y-scroll">
-    <app-table
-      [columns]="columns"
-      [data]="filterByStatus()"
-      [classes]="'table table-bordered table-striped table-hover'"
-    ></app-table>
-  </section>
-</main>
+<div class="container">
+
+  <div class="card border-0 shadow centered-page">
+  <div class="banner">
+      <h3 class="text-center">Tickets</h3>
+  </div>
+
+  <div class="card-body"> 
+    <div style="padding-bottom: 1rem;">
+      <p-dropdown [style]="{'minWidth':'30%'}" 
+        [options]="statuses"
+        [(ngModel)]="selectedStatus"
+        placeholder="Estados"
+        optionLabel="nombre"
+        [showTransitionOptions]="'200ms'"
+        [hideTransitionOptions]="'200ms'"
+        [showClear]="true"
+        scrollHeight="300px"
+      >
+      </p-dropdown>
+    </div>
+
+    <div class="overflow-auto">
+      <section class="table-responsive-md table-sm" style="max-height: 57vh;">
+        <app-table
+          [columns]="columns"
+          [data]="filterByStatus()"
+          [classes]="'table table-bordered table-striped table-hover'"
+        ></app-table>
+      </section>
+    </div>
+    
+  </div>
+</div>
+

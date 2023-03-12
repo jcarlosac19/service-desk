@@ -48,3 +48,22 @@ body  {
 .overflow-y-scroll  {
   overflow-y: scroll;
 }
+
+.banner {
+  /* background: rgb(3,13,94);
+  background: linear-gradient(149deg, rgba(3,13,94,1) 0%, rgba(9,9,121,1) 26%, rgba(0,138,255,1) 100%); */
+  background-image: url("https://hf-static.s3.amazonaws.com/hf-support-center/sc-workflow-banner.svg");
+  background-size: 100%;
+  background-position: left;
+  min-height: 15rem; 
+  text-align: center; 
+  align-items: center; 
+  display: flex; 
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.centered-page{
+  display: block; height: 92vh;
+}

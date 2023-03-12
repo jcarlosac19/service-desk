@@ -1,13 +1,16 @@
-<main class="main-content overflow-auto">
-  <h3 class="text-center">Departamentos</h3>
-  <hr class="mb-5" />
-  
-  <section>
-    <p-button (onClick)="createNewRecord()">Crear Departamento</p-button>
+<div class="container">
+  <div class="card border-0 shadow centered-page">
+    <div class="banner">
+      <h3 class="text-center">Departamentos</h3>
+    </div>
+
+  <div class="card-body p-5"> 
+  <section class="table-responsive-md">
+    <app-table [columns]="filteredColums()" [data]="getDepartments" [classes]="'table table-bordered table-striped table-hover'" ></app-table>
   </section>
 
-  <section class="container table-responsive-md">
-    <app-table [columns]="filteredColums()" [data]="getDepartments" [classes]="'table table-bordered table-striped table-hover'" ></app-table>
+  <section>
+    <p-button (onClick)="createNewRecord()">Crear Departamento</p-button>
   </section>
 
   <p-dialog
@@ -84,4 +87,7 @@
       ></button>
     </ng-template>
   </p-dialog>
-</main>
+    </div>
+  </div>
+</div>
+

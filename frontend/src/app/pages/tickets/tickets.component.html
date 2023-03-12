@@ -132,7 +132,8 @@
         [draggable]="true">
         <div>
             <app-table [columns]="filteredColums()" [data]="getHistory" [classes]="'table table-bordered table-striped text-light'" ></app-table>
-            Tiempo Total de Resolucion: {{totalTimeResolution}}
+            <p>Tiempo Total de Resolucion: {{totalTimeResolution}} horas</p>
+            <p>Tiempo Esperado de Resolucion: {{expectedResolutionTime}}</p>
         </div>
     </p-dialog>
 

@@ -1,11 +1,17 @@
-<main class="main-content overflow-auto">
-  <h3 class="text-center">Prioridades</h3>
-  <hr class="mb-5" />
+<div class="container">
+  <div class="card border-0 shadow centered-page">
+    <div class="banner">
+      <h3 class="text-center">Prioridades</h3>
+    </div>
+
+  <div class="card-body p-5"> 
+
+  <section class="table-responsive-md">
+    <app-table [columns]="filteredColumns()" [data]="getPriorities" [classes]="'table table-bordered table-striped table-hover'" ></app-table>
+  </section>
+
   <section>
     <p-button (onClick)="createNewRecord()">Crear Prioridad</p-button>
-  </section>
-  <section class="container table-responsive-md">
-    <app-table [columns]="filteredColumns()" [data]="getPriorities" [classes]="'table table-bordered table-striped table-hover'" ></app-table>
   </section>
 
   <p-dialog
@@ -82,4 +88,8 @@
       ></button>
     </ng-template>
   </p-dialog>
-</main>
+
+    </div>
+  </div>
+</div>
+
