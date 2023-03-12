@@ -50,4 +50,18 @@ export class SidebarComponent {
       icon: PrimeIcons.STAR_FILL
     },
   ]
+  collapsed: boolean = false;
+  toggleMenu() {
+    this.collapsed = !this.collapsed;
+  }
+
+  classes() {
+    if(!this.collapsed) return 'sidebar';
+    return 'collapsed-sidebar';
+  }
+
+  classesLi(){
+    if(!this.collapsed) return 'li-items';
+    return 'collapsed-sidebar-li';
+  }
 }
