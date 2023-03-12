@@ -67,3 +67,7 @@ body  {
 .centered-page{
   display: block; height: 92vh;
 }
+
+.text-banner{
+  font-size: 3rem;
+}
