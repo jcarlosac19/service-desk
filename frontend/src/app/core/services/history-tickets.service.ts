@@ -75,13 +75,14 @@ export class HistoryTicketsService {
         ticket_id: element.ticket_id._id.toString(),
         departamento_id: element.departamento_id.nombreDepartamento,
         creador_id: element.creador_id.email,
-        compleado_a: new Date(element.compleado_a).toLocaleDateString('es-ES'),
+        compleado_a: element.compleado_a != undefined ? new Date(element.compleado_a).toLocaleString('es-ES'): '',
         asignado_id: element.asignado_id != undefined ? element.asignado_id.email: '',
         modificador_id: element.modificador_id != undefined ? element.modificador_id.email: '',
-        creado_a: new Date(element.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(element.actualizado_a).toLocaleDateString('es-ES'),
+        creado_a: new Date(element.creado_a).toLocaleString('es-ES'),
+        actualizado_a: new Date(element.actualizado_a).toLocaleString('es-ES'),
         tiempoEstimadoResolucion: (ticketFlujo?.tiempo_resolucion || 0).toString() + ' horas',
-        tiempoRealResolucion: element.compleado_a != undefined ? helper.getDiffInHours(element.creado_a, element.compleado_a) + ' horas' : '',
+        tiempoRealResolucion: element.compleado_a != undefined ? helper.getDiffInHours(element.creado_a, element.compleado_a) + ' horas' 
+        : helper.getDiffInHours(element.creado_a, new Date()) + 'horas'
       }
       historyList.push(history);
     });

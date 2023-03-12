@@ -77,11 +77,6 @@ export class TicketsComponent implements OnInit {
       show: false,
     },
     {
-      name: 'Completado',
-      key: 'completado_a',
-      show: false,
-    },
-    {
       name: 'Asignado',
       key: 'asignado_id',
       show: true,
@@ -97,9 +92,14 @@ export class TicketsComponent implements OnInit {
       show: true,
     },
     {
+      name: 'Completado',
+      key: 'compleado_a',
+      show: true,
+    },
+    {
       name: 'Actualizado',
       key: 'actualizado_a',
-      show: true,
+      show: false,
     },
     {
       name: 'Tiempo Estimado Resolucion',
