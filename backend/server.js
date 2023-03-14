@@ -17,6 +17,7 @@ const estadosRoutes = require('./routes/estados.routes');
 const comentariosRoutes = require('./routes/comentarios.routes');
 const historicoRoutes = require('./routes/historico.routes');
 const departamentosRoutes = require('./routes/departamentos.routes');
+const fileStorage = require('./routes/files.storage.route');
 //Middlewares
 const verifyAccessLevel = require('./middleware/access.level');
 const verifyToken = require('./middleware/jwt.auth');
@@ -25,6 +26,8 @@ const app = express();
 const urlPrefix = '/api/v1';
 
 require("./config/db.config").connect();
+
+require("./gdrive/index");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,7 +54,8 @@ app.use(urlPrefix,
         estadosRoutes,
         comentariosRoutes,
         historicoRoutes,
-        departamentosRoutes
+        departamentosRoutes,
+        fileStorage
       ]
 );
 

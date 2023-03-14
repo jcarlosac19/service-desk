@@ -3,13 +3,15 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node server.js"
+        "start": "nodemon server.js"
     },
     "dependencies": {
+        "@google-cloud/local-auth": "^2.1.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "~1.20.1",
         "cors": "^2.8.5",
         "express": "~4.18.2",
+        "googleapis": "^105.0.0",
         "jsonwebtoken": "^9.0.0",
         "mongoose": "^6.8.4",
         "passport": "^0.6.0"
