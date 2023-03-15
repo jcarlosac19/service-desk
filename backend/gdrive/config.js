@@ -1,5 +1,5 @@
 // Application configuration.
 const config = module.exports;
 config.keys = {
-    folderId: '129647Pg-A6YTdDv4XB_6YKlXKf9IQdLd'
+    folderId: '1dNuTOLbTqk3oShqIFhvi_wbV_5oukGzT'
 };

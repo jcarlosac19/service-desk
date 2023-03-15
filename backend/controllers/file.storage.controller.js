@@ -6,14 +6,17 @@ const authenticator = require('../gdrive/index');
 const fileStorageModel = require('../models/files.storage.model');
 
 exports.uploadFile = async (req, res) => {
+  const { ticket } = req.body;
+  const fileObject = req.files[0];
+  if(!ticket) return res.status(500).send({message: "El ID del ticket es requerido."});
+  try{
   const auth = await authenticator.authorize();
   const service = google.drive({version: 'v3', auth});
-  const fileObject = req.body.file;
   const bufferStream = new stream.PassThrough();
   bufferStream.end(fileObject.buffer);
   const { data } = await service.files.create({
     media: {
-      mimeType: fileObject.mimeType,
+      mimeType: fileObject.mimetype,
       body: bufferStream,
     },
     requestBody: {
@@ -22,14 +25,27 @@ exports.uploadFile = async (req, res) => {
     },
     fields: 'id,name',
   });
-  console.log(`Uploaded file ${data.name} ${data.id}`);
+  await fileStorageModel.create({
+    ticket: parseInt(ticket),
+    fileContentType: fileObject.mimetype,
+    fileNameAndExtension: fileObject.originalname,
+    gDriveFileId: data.id
+  }).then(()=>{
+    res.status(201).send({message: "Se subio el archivo exitosamente."});
+  }).catch(err=>{
+    console.log(err);
+    res.status(500).send({message: "Hubo un error no se pudo guardar el archivo."})
+  });
+  }catch(err){
+    res.status(500).send({message: err});
+  }
 };
 
 exports.downloadFile = async function (req, res) {
-  const auth = await authenticator.authorize();
-  const service = google.drive({version: 'v3', auth});
   const id = req.params.id;
   try{
+    const auth = await authenticator.authorize();
+    const service = google.drive({version: 'v3', auth});
     const fileInStorage = await fileStorageModel.findOne({_id: id}).lean().exec();
     await service.files.get(
       { fileId: fileInStorage.gDriveFileId, alt: 'media'},
@@ -53,7 +69,7 @@ exports.downloadFile = async function (req, res) {
 
 exports.getListOfFiles = async (req, res) =>{
   const id = req.params.id;
-  await fileStorageModel.find({ticketId: id}).then(data => {
+  await fileStorageModel.find({ticket: id}).then(data => {
     res.status(201).send(data);
   })
   .catch(err =>{
