@@ -23,7 +23,7 @@ app.get("/archivos/lista/:id",
 app.post("/archivos", 
     [
         verifyAccessLevel.isUser
-    ],
+    ],upload.any(),
     fileStorage.uploadFile
 );
 

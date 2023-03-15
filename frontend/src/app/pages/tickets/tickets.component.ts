@@ -27,6 +27,9 @@ import { Status } from 'src/app/core/interfaces/status.interface';
 import { StatusService } from 'src/app/core/services/status.service';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { FileStorageServices } from 'src/app/core/services/file.storage.service';
+import { ViewChild, ElementRef } from "@angular/core";
+import { FileMetadata } from 'src/app/core/interfaces/files.storage.interfaces';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-tickets',
@@ -34,6 +37,9 @@ import { FileStorageServices } from 'src/app/core/services/file.storage.service'
   styleUrls: ['./tickets.component.css'],
 })
 export class TicketsComponent implements OnInit {
+  @ViewChild("inputFile", {static: false})
+  inputFile: ElementRef
+
   ticket: Ticket = {} as Ticket;
   comments: CommentResponse[] = [];
   comment: string = '';
@@ -44,6 +50,7 @@ export class TicketsComponent implements OnInit {
   historyTable: HistoryTable[] = []
   flujos: Flujo[] = [];
   Departments: Department[]= [];
+  attachments: FileMetadata[] = [];
   selectedDepartment: Department = {} as Department;
 
   selectedStatus: Status = {} as Status;
@@ -146,7 +153,8 @@ export class TicketsComponent implements OnInit {
       this.ticketService.getTicketById(params['id']).subscribe((ticket) => {
         this.ticketStatusColor = ticket.estado_id.color || '';
         this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
-        this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0")
+        this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0");
+        this.getTicketAttachements();
       });
       this.commentService
         .getCommentsByTicketId(params['id'])
@@ -289,11 +297,20 @@ getDateCreatorJoined(): string {
     return new Date(users?.creado_a!).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric'});
 }
 
-onFileUpload() {
-  console.log(this.ticket._id);
+onFileUpload(): void {
+  const hasFile = this.inputFile.nativeElement.value != "";
+
+  if(!hasFile){
+    this.toastr.error('Debe seleccionar un archivo.');
+    return;
+  };
+
   this.storageService.uploadFile(this.ticket._id, this.fileToUpload).subscribe({
     next: (response)=>{
       this.toastr.success(response?.message, 'Se subio el archivo!');
+      this.inputFile.nativeElement.value = "";
+      this.fileToUpload = this.inputFile.nativeElement;
+      this.getTicketAttachements();
     },
     error: (err) =>{
       this.toastr.error(err?.message, 'Error al subir el archivo.');
@@ -301,9 +318,36 @@ onFileUpload() {
   });
 }
 
+onFileDownload(file: any){
+  this.storageService.downloadFile(file._id).subscribe({
+    next: (response)=>{
+      const data: Blob = new Blob([response], {
+        type: file.fileContentType
+      });
+      saveAs(data, file.fileNameAndExtension);
+      this.toastr.success(response?.message, 'Se descargo el archivo exitosamente.!');
+    },
+    error: (err) =>{
+      console.log(err);
+      this.toastr.error(err?.message, 'Error al descargar el archivo.');
+    }
+  })
+}
+
 onFileFormChange(event: any) {
   this.fileToUpload = event.target.files[0];
   console.log(this.fileToUpload);
+}
+
+getTicketAttachements(){
+  this.storageService.getListOfFiles(this.ticket._id).subscribe({
+    next: (response) => {
+      this.attachments = this.storageService.materilizeFileReponse(response);
+    },
+    error: (err) =>{
+      this.toastr.error(err?.message, 'Error al subir el archivo.');
+    }
+  });
 }
 
 }

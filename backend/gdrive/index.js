@@ -51,4 +51,6 @@ async function authorize() {
   return client;
 }
 
+authorize().catch(console.log("Hubo un error conectandose al servicios de Google Drive."))
+
 module.exports = { authorize }
