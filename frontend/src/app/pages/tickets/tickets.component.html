@@ -24,9 +24,9 @@
                     <li class="list-group-item hover-link" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-user"></i>Reasignar</li>
                     <li class="list-group-item hover-link" style="cursor: pointer;" (click)="showHistoryTicket()" ><i class="fa fa-eye"></i>Actividad</li>
                     <li class="list-group-item hover-link" style="cursor: pointer; display: flex" >
-                        <input class="form-control" type="file" style="max-width: 20rem; margin-right: 1rem;">
-                        <button class="btn btn-success" style="position:static;">
-                            Upload
+                        <input class="form-control" type="file" style="max-width: 20rem; margin-right: 1rem;" (change)="onFileFormChange($event)">
+                        <button class="btn btn-success" style="position:static;" (click)="onFileUpload()">
+                            Subir Archivo
                         </button>
                     </li>
                 </nav>

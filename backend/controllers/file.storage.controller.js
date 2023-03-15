@@ -7,9 +7,9 @@ const fileStorageModel = require('../models/files.storage.model');
 
 exports.uploadFile = async (req, res) => {
   const { ticket } = req.body;
-  const fileObject = req.files[0];
   if(!ticket) return res.status(500).send({message: "El ID del ticket es requerido."});
   try{
+  const fileObject = req.files[0];
   const auth = await authenticator.authorize();
   const service = google.drive({version: 'v3', auth});
   const bufferStream = new stream.PassThrough();

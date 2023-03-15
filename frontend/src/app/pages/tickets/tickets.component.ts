@@ -26,6 +26,7 @@ import * as helper from '../../core/helpers';
 import { Status } from 'src/app/core/interfaces/status.interface';
 import { StatusService } from 'src/app/core/services/status.service';
 import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
+import { FileStorageServices } from 'src/app/core/services/file.storage.service';
 
 @Component({
   selector: 'app-tickets',
@@ -60,6 +61,12 @@ export class TicketsComponent implements OnInit {
   ticketPadded: string = '';
   ticketResponse: TicketPostResponse = {} as TicketPostResponse;
   ticketStatusColor: string = '';
+
+  fileToUpload: File;
+
+  shortLink: string = "";
+
+
   columns: ColumnTable[] = [
     {
       name: 'Ticket Id',
@@ -126,7 +133,8 @@ export class TicketsComponent implements OnInit {
     private userService: UserService,
     private activeRoute: ActivatedRoute,
     private toastr: ToastrService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private storageService: FileStorageServices
   ) {
     this.statusService.getStatuses().subscribe(estados=>{
       this.statuses = this.statusService.materializeStatus(estados);
@@ -229,12 +237,6 @@ export class TicketsComponent implements OnInit {
     });
   }
 
-  // Tabla Historico:
-  // Reasignar el ticket: assignee_id, usamos un put, no agregamos registro. No se crea nuevo registro.
-  // Reasignar el ticket: department_id, 
-  //     * Completar el registro anterior, con la funcion completeTicketActivity
-  //     * Crear el nuevo registro con el nuevo departamento con la funcion en la ruta post | historico/
-
   getDepartmentId(isSelectedDepartment: boolean):string{
     if(!isSelectedDepartment){
       const historyCopy = [...this.history];
@@ -280,11 +282,28 @@ onShowStatusChangeModal():void{
   this.showChangeStatusModal = true;
 }
 
-  getDateCreatorJoined(): string {
+getDateCreatorJoined(): string {
     const names = this.ticket?.creador?.split(' ');
     if(helper.isNullOrWhitespace(names)) return ''; 
     const users = this.Users?.find(user => names.includes(user.nombres) || names.includes(user.apellidos));
     return new Date(users?.creado_a!).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric'});
-  }
+}
+
+onFileUpload() {
+  console.log(this.ticket._id);
+  this.storageService.uploadFile(this.ticket._id, this.fileToUpload).subscribe({
+    next: (response)=>{
+      this.toastr.success(response?.message, 'Se subio el archivo!');
+    },
+    error: (err) =>{
+      this.toastr.error(err?.message, 'Error al subir el archivo.');
+    }
+  });
+}
+
+onFileFormChange(event: any) {
+  this.fileToUpload = event.target.files[0];
+  console.log(this.fileToUpload);
+}
 
 }

@@ -3,6 +3,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const config = require('./config/index').config;
 
 //Routes
@@ -18,9 +19,11 @@ const comentariosRoutes = require('./routes/comentarios.routes');
 const historicoRoutes = require('./routes/historico.routes');
 const departamentosRoutes = require('./routes/departamentos.routes');
 const fileStorage = require('./routes/files.storage.route');
+const multer = require('multer');
 //Middlewares
 const verifyAccessLevel = require('./middleware/access.level');
 const verifyToken = require('./middleware/jwt.auth');
+let forms = multer()
 
 const app = express();
 const urlPrefix = '/api/v1';
@@ -29,9 +32,15 @@ require("./config/db.config").connect();
 
 require("./gdrive/index");
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(forms.array());
+
+const corsOptions = {
+  origin: ['http://localhost:4200','127.0.0.1:4200']
+}
+app.use(cors(corsOptions));
+
 
 app.get("/", (req, res) => {
     res.json({ message: "La API esta corriendo..." });
