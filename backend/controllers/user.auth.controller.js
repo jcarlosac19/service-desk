@@ -71,7 +71,7 @@ exports.getUserByEmail = async(req, res) => {
     const userFound = await  Usuario.findOne({ email });
     const token = auth.createToken(userFound._id, email);
 
-    if(!helper.isNullOrWhiteSpace(userFound)){
+    if(!helper.isNullOrWhitespace(userFound)){
       res.status(200).json({
         user: {
           message: "Las credenciales han sido validadas.",

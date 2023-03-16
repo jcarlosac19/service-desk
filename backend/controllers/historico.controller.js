@@ -1,7 +1,5 @@
 const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
-const Ticket = require("../models/ticket.model");   
-const Usuario = require("../models/usuario.model");
-const Departamento = require("../models/departamentos.model");
+const helper = require("../config/helpers/index");
 
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
@@ -88,6 +86,64 @@ exports.obtenerHistoricoPorId = async (req, res) => {
       res.status(500).send({message: "Hubo un error, no se pudo reasignar el ticket."})
     })
   }
+
+exports.obtenerReporte = async (req, res) => {
+  const { fechaInicio, fechaFin } = req.query;
+  const dateStart = new Date(fechaInicio);
+  const dateEnd = new Date(fechaFin);
+  const dateStartISO = dateStart.toISOString();
+  const dateEndISO = dateEnd.toISOString();
+
+  try {
+    const historicos = await TicketHistorico.find({
+      $and: [
+        { creado_a: { $gte: dateStartISO } },
+        { creado_a: { $lte: dateEndISO } },
+      ],
+    })
+      .populate('ticket_id')
+      .populate('departamento_id')
+      .populate('creador_id')
+      .populate('asignado_id')
+      .populate('modificador_id');
+
+    const reporte = historicos.map(historico => {
+      const {
+        ticket_id,
+        departamento_id,
+        creador_id,
+        asignado_id,
+        compleado_a,
+        actualizado_a,
+      } = historico;
+      const { nombres, apellidos, email } = creador_id;
+      const { nombreDepartamento } = departamento_id;
+      const {
+        nombres: nombreAsignado,
+        apellidos: apellidoAsignado,
+        email: emailAsignado,
+      } = asignado_id;
+      const { asunto, creado_a, _id: ticketId } = ticket_id;
+      return {
+        ticketId,
+        asunto,
+        creado_a,
+        actualizado_a,
+        compleado_a,
+        creador: `${nombres} ${apellidos}`,
+        email_creador: email,
+        departamento: nombreDepartamento,
+        asignado: `${nombreAsignado} ${apellidoAsignado}`,
+        email_asignado: emailAsignado,
+        tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a) ? 0 : helper.getDiffInHours(creado_a, compleado_a),
+      };
+    });
+
+    res.status(200).json(reporte);
+  } catch (err) {
+    res.status(400).json([]);
+  }
+};
 
 
 

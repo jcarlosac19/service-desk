@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const config = require('../config/index').config;
 const MONGO_URI  = "mongodb://127.0.0.1:27017/DAV";
-const ATLAS_URI = "mongodb+srv://kenyy03:passKenypass@clustervanguardia.5drt9oa.mongodb.net/DAV?retryWrites=true&w=majority"
+const ATLAS_URI = `mongodb+srv://${config.MONGO_USERNAME}:${config.MONGO_PASSWORD}@clustervanguardia.5drt9oa.mongodb.net/${config.MONGO_DATABASE}?retryWrites=true&w=majority`
 
 mongoose.set("strictQuery", false);
 
