@@ -52,7 +52,7 @@ exports.downloadFile = async function (req, res) {
       { responseType: 'arraybuffer' }
     ).then(content => {
       res.set({
-        'Content-Type': fileInStorage.fileContentType,
+        'Content-Type': 'application/octet-stream ',
         'Content-Disposition': `attachment; filename="${fileInStorage.fileNameAndExtension}"`,
         'Cache-Control' : 'private'
       })
