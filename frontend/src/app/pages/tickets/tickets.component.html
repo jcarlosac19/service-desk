@@ -24,17 +24,18 @@
                     <li class="list-group-item hover-link" style="cursor: pointer;" (click)="onShowReasignModal()"><i class="fa fa-user"></i>Reasignar</li>
                     <li class="list-group-item hover-link" style="cursor: pointer;" (click)="showHistoryTicket()" ><i class="fa fa-eye"></i>Actividad</li>
                     <li class="list-group-item hover-link" style="cursor: pointer; display: flex" >
-                        <input #inputFile class="form-control" name="file" type="file" style="max-width: 33rem; margin-right: 1rem;" (change)="onFileFormChange($event)">
-                        <button class="btn btn-success" style="position:static;" (click)="onFileUpload()">
+                        <input #inputFile class="form-control input-file" name="file" type="file" (change)="onFileFormChange($event)">
+                        <button class="btn btn-success" (click)="onFileUpload()">
                             Subir Archivo
                         </button>
                     </li>
                 </nav>
-                <div style="margin-top: 0.5rem; border:1px solid rgb(209, 209, 209); border-radius: 3px;">
-                    <p style="margin: 0%; padding-top: 1rem; padding-bottom: 0.50rem; padding-left: 1rem; font-size:large; font-weight: bold;">Archivos Adjuntos </p>
-                    <div *ngFor="let attachment of attachments" style="padding-left: 2rem;">
-                        <p class="hover-link" style="cursor: pointer; margin: 0; color: rgb(34, 94, 133); padding-left: 0.50rem;" (click)="onFileDownload(attachment)"><i class="fa fa-paperclip fa-lg"></i> {{attachment.fileNameAndExtension}} </p>
-                        <p style="font-size: small; color: rgb(130, 114, 95); border-bottom: 1px solid rgba(244, 166, 32, 0.452); max-width: 95%;">Creado: {{attachment.creado_a}}</p>
+                <div class="attachment-group">
+                    <p class="attachment-titulo">Archivos Adjuntos </p>
+                    <p *ngIf="attachments.length === 0" class="attachment-no">No hay archivos adjuntos.</p>
+                    <div *ngFor="let attachment of attachments" class="attachment-section">
+                        <p class="attachment-nombre hover-link" (click)="onFileDownload(attachment)"><i class="fa fa-paperclip fa-lg"></i> {{attachment.fileNameAndExtension}} </p>
+                        <p class="attachment-creado">Creado: {{attachment.creado_a}}</p>
                     </div>
                 </div>
                 
