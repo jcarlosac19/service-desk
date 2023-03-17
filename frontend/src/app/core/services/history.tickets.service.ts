@@ -124,4 +124,19 @@ export class HistoryTicketsService {
       headers
     );
   }
+
+  getReportTicketsByDepto(request: ReportRequest): Observable<ReportResponse[]> {
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+
+    return this.getReportService.getAll(
+      `/historico-reporte-departamentos?fechaInicio=${request.dateStart}&fechaFin=${request.dateEnd}`,
+      new HttpParams(),
+      headers
+    );
+  }  
 }
