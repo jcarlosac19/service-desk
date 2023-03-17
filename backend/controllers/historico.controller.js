@@ -170,6 +170,64 @@ exports.obtenerReporte = async (req, res) => {
   }
 };
 
+exports.obtenerReportePorDepto = async (req, res) => {
+  const { fechaInicio, fechaFin } = req.query;
+  const dateStart = new Date(fechaInicio);
+  const dateEnd = new Date(fechaFin);
+  if(helper.isNullOrUndefined(dateStart) || helper.isNullOrUndefined(dateEnd) ) return res.status(400).send({message: "Las fechas son requeridas."});
+  if(dateStart > dateEnd) return res.status(400).send({message: "La fecha de inicio no puede ser mayor a la fecha de fin."})
+  const dateStartISO = dateStart.toISOString();
+  const dateEndISO = dateEnd.toISOString();
+
+  try {
+    const historicos = await TicketHistorico.find({
+      $and: [
+        { creado_a: { $gte: dateStartISO } },
+        { creado_a: { $lte: dateEndISO } },
+      ],
+    })
+      .populate('ticket_id')
+      .populate('departamento_id')
+      .populate('creador_id')
+      .populate('asignado_id')
+      .populate('modificador_id');
+    const flujo = await Flujo.find();
+    const reporte = historicos.map(historico => {
+      const {
+        ticket_id,
+        creador_id,
+        asignado_id,
+        compleado_a,
+        creado_a,
+        departamento_id
+      } = historico;
+      const {  email } = creador_id;
+      const { _id: ticketId, trabajo_flujo_id: flujoId } = ticket_id;
+      const { nombreDepartamento } = departamento_id;
+      return {
+        ticketId,
+        creado_a: helper.formateDateShort(creado_a),
+        compleado_a: helper.isNullOrWhitespace(compleado_a)
+          ? 'Sin completar'
+          : helper.formateDateShort(compleado_a),
+        email_creador: email,
+        nombreDepartamento,
+        asignado: helper.isNullOrUndefined(asignado_id)
+          ? 'Sin asignar'
+          : `${asignado_id.nombres} ${asignado_id.apellidos}`,
+        tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
+          ? '0'
+          : helper.getDiffInHours(creado_a, compleado_a),
+      };
+    });
+    res.status(200).json(reporte);
+  }catch(error){
+    console.log(error);
+    res.status(400).json([]);
+  }
+}
+
+
 
 
   
