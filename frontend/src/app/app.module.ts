@@ -11,10 +11,11 @@ import { NavbarModule } from './shared/navbar/navbar.module';
 import { PagesModule } from './pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { LoadingComponent } from './shared/loading';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, LoadingComponent
   ],
   imports: [
     BrowserModule,

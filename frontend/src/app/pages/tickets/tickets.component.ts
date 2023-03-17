@@ -30,6 +30,7 @@ import { FileStorageServices } from 'src/app/core/services/file.storage.service'
 import { ViewChild, ElementRef } from "@angular/core";
 import { FileMetadata } from 'src/app/core/interfaces/files.storage.interfaces';
 import { saveAs } from 'file-saver';
+import { LoadingService } from 'src/app/shared/loading/index';
 
 @Component({
   selector: 'app-tickets',
@@ -141,7 +142,8 @@ export class TicketsComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private toastr: ToastrService,
     private statusService: StatusService,
-    private storageService: FileStorageServices
+    private storageService: FileStorageServices,
+    private loadingService: LoadingService,
   ) {
     this.statusService.getStatuses().subscribe(estados=>{
       this.statuses = this.statusService.materializeStatus(estados);
@@ -298,6 +300,7 @@ getDateCreatorJoined(): string {
 }
 
 onFileUpload(): void {
+  
   const hasFile = this.inputFile.nativeElement.value != "";
 
   if(!hasFile){
@@ -305,30 +308,36 @@ onFileUpload(): void {
     return;
   };
 
+  this.loadingService.setLoading(true);
+
   this.storageService.uploadFile(this.ticket._id, this.fileToUpload).subscribe({
     next: (response)=>{
+      this.loadingService.setLoading(false);
       this.toastr.success(response?.message, 'Se subio el archivo!');
       this.inputFile.nativeElement.value = "";
       this.fileToUpload = this.inputFile.nativeElement;
       this.getTicketAttachements();
     },
     error: (err) =>{
+      this.loadingService.setLoading(false);
       this.toastr.error(err?.message, 'Error al subir el archivo.');
     }
   });
 }
 
 onFileDownload(file: any){
+  this.loadingService.setLoading(true);
   this.storageService.downloadFile(file._id).subscribe({
     next: (response)=>{
       const data: Blob = new Blob([response], {
         type: file.fileContentType
       });
       saveAs(data, file.fileNameAndExtension);
+      this.loadingService.setLoading(false);
       this.toastr.success(response?.message, 'Se descargo el archivo exitosamente.!');
     },
     error: (err) =>{
-      console.log(err);
+      this.loadingService.setLoading(false);
       this.toastr.error(err?.message, 'Error al descargar el archivo.');
     }
   })
@@ -340,12 +349,15 @@ onFileFormChange(event: any) {
 }
 
 getTicketAttachements(){
+  this.loadingService.setLoading(true);
   this.storageService.getListOfFiles(this.ticket._id).subscribe({
     next: (response) => {
       this.attachments = this.storageService.materilizeFileReponse(response);
+      this.loadingService.setLoading(false);
     },
     error: (err) =>{
       this.toastr.error(err?.message, 'Error al subir el archivo.');
+      this.loadingService.setLoading(false);
     }
   });
 }

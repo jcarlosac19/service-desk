@@ -400,3 +400,47 @@ a.list-group-item, .list-group-item-action {
     color: #0d98c7;
     border-left: 4px solid #0d98c7;
 }
+
+.attachment-group {
+    margin-top: 0.5rem; 
+    border:1px solid rgb(209, 209, 209); 
+    border-radius: 3px;
+}
+
+.attachment-section {
+    padding-left: 2rem;
+    padding-bottom: 1rem;
+}
+
+.attachment-creado {
+    font-size: small; 
+    color: rgb(130, 114, 95); 
+    border-bottom: 1px solid rgba(244, 166, 32, 0.452); 
+    max-width: 95%;
+}
+
+.attachment-nombre {
+    cursor: pointer; 
+    margin: 0; 
+    color: rgb(34, 94, 133); 
+    padding-left: 0.50rem;
+}
+
+.attachment-no {
+    padding-left: 2rem; 
+    color: rgb(34, 94, 133);
+}
+
+.attachment-titulo {
+    margin: 0%; 
+    padding-top: 1rem; 
+    padding-bottom: 0.50rem; 
+    padding-left: 1rem; 
+    font-size:large; 
+    font-weight: bold;
+}
+
+.input-file{
+    max-width: 33rem; 
+    margin-right: 1rem;
+}

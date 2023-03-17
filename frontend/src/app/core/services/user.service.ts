@@ -103,8 +103,9 @@ export class UserService {
     email: string
   ): Observable<UserResponse> {
     const route = type === 'login' ? '/login' : '';
+    console.log(credentials, email);
     return this.postApiService
-      .post(`${route}`, { password: credentials, email })
+      .postForm(`${route}`, { password: credentials, email })
       .pipe(
         map((data) => {
           this.setAuth(data);
