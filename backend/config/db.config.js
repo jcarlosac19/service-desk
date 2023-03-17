@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const config = require('../config/index').config;
+const dotenv = require('dotenv');
+dotenv.config();
 const MONGO_URI  = "mongodb://127.0.0.1:27017/DAV";
-const ATLAS_URI = `mongodb+srv://${config.MONGO_USERNAME}:${config.MONGO_PASSWORD}@clustervanguardia.5drt9oa.mongodb.net/${config.MONGO_DATABASE}?retryWrites=true&w=majority`
+const ATLAS_URI = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@clustervanguardia.5drt9oa.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`
 
 mongoose.set("strictQuery", false);
 
