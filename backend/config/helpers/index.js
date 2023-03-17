@@ -12,4 +12,21 @@ function getDiffInHours (dateInit, dateEnd) {
   return (diff / (1000 * 3600)).toFixed(2);
 };
 
-module.exports = { isNullOrWhitespace, getDiffInHours,  isNullOrUndefined};
+function formateDateShort(date) {
+  const dateObj = new Date(date);
+  const output = dateObj.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit'});
+  return output;
+}
+
+function groupBy(objectArray, property) {
+  return objectArray.reduce(function (acc, obj) {
+    const key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+}
+
+module.exports = { isNullOrWhitespace, getDiffInHours,  isNullOrUndefined, formateDateShort, groupBy};
