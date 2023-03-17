@@ -4,7 +4,7 @@ import { ApiService, JwtService } from './';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { GetAllUserResponse, GetUserResponse, UserResponse } from '../interfaces/user.interface';
 import * as helper from '../helpers';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -129,6 +129,6 @@ export class UserService {
   }
 
   getAllUsers(): Observable<GetAllUserResponse[]> {
-    return this.getAllApiService.getAll('/get-all-users');
+    return this.getAllApiService.getAll('/get-all-users', new HttpParams(), new HttpHeaders());
   }
 }

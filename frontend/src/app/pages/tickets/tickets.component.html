@@ -25,12 +25,10 @@
                     <li class="list-group-item hover-link" style="cursor: pointer;" (click)="showHistoryTicket()" ><i class="fa fa-eye"></i>Actividad</li>
                     <li class="list-group-item hover-link" style="cursor: pointer; display: flex" >
                         <input #inputFile class="form-control" name="file" type="file" style="max-width: 33rem; margin-right: 1rem;" (change)="onFileFormChange($event)">
-                        <button class="btn btn-success" style="position:static;" (click)="onFileUpload()">
-                            Subir Archivo
-                        </button>
+                        <button pButton pRipple type="button" icon="pi pi-upload" class="p-button-rounded p-button-success p-button-text" pTooltip="Subir Archivo" tooltipPosition="top" (click)="onFileUpload()" ></button>
                     </li>
                 </nav>
-                <div style="margin-top: 0.5rem; border:1px solid rgb(209, 209, 209); border-radius: 3px;">
+                <div class="attachment-container" style="margin-top: 0.5rem; border:1px solid rgb(209, 209, 209); border-radius: 3px;">
                     <p style="margin: 0%; padding-top: 1rem; padding-bottom: 0.50rem; padding-left: 1rem; font-size:large; font-weight: bold;">Archivos Adjuntos </p>
                     <div *ngFor="let attachment of attachments" style="padding-left: 2rem;">
                         <p class="hover-link" style="cursor: pointer; margin: 0; color: rgb(34, 94, 133);" (click)="onFileDownload(attachment)"><i class="fa fa-paperclip"></i> {{attachment.fileNameAndExtension}} </p>

@@ -67,3 +67,12 @@ ul  {
   background-color: #091a32;
   padding-top: 1.5rem;
 }
+
+@media screen and (max-width: 1490px) {
+  .sidebar {
+    padding-top: 1.2rem;
+  }
+  .li-items {
+    margin : 0 auto;
+  }
+}

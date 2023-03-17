@@ -17,7 +17,7 @@ import {
 } from 'src/app/core/interfaces/ticket.interface';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { FlujoService } from 'src/app/core/services/flujo.service';
-import { HistoryTicketsService } from 'src/app/core/services/history-tickets.service';
+import { HistoryTicketsService } from 'src/app/core/services/history.tickets.service';
 import { Flujo } from 'src/app/core/interfaces/flujo.interface';
 import { DepartmentsService } from 'src/app/core/services/departments.service';
 import { Department } from 'src/app/core/interfaces/department.interface';
