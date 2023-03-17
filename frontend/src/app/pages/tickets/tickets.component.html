@@ -29,7 +29,7 @@
                         <button pButton pRipple type="button" icon="pi pi-upload" class="p-button-rounded p-button-success p-button-text" pTooltip="Subir Archivo" tooltipPosition="top" (click)="onFileUpload()" ></button>
                     </li>
                 </nav>
-                <div class="attachment-group">
+                <div class="attachment-group attachment-container">
                     <p class="attachment-titulo">Archivos Adjuntos </p>
                     <p *ngIf="attachments.length === 0" class="attachment-no">No hay archivos adjuntos.</p>
                     <div *ngFor="let attachment of attachments" class="attachment-section">
@@ -39,7 +39,7 @@
                 </div>
                 
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8 overflow-y-auto">
                 <div class="padding-top-2x mt-2 hidden-lg-up"></div>
                 <div class="table-responsive margin-bottom-2x">
                     <table class="table margin-bottom-none">
@@ -88,7 +88,7 @@
                 <h5 class="mb-30 padding-top-1x">Comentar</h5>
                 <form method="post" (submit)="onSubmitComment($event)" >
                     <div class="form-group">
-                        <textarea class="form-control form-control-rounded p-3" id="review_text" rows="8"
+                        <textarea class="form-control form-control-rounded p-3 height-area" id="review_text" rows="8"
                             placeholder="Escribe tu mensaje aqui..." required="" [(ngModel)]="comment" [name]="comment"
                             [ngModelOptions]="{ standalone: true }" ></textarea>
                     </div>

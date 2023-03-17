@@ -158,12 +158,20 @@ body{margin-top:20px;}
 
     .attachment-container {
         overflow-y: auto;
-        height: 150px;
+        height: 175px;
     }
 
     .main-content-ticket-detail {
         overflow-y: auto;
         height: 100%;
+    }
+
+    .overflow-y-auto {
+        overflow-y: auto;
+    }
+
+    .height-area{
+        height: 120px;
     }
 }
 
