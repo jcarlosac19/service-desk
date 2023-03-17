@@ -1,0 +1,16 @@
+.header-container-filters  {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+} 
+
+.card-body-container {
+  height: 40rem;
+}
+
+.tabset-styles {
+  height: 39rem;
+}
+
+:host nb-tab {
+  padding: 1.25rem;
+}

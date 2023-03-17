@@ -39,4 +39,9 @@ app.get("/historico/:id",
     historicoController.obtenerHistoricoPorId
 );
 
+app.get("/historico-reporte",
+    [ verifyAccessLevel.isUser ],
+    historicoController.obtenerReporte
+)
+
 module.exports = app;

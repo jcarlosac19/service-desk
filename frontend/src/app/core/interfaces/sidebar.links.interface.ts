@@ -24,4 +24,5 @@ export interface ColumnTable {
   editIcon?: string;
   removeIcon?: string;
   routeLink?: string[];
+  width?: string;
 }

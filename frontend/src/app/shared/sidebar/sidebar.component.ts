@@ -15,9 +15,14 @@ export class SidebarComponent {
       icon: PrimeIcons.TICKET
     },
     {
-      name: 'Create Tickets',
+      name: 'Crear Tickets',
       routerName: '/create-tickets',
       icon: PrimeIcons.PLUS_CIRCLE
+    },
+    {
+      name: 'Reportes',
+      routerName: '/reporting',
+      icon: PrimeIcons.CHART_BAR
     },
     {
       name: 'Grupo',

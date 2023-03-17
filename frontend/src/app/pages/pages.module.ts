@@ -9,12 +9,17 @@ import { GroupsComponent } from './groups/groups.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { TooltipModule } from 'primeng/tooltip';
+import { TabViewModule } from 'primeng/tabview';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { FlujosComponent } from './flujos/flujos.component';
 import { DepartmentsComponent } from './departments/departments.component';
+import { ReportingComponent } from './reporting/reporting.component';
+import { NbCardModule, NbTabsetModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,8 @@ import { DepartmentsComponent } from './departments/departments.component';
     CategoriesComponent,
     TicketsComponent,
     FlujosComponent,
-    DepartmentsComponent
+    DepartmentsComponent,
+    ReportingComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +41,12 @@ import { DepartmentsComponent } from './departments/departments.component';
     SharedModule,
     DialogModule,
     ButtonModule,
-    DropdownModule
+    DropdownModule,
+    CalendarModule,
+    TooltipModule,
+    TabViewModule,
+    NbTabsetModule,
+    NbCardModule
   ]
 })
 export class PagesModule { }

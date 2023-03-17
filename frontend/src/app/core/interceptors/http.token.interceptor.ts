@@ -9,9 +9,12 @@ export class HttpTokenInterceptor implements HttpInterceptor {
   constructor(private jwtService: JwtService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const isFileUpload = req.url.includes('archivos') || req.responseType === 'arraybuffer';
     const headersConfig = {
-      // 'Content-Type': 'application/json',
-      // 'Accept': 'application/json',
+       ...( !isFileUpload && ({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+       })),
       'Authorization' : ''
     };
 

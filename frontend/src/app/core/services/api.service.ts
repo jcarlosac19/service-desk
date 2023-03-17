@@ -19,7 +19,7 @@ export class ApiService<T> {
       .pipe(catchError(this.formatErrors));
   }
 
-  getAll(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders()): Observable<T[]> {
+  getAll(path: string, params:HttpParams, headers:HttpHeaders): Observable<T[]> {
     return this.http
       .get<T[]>(`${environment.api_url}${path}`, { headers, params })
       .pipe(catchError(this.formatErrors));

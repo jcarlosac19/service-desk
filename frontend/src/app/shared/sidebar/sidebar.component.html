@@ -1,5 +1,5 @@
 <aside [class]="classes()">
-  <div class="mb-4 d-flex justify-content-end mx-3">
+  <div class="mb-3 d-flex justify-content-end mx-3">
     <button pButton pRipple type="button"(click)="toggleMenu()"
       class="p-button-rounded p-button-text p-button-plain d-flex justify-content-center">
       <i class="fa fa-bars" aria-hidden="true" style="font-size: 1.3rem;"></i>
@@ -10,7 +10,7 @@
     <img src="../../assets/logo-test.png" class="image-logo" alt="logo" />
   </div>
 
-  <div class="pages-container mt-5">
+  <div class="pages-container mt-4">
     <ul>
       <li *ngFor="let link of links" [class]="classesLi()">
         <a [routerLink]="link?.routerName" class="nav-link-item text-light nav-center"><i [class]="link?.icon"

@@ -1,0 +1,48 @@
+<main class="container mt-2">
+  <nb-card [size]="'large'">
+    <nb-card-body class="card-body-container">
+      <nb-tabset fullWidth class="tabset-styles" >
+        <nb-tab tabTitle="Tickets" class="tabset-styles">
+          <header class="header-container-filters mt-1">
+            <div class="d-flex gap-3 flex-column">
+              <label for="time">Fecha Inicio</label>
+              <p-calendar
+                [(ngModel)]="dateStart"
+                [showTime]="true"
+                [showSeconds]="true"
+                inputId="time"
+              ></p-calendar>
+            </div>
+        
+            <div class="d-flex gap-3 flex-column">
+              <label for="time">Fecha Fin</label>
+              <p-calendar
+                [(ngModel)]="dateEnd"
+                [showTime]="true"
+                [showSeconds]="true"
+                inputId="time"
+              ></p-calendar>
+            </div>
+            <div class="d-flex justify-content-center align-items-end">
+              <button
+                pButton
+                pRipple
+                type="button"
+                label="Generar Reporte"
+                class="p-button-raised p-button-info"
+                (click)="onGenerateReport($event)"
+              ></button>
+            </div>
+          </header>
+          <section class="mt-2">
+            <app-table [data]="data" [columns]="filterColumnsTable()" [classes]="'table table-bordered table-striped table-hover'"></app-table>
+          </section>
+        </nb-tab>
+        <nb-tab tabTitle="Orders">
+          <p>List of <strong>orders</strong>.</p>
+        </nb-tab>
+      </nb-tabset>
+  
+    </nb-card-body>
+  </nb-card>
+</main>
