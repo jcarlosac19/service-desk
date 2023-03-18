@@ -16,6 +16,8 @@ import { Priority } from 'src/app/core/interfaces/priority.interface';
 import { Category } from 'src/app/core/interfaces/categories.interface';
 import { Flujo } from 'src/app/core/interfaces/flujo.interface';
 import { FlujoService } from 'src/app/core/services/flujo.service';
+import { Subscription, forkJoin } from 'rxjs';
+import { LoadingService } from 'src/app/shared/loading';
 
 @Component({
   selector: 'app-create-tickets',
@@ -81,6 +83,7 @@ import { FlujoService } from 'src/app/core/services/flujo.service';
   ],
 })
 export class CreateTicketsComponent {
+  private destroy$: Subscription[] = [];
   ticketForm: FormGroup;
   
 
@@ -102,7 +105,8 @@ export class CreateTicketsComponent {
     private statusService: StatusService,
     private priorityService: PriorityService,
     private categoryService: CategoriesService,
-    private flujoService: FlujoService
+    private flujoService: FlujoService,
+    private loadingService: LoadingService,
   ) {
     this.ticketForm = new FormGroup({
       prioritiesSelect: new FormControl(this.priorities),
@@ -114,49 +118,52 @@ export class CreateTicketsComponent {
   }
 
   ngOnInit(): void {
-    this.statusService.getStatuses().subscribe({
-      next: (response) => {
-        this.status = this.statusService.materializeStatus(response);
-      },
-    });
-
-    this.priorityService.getPriorities().subscribe({
-      next: (response) => {
-        this.priorityKeys =
-          this.priorityService.materializePriorities(response);
+    this.loadingService.setLoading(true);
+    const status$ = this.statusService.getStatuses();
+    const priorities$ = this.priorityService.getPriorities();
+    const categories$ = this.categoryService.getCategories();
+    const flujos$ = this.flujoService.getFlujos();
+    
+    this.destroy$.push(
+      forkJoin([status$, priorities$, categories$, flujos$]).subscribe({
+        next: ([statusResponse, prioritiesResponse, categoriesResponse, flujosResponse ]) => {
+          this.status = this.statusService.materializeStatus(statusResponse);
+          this.priorityKeys = this.priorityService.materializePriorities(prioritiesResponse);
+          this.categoryKeys = this.categoryService.materializeCategories(categoriesResponse);
+          this.flujoKeys = this.flujoService.materializeFlujos(flujosResponse);
           this.priorities = this.priorityKeys.map((p) => p.nombre);
-      },
-    });
-
-    this.categoryService.getCategories().subscribe({
-      next: (response) => {
-        this.categoryKeys = this.categoryService.materializeCategories(response);
           this.categories = this.categoryKeys.map((c) => c.nombre);
-      },
-    });
+          this.flujos = this.flujoKeys.map((f) => f.nombre);
+          this.loadingService.setLoading(false);
+        },
+        error: (err) => {this.toastr.error('Error al cargar datos', 'Error'); this.loadingService.setLoading(false);},
+      })
+    )
+  }
 
-    this.flujoService.getFlujos().subscribe({
-      next: (response) => {
-        this.flujoKeys = this.flujoService.materializeFlujos(response);
-        this.flujos = this.flujoKeys.map((c) => c.nombre);
-      },
-    });
+  ngOnDestroy(): void {
+    this.destroy$.forEach((d) => d.unsubscribe());
   }
 
   onSubmitTicket() {
+    this.loadingService.setLoading(true);
     const ticketRequest: TicketSelect = this.ticketForm.value;
     const request: CreateTicket = this.materializeTicketRequest(ticketRequest);
-    this.ticketService.createTicket(request).subscribe({
-      next: (response) => {
-        this.ticketResponse = response;
-        this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
-        this.ticketForm.reset();
-      },
-      error: (err) => {
-        this.toastr.error(err?.message, 'Error al crear ticket');
-        this.ticketForm.reset();
-      },
-    });
+    this.destroy$.push(
+      this.ticketService.createTicket(request).subscribe({
+        next: (response) => {
+          this.ticketResponse = response;
+          this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
+          this.ticketForm.reset();
+          this.loadingService.setLoading(false);
+        },
+        error: (err) => {
+          this.toastr.error(err?.message, 'Error al crear ticket');
+          this.ticketForm.reset();
+          this.loadingService.setLoading(false);
+        },
+      })
+    )
   }
 
   materializeTicketRequest(ticket: TicketSelect): CreateTicket {

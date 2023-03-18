@@ -9,7 +9,6 @@ import {
 import {
   HistoryResponse,
   Ticket,
-  TicketResponse,
   TicketPostResponse, 
   UpdateTicketStatus,
   historyRequest,
@@ -31,6 +30,7 @@ import { ViewChild, ElementRef } from "@angular/core";
 import { FileMetadata } from 'src/app/core/interfaces/files.storage.interfaces';
 import { saveAs } from 'file-saver';
 import { LoadingService } from 'src/app/shared/loading/index';
+import { Subscription, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-tickets',
@@ -38,6 +38,7 @@ import { LoadingService } from 'src/app/shared/loading/index';
   styleUrls: ['./tickets.component.css'],
 })
 export class TicketsComponent implements OnInit {
+  private servicesSubcription$: Subscription[] = [];
   @ViewChild("inputFile", {static: false})
   inputFile: ElementRef
 
@@ -144,55 +145,73 @@ export class TicketsComponent implements OnInit {
     private statusService: StatusService,
     private storageService: FileStorageServices,
     private loadingService: LoadingService,
-  ) {
-    this.statusService.getStatuses().subscribe(estados=>{
-      this.statuses = this.statusService.materializeStatus(estados);
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe((params) => {
-      this.ticketService.getTicketById(params['id']).subscribe((ticket) => {
-        this.ticketStatusColor = ticket.estado_id.color || '';
-        this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
-        this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0");
-        this.getTicketAttachements();
-      });
-      this.commentService
-        .getCommentsByTicketId(params['id'])
-        .subscribe((comments) => {
-          this.comments = comments;
-        });
-      this.historyService.getHistoryByTicket(parseInt(params['id'])).subscribe((history) => {
-        this.history = history;
-      });
-    });
+    this.servicesSubcription$.push(
+      this.activeRoute.params.subscribe((params) => {
+        this.servicesSubcription$.push(
+          this.ticketService.getTicketById(params['id']).subscribe((ticket) => {
+            this.ticketStatusColor = ticket.estado_id.color || '';
+            this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
+            this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0");
+            this.getTicketAttachements();
+          })
+        )
+        this.servicesSubcription$.push(
+          this.commentService
+          .getCommentsByTicketId(params['id'])
+          .subscribe((comments) => {
+            this.comments = comments;
+          })
+        )
+        this.servicesSubcription$.push(
+          this.historyService.getHistoryByTicket(parseInt(params['id'])).subscribe((history) => {
+            this.history = history;
+          })
+        )
+      })
+    )
 
-    this.flujoService.getFlujos().subscribe((flujos) => {
-      this.flujos = this.flujoService.materializeFlujos(flujos);
-    });
-    this.departmentServices.getDepartments().subscribe((departments) => {
-      this.Departments = this.departmentServices.materializeResponseToDepartments(departments);
-    });
-    this.userService.getAllUsers().subscribe((users) => {
-      this.Users = users;
-    });
+    const flujos$ = this.flujoService.getFlujos();
+    const departments$ = this.departmentServices.getDepartments();
+    const users$ = this.userService.getAllUsers(); 
+    const statuses$ = this.statusService.getStatuses();
+
+    this.servicesSubcription$.push(
+      forkJoin([flujos$, departments$, users$, statuses$]).subscribe(
+        ([flujosResponse, departmentsResponse, usersResponse, statusesResponse]) => {
+          this.flujos = this.flujoService.materializeFlujos(flujosResponse);
+          this.Departments = this.departmentServices.materializeResponseToDepartments(departmentsResponse);
+          this.Users = (usersResponse);
+          this.statuses = this.statusService.materializeStatus(statusesResponse);
+        },
+        error => this.toastr.error('Error al cargar los datos', 'Error')
+      )
+    );
+
+  }
+
+  ngOnDestroy(): void {
+    this.servicesSubcription$.forEach(sub => sub.unsubscribe());
   }
 
   showHistoryTicket() {
-    this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
-      this.historyTable = this.historyService.assignTimeResolution(history, this.flujos, this.ticket);
-
-      this.expectedResolutionTime = this.historyTable[0].tiempoEstimadoResolucion || '';
-
-      this.totalTimeResolution = this.historyTable.map(h => {
-        if(h.tiempoRealResolucion){
-          return parseFloat(h.tiempoRealResolucion);
-        }
-        return 0;
-      }).reduce((a,b) => a + b, 0).toFixed(2);
-      this.showHistoryModal = true;
-    });
+    this.servicesSubcription$.push(
+      this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
+        this.historyTable = this.historyService.assignTimeResolution(history, this.flujos, this.ticket);
+  
+        this.expectedResolutionTime = this.historyTable[0].tiempoEstimadoResolucion || '';
+  
+        this.totalTimeResolution = this.historyTable.map(h => {
+          if(h.tiempoRealResolucion){
+            return parseFloat(h.tiempoRealResolucion);
+          }
+          return 0;
+        }).reduce((a,b) => a + b, 0).toFixed(2);
+        this.showHistoryModal = true;
+      })
+    )
   }
 
   filteredColums(){
@@ -206,11 +225,13 @@ export class TicketsComponent implements OnInit {
       contenido: this.comment,
       ticket: this.ticket._id,
     };
-    this.commentService.createComment(request).subscribe((comment) => {
-      this.toastr.success(comment.message, 'Exito');
-      this.comments = comment.comentario;
-      this.comment = '';
-    });
+    this.servicesSubcription$.push(
+      this.commentService.createComment(request).subscribe((comment) => {
+        this.toastr.success(comment.message, 'Exito');
+        this.comments = comment.comentario;
+        this.comment = '';
+      })
+    )
   }
 
   onShowReasignModal():void{
@@ -228,23 +249,28 @@ export class TicketsComponent implements OnInit {
     };
 
     if (!isSelectedDepartment) {
-      this.historyService.reasignTicketToUser(request).subscribe((response) => {
-        this.toastr.success(response.message, 'Exito');
-        this.showReasignModal = false;
-      });
+      this.servicesSubcription$.push(
+        this.historyService.reasignTicketToUser(request).subscribe((response) => {
+          this.toastr.success(response.message, 'Exito');
+          this.showReasignModal = false;
+        })
+      )
       return;
     }
 
     if (!helper.isFullObjectAndValue(request)) return;
-    this.historyService.completeTicketActivity(this.ticket._id).subscribe((res) => {
-      this.showReasignModal = false;
-
-      this.historyService.crearNuevaActividad(request).subscribe((response) => {
-        this.toastr.success(response.message, 'Exito');
+    this.servicesSubcription$.push(
+      this.historyService.completeTicketActivity(this.ticket._id).subscribe((res) => {
         this.showReasignModal = false;
-      });
-
-    });
+  
+        this.servicesSubcription$.push(
+          this.historyService.crearNuevaActividad(request).subscribe((response) => {
+            this.toastr.success(response.message, 'Exito');
+            this.showReasignModal = false;
+          })
+        )
+      })
+    )
   }
 
   getDepartmentId(isSelectedDepartment: boolean):string{
@@ -265,27 +291,31 @@ onStatusChangeTicket():void{
     estado_id: this.selectedStatus._id
   }
   if(this.selectedStatus.nombre === 'Completado' ){
-    this.historyService.completeTicketActivity(this.ticket._id).subscribe({
-      next: (response) => {
-        this.toastr.success(response.message, 'Ticket cerrado'); 
-      },
-      error: (err) => this.toastr.error(err?.message, 'Error al cerrar ticket')
-    });
+    this.servicesSubcription$.push(
+      this.historyService.completeTicketActivity(this.ticket._id).subscribe({
+        next: (response) => {
+          this.toastr.success(response.message, 'Ticket cerrado'); 
+        },
+        error: (err) => this.toastr.error(err?.message, 'Error al cerrar ticket')
+      })
+    )
   }
-  this.ticketService.updateTicket(this.ticket._id, update)
-  .subscribe({
-    next: (response) => {
-      this.ticketResponse = response;
-      this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
-      this.ticket.estado = this.selectedStatus.nombre;
-      this.ticketStatusColor = this.selectedStatus.color;
-      this.showChangeStatusModal = false;
-    },
-    error: (err) => {
-      this.toastr.error(err?.message, 'Error al crear ticket');
-      this.showChangeStatusModal = false;
-    },
-  });
+  this.servicesSubcription$.push(
+    this.ticketService.updateTicket(this.ticket._id, update)
+    .subscribe({
+      next: (response) => {
+        this.ticketResponse = response;
+        this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
+        this.ticket.estado = this.selectedStatus.nombre;
+        this.ticketStatusColor = this.selectedStatus.color;
+        this.showChangeStatusModal = false;
+      },
+      error: (err) => {
+        this.toastr.error(err?.message, 'Error al crear ticket');
+        this.showChangeStatusModal = false;
+      },
+    })
+  )
 }
 
 onShowStatusChangeModal():void{
@@ -310,56 +340,61 @@ onFileUpload(): void {
 
   this.loadingService.setLoading(true);
 
-  this.storageService.uploadFile(this.ticket._id, this.fileToUpload).subscribe({
-    next: (response)=>{
-      this.loadingService.setLoading(false);
-      this.toastr.success(response?.message, 'Se subio el archivo!');
-      this.inputFile.nativeElement.value = "";
-      this.fileToUpload = this.inputFile.nativeElement;
-      this.getTicketAttachements();
-    },
-    error: (err) =>{
-      this.loadingService.setLoading(false);
-      this.toastr.error(err?.message, 'Error al subir el archivo.');
-    }
-  });
+  this.servicesSubcription$.push(
+    this.storageService.uploadFile(this.ticket._id, this.fileToUpload).subscribe({
+      next: (response)=>{
+        this.loadingService.setLoading(false);
+        this.toastr.success(response?.message, 'Se subio el archivo!');
+        this.inputFile.nativeElement.value = "";
+        this.fileToUpload = this.inputFile.nativeElement;
+        this.getTicketAttachements();
+      },
+      error: (err) =>{
+        this.loadingService.setLoading(false);
+        this.toastr.error(err?.message, 'Error al subir el archivo.');
+      }
+    })
+  )
 }
 
 onFileDownload(file: any){
   this.loadingService.setLoading(true);
-  this.storageService.downloadFile(file._id).subscribe({
-    next: (response)=>{
-      const data: Blob = new Blob([response], {
-        type: file.fileContentType
-      });
-      saveAs(data, file.fileNameAndExtension);
-      this.loadingService.setLoading(false);
-      this.toastr.success(response?.message, 'Se descargo el archivo exitosamente.!');
-    },
-    error: (err) =>{
-      this.loadingService.setLoading(false);
-      this.toastr.error(err?.message, 'Error al descargar el archivo.');
-    }
-  })
+  this.servicesSubcription$.push(
+    this.storageService.downloadFile(file._id).subscribe({
+      next: (response)=>{
+        const data: Blob = new Blob([response], {
+          type: file.fileContentType
+        });
+        saveAs(data, file.fileNameAndExtension);
+        this.loadingService.setLoading(false);
+        this.toastr.success(response?.message, 'Se descargo el archivo exitosamente.!');
+      },
+      error: (err) =>{
+        this.loadingService.setLoading(false);
+        this.toastr.error(err?.message, 'Error al descargar el archivo.');
+      }
+    })
+  )
 }
 
 onFileFormChange(event: any) {
   this.fileToUpload = event.target.files[0];
-  console.log(this.fileToUpload);
 }
 
 getTicketAttachements(){
   this.loadingService.setLoading(true);
-  this.storageService.getListOfFiles(this.ticket._id).subscribe({
-    next: (response) => {
-      this.attachments = this.storageService.materilizeFileReponse(response);
-      this.loadingService.setLoading(false);
-    },
-    error: (err) =>{
-      this.toastr.error(err?.message, 'Error al subir el archivo.');
-      this.loadingService.setLoading(false);
-    }
-  });
+  this.servicesSubcription$.push(
+    this.storageService.getListOfFiles(this.ticket._id).subscribe({
+      next: (response) => {
+        this.attachments = this.storageService.materilizeFileReponse(response);
+        this.loadingService.setLoading(false);
+      },
+      error: (err) =>{
+        this.toastr.error(err?.message, 'Error al subir el archivo.');
+        this.loadingService.setLoading(false);
+      }
+    })
+  )
 }
 
 }

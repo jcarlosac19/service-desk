@@ -103,7 +103,7 @@ export class HistoryTicketsService {
           element.compleado_a != undefined
             ? helper.getDiffInHours(element.creado_a, element.compleado_a) +
               ' horas'
-            : helper.getDiffInHours(element.creado_a, new Date()) + 'horas',
+            :  '0.00 horas',
       };
       historyList.push(history);
     });
