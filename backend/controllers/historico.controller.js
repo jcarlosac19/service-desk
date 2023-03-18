@@ -159,7 +159,7 @@ exports.obtenerReporte = async (req, res) => {
         asignado,
         creado_a,
         compleado_a,
-        tiempoEstimadoResolucion,
+        tiempoEstimadoResolucion: tiempoEstimadoResolucion + ' horas',
         tiempoRealResolucion: tiempoRealResolucion.toFixed(2) + ' horas',
         percentageSLA,
       };
@@ -219,8 +219,8 @@ exports.obtenerReportePorDepto = async (req, res) => {
           ? 'Sin asignar'
           : `${asignado_id.nombres} ${asignado_id.apellidos}`,
         tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
-          ? '0.00 hours'
-          : helper.getDiffInHours(creado_a, compleado_a) + ' hours',
+          ? '0.00 horas'
+          : helper.getDiffInHours(creado_a, compleado_a) + ' horas',
       };
     });
     const reporteOrdenado = [...reporte].sort((a, b) => {
