@@ -41,11 +41,11 @@ body  {
   height: 92vh;
   display: grid;
   place-content: center;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .overflow-y-scroll  {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .banner {
