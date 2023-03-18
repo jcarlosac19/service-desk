@@ -1,5 +1,6 @@
 .header-container-filters  {
-  display: flex;
+  display: grid;
+  grid-template-columns: 20% 20% 56.7%;
   gap: 1rem;
 } 
 
@@ -29,8 +30,8 @@
 
   .reporting-container {
     margin: 1rem 1.5rem;
-    overflow-y: auto;
-    height: 85vh;
+    /* overflow-y: auto;
+    height: 85vh; */
   }
 }
 
