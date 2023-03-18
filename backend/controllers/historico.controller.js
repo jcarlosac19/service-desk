@@ -144,7 +144,7 @@ exports.obtenerReporte = async (req, res) => {
       return reporteAgrupado[key];
     });
 
-    const reporteFinal = reporteAgrupadoArray.map((reporte, index) => {
+    const reporteFinal = reporteAgrupadoArray.map((reporte) => {
       const { ticketId, creado_a, asignado, email_creador, compleado_a, tiempoEstimadoResolucion } = reporte[0];
       const tiempoRealResolucion = reporte.reduce((a, b) => {
         return a + parseFloat(b.tiempoRealResolucion);
@@ -158,7 +158,7 @@ exports.obtenerReporte = async (req, res) => {
         creado_a,
         compleado_a,
         tiempoEstimadoResolucion,
-        tiempoRealResolucion,
+        tiempoRealResolucion: tiempoRealResolucion.toFixed(2) + ' horas',
         percentageSLA,
       };
     });
@@ -191,7 +191,6 @@ exports.obtenerReportePorDepto = async (req, res) => {
       .populate('creador_id')
       .populate('asignado_id')
       .populate('modificador_id');
-    const flujo = await Flujo.find();
     const reporte = historicos.map(historico => {
       const {
         ticket_id,
@@ -202,7 +201,7 @@ exports.obtenerReportePorDepto = async (req, res) => {
         departamento_id
       } = historico;
       const {  email } = creador_id;
-      const { _id: ticketId, trabajo_flujo_id: flujoId } = ticket_id;
+      const { _id: ticketId } = ticket_id;
       const { nombreDepartamento } = departamento_id;
       return {
         ticketId,
@@ -216,8 +215,8 @@ exports.obtenerReportePorDepto = async (req, res) => {
           ? 'Sin asignar'
           : `${asignado_id.nombres} ${asignado_id.apellidos}`,
         tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
-          ? '0'
-          : helper.getDiffInHours(creado_a, compleado_a),
+          ? '0.00 hours'
+          : helper.getDiffInHours(creado_a, compleado_a) + ' hours',
       };
     });
     res.status(200).json(reporte);
