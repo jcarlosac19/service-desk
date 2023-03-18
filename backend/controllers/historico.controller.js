@@ -150,7 +150,7 @@ exports.obtenerReporte = async (req, res) => {
         return a + parseFloat(b.tiempoRealResolucion);
       }, 0);
       const SLA = tiempoRealResolucion != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoRealResolucion) : 0;
-      const percentageSLA = SLA != 0 ? (SLA * 100) >= 1 ? '100 %' : `${(SLA * 100)} %`  : `${SLA} %` ;
+      const percentageSLA = SLA != 0 ? (SLA * 100) >= 100 ? '100 %' : `${(SLA * 100).toFixed(2)} %`  : `${SLA} %` ;
       return {
         ticketId,
         email_creador,
@@ -219,7 +219,16 @@ exports.obtenerReportePorDepto = async (req, res) => {
           : helper.getDiffInHours(creado_a, compleado_a) + ' hours',
       };
     });
-    res.status(200).json(reporte);
+    const reporteOrdenado = [...reporte].sort((a, b) => {
+      if (a.ticketId < b.ticketId) {
+        return -1;
+      } else if (a.ticketId > b.ticketId) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    res.status(200).json(reporteOrdenado);
   }catch(error){
     console.log(error);
     res.status(400).json([]);
