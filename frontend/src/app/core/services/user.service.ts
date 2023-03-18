@@ -103,7 +103,6 @@ export class UserService {
     email: string
   ): Observable<UserResponse> {
     const route = type === 'login' ? '/login' : '';
-    console.log(credentials, email);
     return this.postApiService
       .postForm(`${route}`, { password: credentials, email })
       .pipe(
