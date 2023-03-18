@@ -18,6 +18,7 @@ import { Flujo } from 'src/app/core/interfaces/flujo.interface';
 import { FlujoService } from 'src/app/core/services/flujo.service';
 import { Subscription, forkJoin } from 'rxjs';
 import { LoadingService } from 'src/app/shared/loading';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-tickets',
@@ -106,6 +107,7 @@ export class CreateTicketsComponent {
     private priorityService: PriorityService,
     private categoryService: CategoriesService,
     private flujoService: FlujoService,
+    private router: Router,
     private loadingService: LoadingService,
   ) {
     this.ticketForm = new FormGroup({
@@ -160,6 +162,7 @@ export class CreateTicketsComponent {
         error: (err) => {
           this.toastr.error(err?.message, 'Error al crear ticket');
           this.ticketForm.reset();
+          this.router.navigateByUrl('/my-tickets');
           this.loadingService.setLoading(false);
         },
       })
