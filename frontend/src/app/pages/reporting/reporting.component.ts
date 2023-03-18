@@ -4,6 +4,7 @@ import { ReportRequest, ReportResponse } from 'src/app/core/interfaces/report.in
 import { HistoryTicketsService } from 'src/app/core/services/history.tickets.service';
 import { Subscription, forkJoin } from 'rxjs';
 import { LoadingService } from 'src/app/shared/loading';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-reporting',
@@ -22,6 +23,36 @@ export class ReportingComponent {
     private loadingService: LoadingService,
 
   ) {}
+
+  exportToCsv(data: any[], fileName: string) {
+    const separator = ',';
+    const keys = Object.keys(data[0]);
+    const csvContent = keys.join(separator) + '\n' + data.map(row => {
+      return keys.map(k => {
+        let cell = row[k] === null || row[k] === undefined ? '' : row[k];
+        cell = cell instanceof Date ? cell.toLocaleString() : cell.toString();
+        cell = cell.replace(/"/g, '""');
+        return '"' + cell + '"';
+      }).join(separator);
+    }).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, fileName + '.csv');
+  }
+
+  exportTicketReport(){
+    if(this.data.length === 0){
+      this.toastrt.error('Debe de generar un reporte para poder descargar los reportes.', 'Error'); 
+    }
+    this.exportToCsv(this.data, `tickets-reporte_${(new Date()).toLocaleString()}`);
+  }
+
+  exportTicketByDepartmentReport(){
+    if(this.dataByDepto.length === 0){
+      this.toastrt.error('Debe de generar un reporte para poder descargar los reportes.', 'Error'); 
+    }
+    this.exportToCsv(this.dataByDepto, `tickets-por-departamento_${(new Date()).toLocaleString()}`);
+  }
 
   onGenerateReport(event: any) {
     event.preventDefault();
@@ -61,4 +92,6 @@ export class ReportingComponent {
   ngOnDestroy() {
     this.destroySubscription$.unsubscribe();
   }
+
+
 }
