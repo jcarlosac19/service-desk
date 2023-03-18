@@ -90,9 +90,11 @@ exports.obtenerHistoricoPorId = async (req, res) => {
 
 exports.obtenerReporte = async (req, res) => {
   const { fechaInicio, fechaFin } = req.query;
+
   const dateStart = new Date(fechaInicio);
   const dateEnd = new Date(fechaFin);
-  if(helper.isNullOrUndefined(dateStart) || helper.isNullOrUndefined(dateEnd) ) return res.status(400).send({message: "Las fechas son requeridas."});
+
+    if(helper.isNullOrUndefined(dateStart) || helper.isNullOrUndefined(dateEnd) ) return res.status(400).send({message: "Las fechas son requeridas."});
   if(dateStart > dateEnd) return res.status(400).send({message: "La fecha de inicio no puede ser mayor a la fecha de fin."})
   const dateStartISO = dateStart.toISOString();
   const dateEndISO = dateEnd.toISOString();
@@ -172,8 +174,10 @@ exports.obtenerReporte = async (req, res) => {
 
 exports.obtenerReportePorDepto = async (req, res) => {
   const { fechaInicio, fechaFin } = req.query;
+
   const dateStart = new Date(fechaInicio);
   const dateEnd = new Date(fechaFin);
+  
   if(helper.isNullOrUndefined(dateStart) || helper.isNullOrUndefined(dateEnd) ) return res.status(400).send({message: "Las fechas son requeridas."});
   if(dateStart > dateEnd) return res.status(400).send({message: "La fecha de inicio no puede ser mayor a la fecha de fin."})
   const dateStartISO = dateStart.toISOString();

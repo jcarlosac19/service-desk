@@ -1,6 +1,6 @@
 <main class="main-content-ticket-detail">
-    <div class="mb-5">
-        <div class="d-flex mt-10">
+    <div class="mb-5 overflow-auto">
+        <div class="d-flex mt-10 overflow-auto">
             <div class="col-lg-4">
                 <aside class="user-info-wrapper" style="background-color: white;">
                     <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
@@ -26,7 +26,7 @@
                     <li class="list-group-item hover-link" style="cursor: pointer; display: flex" >
                         <input #inputFile class="form-control input-file" name="file" type="file" (change)="onFileFormChange($event)">
                         
-                        <button pButton pRipple type="button" icon="pi pi-upload" class="p-button-rounded p-button-success p-button-text" pTooltip="Subir Archivo" tooltipPosition="top" (click)="onFileUpload()" ></button>
+                        <button pButton pRipple type="button" icon="pi pi-upload" class="p-button-rounded p-button-info p-button-text p-button-lg" pTooltip="Subir Archivo" tooltipPosition="top" (click)="onFileUpload()" ></button>
                     </li>
                 </nav>
                 <div class="attachment-group attachment-container">
@@ -88,7 +88,7 @@
                 <h5 class="mb-30 padding-top-1x">Comentar</h5>
                 <form method="post" (submit)="onSubmitComment($event)" >
                     <div class="form-group">
-                        <textarea class="form-control form-control-rounded p-3 height-area" id="review_text" rows="8"
+                        <textarea class="form-control form-control-rounded p-3 height-area" id="review_text" rows="4"
                             placeholder="Escribe tu mensaje aqui..." required="" [(ngModel)]="comment" [name]="comment"
                             [ngModelOptions]="{ standalone: true }" ></textarea>
                     </div>

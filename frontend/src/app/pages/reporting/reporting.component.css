@@ -1,6 +1,6 @@
 .header-container-filters  {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  gap: 1rem;
 } 
 
 .card-body-container {

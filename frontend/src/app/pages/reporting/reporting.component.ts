@@ -30,9 +30,15 @@ export class ReportingComponent {
       dateStart: this.dateStart,
       dateEnd: this.dateEnd,
     };
+
+    if(this.dateStart == undefined || this.dateEnd == undefined) {
+      this.loadingService.setLoading(false); 
+      this.toastrt.error('Debe de ingresar la fecha de inicio y fin.', 'Error'); 
+
+      return;
+    } 
     const reportTickets$ = this.historyService.getReportTickets(reportRequest);
-    const reportTicketsByDepto$ =
-      this.historyService.getReportTicketsByDepto(reportRequest);
+    const reportTicketsByDepto$ = this.historyService.getReportTicketsByDepto(reportRequest);
 
     this.destroySubscription$ = forkJoin([
       reportTickets$,
@@ -44,7 +50,10 @@ export class ReportingComponent {
           this.dataByDepto = reportTicketsByDeptoResponse;
           this.loadingService.setLoading(false);
         },
-        error: (error) => {this.toastrt.error('No se pudieron cagar los datos', 'Error'); this.loadingService.setLoading(false); }
+        error: (error) => {
+          this.toastrt.error('No se pudieron cagar los datos', 'Error'); 
+          this.loadingService.setLoading(false); 
+        }
       }
     );
   }
