@@ -10,6 +10,7 @@ export interface ReportResponse {
   creado_a: string;
   compleado_a: string;
   email_asignado?: string;
+  nombreDepartamento?: string;
   tiempoEstimadoResolucion?: string;
   tiempoRealResolucion?: string;
   percentageSLA?: string;

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-loading',
   templateUrl: './loading.component.html',
-  styleUrls: ['./loading.component.scss']
+  styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent {
   // @Input() isLoading: boolean = false;

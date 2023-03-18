@@ -44,4 +44,9 @@ app.get("/historico-reporte",
     historicoController.obtenerReporte
 )
 
+app.get("/historico-reporte-departamentos",
+    [ verifyAccessLevel.isUser ],
+    historicoController.obtenerReportePorDepto
+)
+
 module.exports = app;

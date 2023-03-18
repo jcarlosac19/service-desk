@@ -1,89 +1,55 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ReportRequest, ReportResponse } from 'src/app/core/interfaces/report.interface';
-import { ColumnTable } from 'src/app/core/interfaces/sidebar.links.interface';
 import { HistoryTicketsService } from 'src/app/core/services/history.tickets.service';
+import { Subscription, forkJoin } from 'rxjs';
+import { LoadingService } from 'src/app/shared/loading';
 
 @Component({
   selector: 'app-reporting',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './reporting.component.html',
-  styleUrls: ['./reporting.component.css']
+  styleUrls: ['./reporting.component.css'],
 })
 export class ReportingComponent {
-  columns: ColumnTable[] = [];
+  private destroySubscription$: Subscription;
   dateStart: Date;
   dateEnd: Date;
   data: ReportResponse[] = [];
-  constructor(private historyService: HistoryTicketsService, private toastrt: ToastrService) {
-    this.columns = [
-      {
-        name: 'Ticket Id',
-        key: 'ticketId',
-        show: true,
-        width: '50px'
-      },
-      {
-        name: 'Email Creador',
-        key: 'email_creador',
-        show: true,
-        width: '150px'
-      },
-      {
-        name: 'Asignado',
-        key: 'asignado',
-        show: true,
-      },
-      {
-        name: 'Creado',
-        key: 'creado_a',
-        show: true,
-      },
-      {
-        name: 'Completado',
-        key: 'compleado_a',
-        show: true,
-      },
-      {
-        name: 'Tiempo Estimado Resolucion',
-        key: 'tiempoEstimadoResolucion',
-        show: true,
-        width: '170px'
-      },
-      {
-        name: 'Tiempo Real Resolucion',
-        key: 'tiempoRealResolucion',
-        show: true,
-        width: '150px'
-      },
-      {
-        name: 'SLA',
-        key: 'percentageSLA',
-        show: true,
-        width: '77px'
-      }
-    ];
-  }
+  dataByDepto: ReportResponse[] = [];
+  constructor(
+    private historyService: HistoryTicketsService,
+    private toastrt: ToastrService,
+    private loadingService: LoadingService,
 
-  filterColumnsTable():ColumnTable[]{
-    return this.columns.filter((column: ColumnTable) => column.show);
-  }
-  
+  ) {}
+
   onGenerateReport(event: any) {
     event.preventDefault();
+    this.loadingService.setLoading(true);
     const reportRequest: ReportRequest = {
       dateStart: this.dateStart,
-      dateEnd: this.dateEnd
+      dateEnd: this.dateEnd,
     };
-    this.historyService.getReportTickets(reportRequest).subscribe({
-      next: (response: ReportResponse[]) => {
-        this.data = response;
-      },
-      error: (error: any) => {
-        this.toastrt.error(error, 'Error');
+    const reportTickets$ = this.historyService.getReportTickets(reportRequest);
+    const reportTicketsByDepto$ =
+      this.historyService.getReportTicketsByDepto(reportRequest);
+
+    this.destroySubscription$ = forkJoin([
+      reportTickets$,
+      reportTicketsByDepto$,
+    ]).subscribe(
+      {
+        next: ([reportTicketsResponse, reportTicketsByDeptoResponse]) => {
+          this.data = reportTicketsResponse;
+          this.dataByDepto = reportTicketsByDeptoResponse;
+          this.loadingService.setLoading(false);
+        },
+        error: (error) => {this.toastrt.error('No se pudieron cagar los datos', 'Error'); this.loadingService.setLoading(false); }
       }
-    })
+    );
   }
 
-
+  ngOnDestroy() {
+    this.destroySubscription$.unsubscribe();
+  }
 }

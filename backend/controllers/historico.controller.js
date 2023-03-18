@@ -144,13 +144,13 @@ exports.obtenerReporte = async (req, res) => {
       return reporteAgrupado[key];
     });
 
-    const reporteFinal = reporteAgrupadoArray.map((reporte, index) => {
+    const reporteFinal = reporteAgrupadoArray.map((reporte) => {
       const { ticketId, creado_a, asignado, email_creador, compleado_a, tiempoEstimadoResolucion } = reporte[0];
       const tiempoRealResolucion = reporte.reduce((a, b) => {
         return a + parseFloat(b.tiempoRealResolucion);
       }, 0);
       const SLA = tiempoRealResolucion != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoRealResolucion) : 0;
-      const percentageSLA = SLA != 0 ? (SLA * 100) >= 1 ? '100 %' : `${(SLA * 100)} %`  : `${SLA} %` ;
+      const percentageSLA = SLA != 0 ? (SLA * 100) >= 100 ? '100 %' : `${(SLA * 100).toFixed(2)} %`  : `${SLA} %` ;
       return {
         ticketId,
         email_creador,
@@ -158,7 +158,7 @@ exports.obtenerReporte = async (req, res) => {
         creado_a,
         compleado_a,
         tiempoEstimadoResolucion,
-        tiempoRealResolucion,
+        tiempoRealResolucion: tiempoRealResolucion.toFixed(2) + ' horas',
         percentageSLA,
       };
     });
@@ -169,6 +169,72 @@ exports.obtenerReporte = async (req, res) => {
     res.status(400).json([]);
   }
 };
+
+exports.obtenerReportePorDepto = async (req, res) => {
+  const { fechaInicio, fechaFin } = req.query;
+  const dateStart = new Date(fechaInicio);
+  const dateEnd = new Date(fechaFin);
+  if(helper.isNullOrUndefined(dateStart) || helper.isNullOrUndefined(dateEnd) ) return res.status(400).send({message: "Las fechas son requeridas."});
+  if(dateStart > dateEnd) return res.status(400).send({message: "La fecha de inicio no puede ser mayor a la fecha de fin."})
+  const dateStartISO = dateStart.toISOString();
+  const dateEndISO = dateEnd.toISOString();
+
+  try {
+    const historicos = await TicketHistorico.find({
+      $and: [
+        { creado_a: { $gte: dateStartISO } },
+        { creado_a: { $lte: dateEndISO } },
+      ],
+    })
+      .populate('ticket_id')
+      .populate('departamento_id')
+      .populate('creador_id')
+      .populate('asignado_id')
+      .populate('modificador_id');
+    const reporte = historicos.map(historico => {
+      const {
+        ticket_id,
+        creador_id,
+        asignado_id,
+        compleado_a,
+        creado_a,
+        departamento_id
+      } = historico;
+      const {  email } = creador_id;
+      const { _id: ticketId } = ticket_id;
+      const { nombreDepartamento } = departamento_id;
+      return {
+        ticketId,
+        creado_a: helper.formateDateShort(creado_a),
+        compleado_a: helper.isNullOrWhitespace(compleado_a)
+          ? 'Sin completar'
+          : helper.formateDateShort(compleado_a),
+        email_creador: email,
+        nombreDepartamento,
+        asignado: helper.isNullOrUndefined(asignado_id)
+          ? 'Sin asignar'
+          : `${asignado_id.nombres} ${asignado_id.apellidos}`,
+        tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
+          ? '0.00 hours'
+          : helper.getDiffInHours(creado_a, compleado_a) + ' hours',
+      };
+    });
+    const reporteOrdenado = [...reporte].sort((a, b) => {
+      if (a.ticketId < b.ticketId) {
+        return -1;
+      } else if (a.ticketId > b.ticketId) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    res.status(200).json(reporteOrdenado);
+  }catch(error){
+    console.log(error);
+    res.status(400).json([]);
+  }
+}
+
 
 
 

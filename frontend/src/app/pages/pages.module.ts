@@ -18,8 +18,9 @@ import { CategoriesComponent } from './categories/categories.component';
 import { TicketsComponent } from './tickets/tickets.component';
 import { FlujosComponent } from './flujos/flujos.component';
 import { DepartmentsComponent } from './departments/departments.component';
-import { ReportingComponent } from './reporting/reporting.component';
-import { NbCardModule, NbTabsetModule } from '@nebular/theme';
+import { ReportingComponent } from './reporting/reporting.component'
+import {TableModule} from 'primeng/table';
+import { PanelModule } from 'primeng/panel';
 
 @NgModule({
   declarations: [
@@ -44,9 +45,8 @@ import { NbCardModule, NbTabsetModule } from '@nebular/theme';
     DropdownModule,
     CalendarModule,
     TooltipModule,
-    TabViewModule,
-    NbTabsetModule,
-    NbCardModule
+    TableModule,
+    PanelModule
   ]
 })
 export class PagesModule { }

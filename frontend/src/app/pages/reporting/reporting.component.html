@@ -1,48 +1,93 @@
-<main class="container mt-2">
-  <nb-card [size]="'large'">
-    <nb-card-body class="card-body-container">
-      <nb-tabset fullWidth class="tabset-styles" >
-        <nb-tab tabTitle="Tickets" class="tabset-styles">
-          <header class="header-container-filters mt-1">
-            <div class="d-flex gap-3 flex-column">
-              <label for="time">Fecha Inicio</label>
-              <p-calendar
-                [(ngModel)]="dateStart"
-                [showTime]="true"
-                [showSeconds]="true"
-                inputId="time"
-              ></p-calendar>
-            </div>
-        
-            <div class="d-flex gap-3 flex-column">
-              <label for="time">Fecha Fin</label>
-              <p-calendar
-                [(ngModel)]="dateEnd"
-                [showTime]="true"
-                [showSeconds]="true"
-                inputId="time"
-              ></p-calendar>
-            </div>
-            <div class="d-flex justify-content-center align-items-end">
-              <button
-                pButton
-                pRipple
-                type="button"
-                label="Generar Reporte"
-                class="p-button-raised p-button-info"
-                (click)="onGenerateReport($event)"
-              ></button>
-            </div>
-          </header>
-          <section class="mt-2">
-            <app-table [data]="data" [columns]="filterColumnsTable()" [classes]="'table table-bordered table-striped table-hover'"></app-table>
-          </section>
-        </nb-tab>
-        <nb-tab tabTitle="Orders">
-          <p>List of <strong>orders</strong>.</p>
-        </nb-tab>
-      </nb-tabset>
-  
-    </nb-card-body>
-  </nb-card>
+<main class="reporting-container">
+  <header class="header-container-filters mt-1">
+    <div class="d-flex gap-3 flex-column">
+      <label class="label-dates" for="time">Fecha Inicio</label>
+      <p-calendar
+        [(ngModel)]="dateStart"
+        [showTime]="true"
+        [showSeconds]="true"
+        inputId="time"
+      ></p-calendar>
+    </div>
+
+    <div class="d-flex gap-3 flex-column">
+      <label class="label-dates" for="time">Fecha Fin</label>
+      <p-calendar
+        [(ngModel)]="dateEnd"
+        [showTime]="true"
+        [showSeconds]="true"
+        inputId="time"
+      ></p-calendar>
+    </div>
+    <div class="d-flex justify-content-center align-items-end">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Generar Reporte"
+        class="p-button-raised p-button-info"
+        (click)="onGenerateReport($event)"
+      ></button>
+    </div>
+  </header>
+  <section *ngIf="data.length > 0 || dataByDepto.length > 0 " class="mt-2 overflow-auto">
+    <p-panel header="Por Tickets" styleClass="mb-3" [toggleable]="true">
+      <div>
+        <p-table [value]="data" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ticket Id</th>
+                  <th>Creador</th>
+                  <th>Asignado</th>
+                  <th>Fecha Creacion</th>
+                  <th>Fecha Completado</th>
+                  <th>Tiempo Estimado Resolucion</th>
+                  <th>Tiempo Real Resolucion</th>
+                  <th>SLA</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-data>
+              <tr>
+                  <td>{{data.ticketId}}</td>
+                  <td style="width: 150px;">{{data.email_creador}}</td>
+                  <td>{{data.asignado}}</td>
+                  <td>{{data.creado_a}}</td>
+                  <td>{{data.compleado_a}}</td>
+                  <td style="width: 170px;" >{{data.tiempoEstimadoResolucion}}</td>
+                  <td style="width: 150px">{{data.tiempoRealResolucion}}</td>
+                  <td style="width: 90px;" >{{data.percentageSLA}}</td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-panel>
+    <p-panel header="Por Departamentos" [toggleable]="true" >
+      <div class="">
+        <p-table [value]="dataByDepto" [paginator]="true" [rows]="4">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ticket Id</th>
+                  <th>Creador</th>
+                  <th style="width: 130px;">Asignado</th>
+                  <th>Fecha Creacion</th>
+                  <th>Fecha Completado</th>
+                  <th>Departamento</th>
+                  <th>Tiempo Real Resolucion</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-dataByDepto>
+              <tr>
+                  <td>{{dataByDepto.ticketId}}</td>
+                  <td style="width: 150px;">{{dataByDepto.email_creador}}</td>
+                  <td style="width: 150px;" >{{dataByDepto.asignado}}</td>
+                  <td>{{dataByDepto.creado_a}}</td>
+                  <td>{{dataByDepto.compleado_a}}</td>
+                  <td>{{dataByDepto.nombreDepartamento}}</td>
+                  <td style="width: 150px">{{dataByDepto.tiempoRealResolucion}}</td>
+              </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </p-panel>
+  </section>
 </main>
