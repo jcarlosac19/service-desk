@@ -1,0 +1,78 @@
+<main class="profile-container">
+  <h4 class="title">Perfil de Usuario</h4>
+  <hr>
+  <div class="content">
+    <section class="user-details">
+      <div class="back-image-container">
+        <img src="https://demos.creative-tim.com/paper-dashboard-angular/assets/img/damir-bosnjak.jpg" alt="back-image" class="back-image" />
+      </div>
+      <div class="user-image-container">
+        <img src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user-image">
+      </div>
+      <div class="user-info">
+        <h4 class="user-name">Admin Test</h4>
+        <p class="user-email">
+          <i class="fa fa-envelope icon" ></i>
+          <span>
+            admin@usuario.com
+          </span>
+        </p>
+        <p class="user-phone">
+          <i class="fa fa-phone icon"></i>
+          <span>
+            123456789
+          </span>
+        </p>
+      </div>
+      <hr>
+      <div class="role">Administrador</div>
+    </section>
+  
+    <aside class="edit-profile overflow-auto">
+      <h4 class="title-form">Editar Perfil</h4>
+      <form class="">
+        <section class="name-container" >
+          <div>
+            <label class="label-form">Nombres</label>
+            <mat-form-field class="full-width">
+              <mat-label>Nombres</mat-label>
+              <input matInput placeholder="nombres" value="">
+            </mat-form-field>
+          </div>
+          <div>
+            <label class="label-form">Apellidos</label>
+            <mat-form-field class="full-width">
+              <mat-label>Apellidos</mat-label>
+              <input matInput placeholder="apellidos" value="">
+            </mat-form-field>
+          </div>
+        </section>
+        <section class="Password">
+          <div class="mb-2" ><h4 class="title-form">Cambiar Contraseña</h4></div>
+          <div>
+            <label class="label-form">Contraseña Actual</label>
+            <mat-form-field class="full-width">
+              <mat-label>Contraseña Actual</mat-label>
+              <input matInput placeholder="contraseña actual" value="">
+            </mat-form-field>
+          </div>
+          <div>
+            <label class="label-form">Contraseña Nueva</label>
+            <mat-form-field class="full-width">
+              <mat-label>Contraseña Nueva</mat-label>
+              <input matInput placeholder="contraseña nueva" value="">
+            </mat-form-field>
+          </div>
+          <div>
+            <label class="label-form">Confirmar Contraseña Nueva</label>
+            <mat-form-field class="full-width">
+              <mat-label>Confirmar Contraseña Nueva</mat-label>
+              <input matInput placeholder="contraseña nueva" value="">
+            </mat-form-field>
+          </div>
+        </section>
+        <button class="btn-update">Actualizar Perfil</button>
+      </form>
+    </aside>
+  </div>
+</main>
