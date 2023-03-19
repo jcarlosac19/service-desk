@@ -81,6 +81,8 @@ p {
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 1.2rem;
+  text-transform: capitalize;
+  text-align: center;
   letter-spacing: .1rem;
   margin-bottom: 0;
   color: #51cbce;
@@ -127,6 +129,12 @@ p {
 
 .full-width {
   width: 100%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .label-form {
