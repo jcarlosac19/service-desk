@@ -22,6 +22,11 @@ export class NavbarComponent {
         label: 'User',
         icon: 'pi pi-fw pi-user',
         items: [
+          {
+            label: 'Mi Perfil',
+            icon: 'pi pi-fw pi-user-edit',
+            routerLink: ['/my-profile']
+          },
           { 
             label: 'Logout', 
             icon: 'pi pi-fw pi-sign-out',
