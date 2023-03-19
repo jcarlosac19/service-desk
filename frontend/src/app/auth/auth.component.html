@@ -44,6 +44,16 @@
                   [(ngModel)]="newRequestUser.email"
                 />
               </fieldset>
+              <fieldset *ngIf="authType === 'register'" class="form-group mb-2">
+                <input
+                  formControlName="telefono"
+                  placeholder="Telefono"
+                  class="form-control form-control-lg"
+                  type="text"
+                  name="telefono"
+                  [(ngModel)]="newRequestUser.telefono"
+                />
+              </fieldset>
               <fieldset class="form-group mb-2">
                 <input
                   formControlName="password"
