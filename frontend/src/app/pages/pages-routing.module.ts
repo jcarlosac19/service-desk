@@ -8,6 +8,7 @@ import { FlujosComponent } from './flujos/flujos.component';
 import { GroupsComponent } from './groups/groups.component';
 import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
+import { ProfileComponent } from './profile/profile.component';
 import { ReportingComponent } from './reporting/reporting.component';
 import { TicketsComponent } from './tickets/tickets.component';
 
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'departments',
     component: DepartmentsComponent
+  },
+  {
+    path: 'my-profile',
+    component: ProfileComponent
   }
 ];
 
