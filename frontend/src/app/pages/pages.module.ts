@@ -11,7 +11,6 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { TooltipModule } from 'primeng/tooltip';
-import { TabViewModule } from 'primeng/tabview';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { StatusComponent } from './estados/status.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -21,6 +20,8 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { ReportingComponent } from './reporting/reporting.component'
 import {TableModule} from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
+import { ProfileComponent } from './profile/profile.component';
+import { MatInputModule } from '@angular/material/input'; 
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PanelModule } from 'primeng/panel';
     TicketsComponent,
     FlujosComponent,
     DepartmentsComponent,
-    ReportingComponent
+    ReportingComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { PanelModule } from 'primeng/panel';
     CalendarModule,
     TooltipModule,
     TableModule,
-    PanelModule
+    PanelModule,
+    MatInputModule
   ]
 })
 export class PagesModule { }
