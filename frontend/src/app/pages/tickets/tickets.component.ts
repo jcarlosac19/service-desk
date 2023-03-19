@@ -53,7 +53,7 @@ export class TicketsComponent implements OnInit {
   flujos: Flujo[] = [];
   Departments: Department[]= [];
   attachments: FileMetadata[] = [];
-  selectedDepartment: Department = {} as Department;
+  selectedDepartment: Department;
 
   selectedStatus: Status = {} as Status;
 
