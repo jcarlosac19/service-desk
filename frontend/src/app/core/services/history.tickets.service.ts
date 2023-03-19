@@ -104,6 +104,7 @@ export class HistoryTicketsService {
             ? helper.getDiffInHours(element.creado_a, element.compleado_a) +
               ' horas'
             :  '0.00 horas',
+        tiempoResolucionHorasOficina: element.tiempoResolucionHorasOficina != undefined ? element.tiempoResolucionHorasOficina : ''
       };
       historyList.push(history);
     });

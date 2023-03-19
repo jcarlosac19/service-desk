@@ -15,7 +15,7 @@
               !column.hasRemoveButton)
           "
         >
-          <a *ngIf="evaluateArray(column.routeLink) && column.key == '_id' " [routerLink]="[column.routeLink![0], row[column.key]]" > {{ row[column.key] }} </a>
+          <a *ngIf="evaluateArray(column.routeLink) && column.key == '_id' " [routerLink]="[column.routeLink![0], row[column.key]]" > {{ row[column.key].toString().padStart(4,"0") }} </a>
           <p *ngIf="evaluateIsUndefined(column.routeLink)" > {{ row[column.key] }} </p>
         </ng-container>
         <div [ngStyle]="actionsContainer">

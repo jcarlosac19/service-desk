@@ -126,6 +126,7 @@ export interface HistoryResponse {
   actualizado_a: Date;
   message?: string;
   tiempoEstimadoResolucion?: number;
+  tiempoResolucionHorasOficina?: string;
   tiempoRealResolucion?: number;
 }
 
@@ -141,6 +142,7 @@ export interface HistoryTable {
   actualizado_a: string;
   message?: string;
   tiempoEstimadoResolucion?: string;
+  tiempoResolucionHorasOficina?: string;
   tiempoRealResolucion?: string;
 }
 export interface historyRequest {

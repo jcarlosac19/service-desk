@@ -2,6 +2,26 @@ const TicketHistorico = require("../models/ticket.historico.actualizaciones.mode
 const Flujo = require('../models/flujos.model');
 const helper = require("../config/helpers/index");
 
+
+
+
+function workingHoursBetweenDates(startDate, endDate, dayStart, dayEnd, includeWeekends) {
+  var minutesWorked = 0;
+  if (endDate < startDate) { return 0; }
+  var current = startDate;
+  var workHoursStart = dayStart;
+  var workHoursEnd = dayEnd;
+  while(current <= endDate){      
+      var currentTime = current.getHours() + (current.getMinutes() / 60);             
+      if(currentTime >= workHoursStart && 
+         currentTime < workHoursEnd && 
+         (includeWeekends ? current.getDay() !== 0 && current.getDay() !== 6 : true)
+         ) minutesWorked++;
+      current.setTime(current.getTime() + 1000 * 60);
+  }
+  return (minutesWorked / 60).toFixed(2);
+}
+
 exports.crearActualizacion = async (req, res) => {
     currentUserId = req.user.user_id;
 
@@ -138,6 +158,7 @@ exports.obtenerReporte = async (req, res) => {
         tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
           ? '0'
           : helper.getDiffInHours(creado_a, compleado_a),
+          tiempoResolucionHorasOficina: workingHoursBetweenDates(creado_a, compleado_a, 8, 18, false)
       };
     });
 
@@ -147,11 +168,11 @@ exports.obtenerReporte = async (req, res) => {
     });
 
     const reporteFinal = reporteAgrupadoArray.map((reporte) => {
-      const { ticketId, creado_a, asignado, email_creador, compleado_a, tiempoEstimadoResolucion } = reporte[0];
+      const { ticketId, creado_a, asignado, email_creador, compleado_a, tiempoEstimadoResolucion, tiempoResolucionHorasOficina } = reporte[0];
       const tiempoRealResolucion = reporte.reduce((a, b) => {
         return a + parseFloat(b.tiempoRealResolucion);
       }, 0);
-      const SLA = tiempoRealResolucion != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoRealResolucion) : 0;
+      const SLA = tiempoResolucionHorasOficina != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoResolucionHorasOficina) : 0;
       const percentageSLA = SLA != 0 ? (SLA * 100) >= 100 ? '100 %' : `${(SLA * 100).toFixed(2)} %`  : `${SLA} %` ;
       return {
         ticketId,
@@ -162,6 +183,7 @@ exports.obtenerReporte = async (req, res) => {
         tiempoEstimadoResolucion: tiempoEstimadoResolucion + ' horas',
         tiempoRealResolucion: tiempoRealResolucion.toFixed(2) + ' horas',
         percentageSLA,
+        tiempoResolucionHorasOficina: tiempoResolucionHorasOficina + ' horas'
       };
     });
 

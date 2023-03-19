@@ -13,5 +13,6 @@ export interface ReportResponse {
   nombreDepartamento?: string;
   tiempoEstimadoResolucion?: string;
   tiempoRealResolucion?: string;
+  tiempoResolucionHorasOficina?: string;
   percentageSLA?: string;
 }
