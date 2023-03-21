@@ -103,3 +103,41 @@ exports.getAllUsers = async (req, res) => {
     console.log(err);
   }
 }
+
+exports.updateUser = async (req, res) => {
+  const { nombres, apellidos, email, telefono, newPassword } = req.body;
+  const userToUpdate = {
+    ...(!helper.isNullOrWhitespace(nombres) && { nombres }),
+    ...(!helper.isNullOrWhitespace(apellidos) && { apellidos }),
+    ...(!helper.isNullOrWhitespace(email) && { email }),
+    ...(!helper.isNullOrWhitespace(telefono) && { telefono }),
+    ...(!helper.isNullOrWhitespace(newPassword) && {
+      password: await bcrypt.hash(newPassword, 10),
+    }),
+  };
+
+  if(helper.isObject(userToUpdate)) return;
+
+  try {
+    const response = await Usuario.findOneAndUpdate({ email }, userToUpdate, {
+      new: true,
+    });
+    res.status(200).json({
+      user: {
+        message: 'Usuario actualizado exitosamente.',
+        token: '',
+        userInfo: {
+          _id: response._id,
+          nombres: response.nombres,
+          apellidos: response.apellidos,
+          email: response.email,
+          telefono: response.telefono,
+          rol: response.es_administrador ? 'Administrador' : 'usuario',
+        },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: 'Hubo un error inesperado.' });
+  }
+};
