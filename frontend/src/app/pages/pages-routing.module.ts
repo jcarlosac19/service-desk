@@ -6,6 +6,7 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { StatusComponent } from './estados/status.component';
 import { FlujosComponent } from './flujos/flujos.component';
 import { GroupsComponent } from './groups/groups.component';
+import { HorariosComponent } from './horario/horarios.component';
 import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 import { PrioridadesComponent } from './prioridades/prioridades.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path: 'my-profile',
     component: ProfileComponent
+  },
+  {
+    path: 'horarios',
+    component: HorariosComponent
   }
 ];
 

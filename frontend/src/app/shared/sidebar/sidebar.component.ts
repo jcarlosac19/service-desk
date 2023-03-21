@@ -54,6 +54,11 @@ export class SidebarComponent {
       routerName: '/status',
       icon: PrimeIcons.STAR_FILL
     },
+    {
+      name: 'Horarios',
+      routerName: '/horarios',
+      icon: PrimeIcons.CALENDAR_TIMES
+    }
   ]
   collapsed: boolean = false;
   toggleMenu() {

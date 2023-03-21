@@ -1,9 +1,7 @@
 const TicketHistorico = require("../models/ticket.historico.actualizaciones.model");
 const Flujo = require('../models/flujos.model');
 const helper = require("../config/helpers/index");
-
-
-
+const horariosModel = require('../models/horario.operacion.model');
 
 function workingHoursBetweenDates(startDate, endDate, dayStart, dayEnd, includeWeekends) {
   var minutesWorked = 0;
@@ -133,6 +131,8 @@ exports.obtenerReporte = async (req, res) => {
       .populate('modificador_id');
     const flujo = await Flujo.find();
 
+    const horario = await horariosModel.findOne({}).lean().exec();
+
     const reporte = historicos.map(historico => {
       const {
         ticket_id,
@@ -158,7 +158,7 @@ exports.obtenerReporte = async (req, res) => {
         tiempoRealResolucion: helper.isNullOrWhitespace(compleado_a)
           ? '0'
           : helper.getDiffInHours(creado_a, compleado_a),
-          tiempoResolucionHorasOficina: workingHoursBetweenDates(creado_a, compleado_a, 8, 18, false)
+          tiempoResolucionHorasOficina: workingHoursBetweenDates(creado_a, compleado_a, horario.horaInicio, horario.horaFinal, horario.incluyeFinesDeSemana)
       };
     });
 
@@ -172,7 +172,7 @@ exports.obtenerReporte = async (req, res) => {
       const tiempoRealResolucion = reporte.reduce((a, b) => {
         return a + parseFloat(b.tiempoRealResolucion);
       }, 0);
-      const SLA = tiempoResolucionHorasOficina != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoResolucionHorasOficina) : 0;
+      const SLA = tiempoResolucionHorasOficina != 0 ? (parseInt(tiempoEstimadoResolucion) / tiempoResolucionHorasOficina) : 100;
       const percentageSLA = SLA != 0 ? (SLA * 100) >= 100 ? '100 %' : `${(SLA * 100).toFixed(2)} %`  : `${SLA} %` ;
       return {
         ticketId,

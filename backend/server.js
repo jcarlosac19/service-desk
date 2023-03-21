@@ -19,6 +19,8 @@ const comentariosRoutes = require('./routes/comentarios.routes');
 const historicoRoutes = require('./routes/historico.routes');
 const departamentosRoutes = require('./routes/departamentos.routes');
 const fileStorage = require('./routes/files.storage.route');
+const horariosRoutes = require('./routes/horarios.routes');
+
 const multer = require('multer');
 //Middlewares
 const verifyAccessLevel = require('./middleware/access.level');
@@ -61,7 +63,8 @@ app.use(urlPrefix,
         comentariosRoutes,
         historicoRoutes,
         departamentosRoutes,
-        fileStorage
+        fileStorage,
+        horariosRoutes
       ]
 );
 

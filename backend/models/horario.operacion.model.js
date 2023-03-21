@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const flujo = new mongoose.Schema(
   {
-    horaInicio              : {type: Number, defualt: null, unique: true},
-    horaFinal               : {type: Number, default: null, unique: true},
+    horaInicio              : {type: Number, defualt: null},
+    horaFinal               : {type: Number, default: null},
     incluyeFinesDeSemana    : {type: Boolean }
   },
   {
@@ -15,4 +15,4 @@ const flujo = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("flujo", flujo);
+module.exports = mongoose.model("horarioOperacion", flujo);

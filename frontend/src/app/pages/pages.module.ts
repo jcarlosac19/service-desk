@@ -22,6 +22,7 @@ import {TableModule} from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { ProfileComponent } from './profile/profile.component';
 import { MatInputModule } from '@angular/material/input'; 
+import { HorariosComponent } from './horario/horarios.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatInputModule } from '@angular/material/input';
     FlujosComponent,
     DepartmentsComponent,
     ReportingComponent,
-    ProfileComponent
+    ProfileComponent,
+    HorariosComponent
   ],
   imports: [
     CommonModule,
