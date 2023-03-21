@@ -56,6 +56,7 @@ export class UserService {
     email: string,
     names: string,
     lastNames: string,
+    telefono: string,
     isAdministrator: boolean,
     isUser: boolean
   ): Observable<UserResponse> {
@@ -64,17 +65,13 @@ export class UserService {
       nombres: names,
       apellidos: lastNames,
       email,
+      telefono,
       password: credentials,
       isAdministrator,
       isUser,
     };
 
-    return this.postApiService.post(route, request).pipe(
-      map((data) => {
-        this.setAuth(data);
-        return data;
-      })
-    );
+    return this.postApiService.post(route, request);
   }
 
   setAuth(user: UserResponse) {

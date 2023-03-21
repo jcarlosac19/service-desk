@@ -5,12 +5,13 @@ const helper = require('../config/helpers');
 
 exports.register = async (req, res) => {
   try {
-    const { nombres, apellidos, email, password, isAdministrator, isUser } = req.body;
+    const { nombres, apellidos, email, password, isAdministrator, isUser, telefono } = req.body;
     encryptedPassword = await bcrypt.hash(password, 10);
     const user = await Usuario.create({
       nombres,
       apellidos,
       email: email.toLowerCase(),
+      telefono,
       password: encryptedPassword,
       es_administrador: isAdministrator,
       es_usuario: isAdministrator ? isAdministrator : isUser,
@@ -54,6 +55,7 @@ exports.login = async (req, res) => {
           nombres: user.nombres,
           apellidos: user.apellidos,
           email: user.email,
+          telefono: user.telefono,
           rol: user.es_administrador ? 'Administrador': 'usuario'
         }
       });
@@ -81,6 +83,7 @@ exports.getUserByEmail = async(req, res) => {
           nombres: userFound.nombres,
           apellidos: userFound.apellidos,
           email: userFound.email,
+          telefono: userFound.telefono,
           rol: userFound.es_administrador ? 'Administrador': 'usuario'
         }
       }});

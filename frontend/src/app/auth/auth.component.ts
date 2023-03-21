@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Errors, UserService } from '../core';
-import { User, UserResponse } from '../core/interfaces/user.interface';
+import { User, UserInfo, UserResponse } from '../core/interfaces/user.interface';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -32,13 +32,7 @@ export class AuthComponent implements OnInit {
   userResponse: UserResponse = {
     message: '',
     token: '',
-    userInfo: {
-      _id: '',
-      email: '',
-      nombres: '',
-      apellidos: '',
-      rol: '',
-    },
+    userInfo: {} as UserInfo,
   };
 
   constructor(
@@ -65,6 +59,7 @@ export class AuthComponent implements OnInit {
       if (this.authType === 'register') {
         this.authForm.addControl('names', new FormControl());
         this.authForm.addControl('lastNames', new FormControl());
+        this.authForm.addControl('telefono', new FormControl());
       }
     });
   }
@@ -88,7 +83,7 @@ export class AuthComponent implements OnInit {
   }
 
   handleOnSubmitForm() {
-    const { password, email, names, lastNames } = this.newRequestUser;
+    const { password, email, names, lastNames, telefono } = this.newRequestUser;
     if (this.authType === 'login') {
       this.userService.attemptAuth(this.authType, password, email).subscribe({
         next: (response) => {
@@ -108,13 +103,14 @@ export class AuthComponent implements OnInit {
         email,
         names!,
         lastNames!,
+        telefono!,
         this.isAdministrator,
         this.isUser
       )
       .subscribe({
         next: (data) => {
           this.userResponse = data;
-          this.router.navigateByUrl('/my-tickets');
+          this.router.navigateByUrl('/login');
         },
         error: (err) => this.toastr.error(err),
       });

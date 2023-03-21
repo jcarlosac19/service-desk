@@ -7,6 +7,7 @@ export interface User  {
   Role?: string,
   names?: string,
   lastNames?: string
+  telefono?: string,
 }
 
 export interface UserResponse  {
@@ -15,11 +16,12 @@ export interface UserResponse  {
   userInfo: UserInfo
 }
 
-interface UserInfo  {
+export interface UserInfo  {
   _id: string,
   email: string,
   nombres: string,
   apellidos: string,
+  telefono: string,
   rol: string
 }
 
@@ -38,4 +40,14 @@ export interface GetAllUserResponse {
   esta_activo:      boolean;
   creado_a:         Date;
   actualizado_a:    Date;
+}
+
+export interface UpdateUserRequest {
+  nombres:          string;
+  apellidos:        string;
+  email:            string;
+  telefono:         string;
+  currentPassword:  string;
+  newPassword:      string;
+  confirmPassword:  string;
 }
