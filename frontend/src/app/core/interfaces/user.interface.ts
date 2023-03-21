@@ -43,6 +43,7 @@ export interface GetAllUserResponse {
 }
 
 export interface UpdateUserRequest {
+  id:               string;
   nombres:          string;
   apellidos:        string;
   email:            string;

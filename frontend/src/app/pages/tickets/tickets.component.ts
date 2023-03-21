@@ -179,15 +179,16 @@ export class TicketsComponent implements OnInit {
     const statuses$ = this.statusService.getStatuses();
 
     this.servicesSubcription$.push(
-      forkJoin([flujos$, departments$, users$, statuses$]).subscribe(
-        ([flujosResponse, departmentsResponse, usersResponse, statusesResponse]) => {
+      forkJoin([flujos$, departments$, users$, statuses$]).subscribe({
+        next: ([flujosResponse, departmentsResponse, usersResponse, statusesResponse]) => {
           this.flujos = this.flujoService.materializeFlujos(flujosResponse);
           this.Departments = this.departmentServices.materializeResponseToDepartments(departmentsResponse);
           this.Users = (usersResponse);
           this.statuses = this.statusService.materializeStatus(statusesResponse);
         },
-        error => this.toastr.error('Error al cargar los datos', 'Error')
-      )
+        error: error => this.toastr.error('Error al cargar los datos', 'Error')
+      
+      })
     );
 
   }

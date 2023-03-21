@@ -38,28 +38,28 @@
               <label class="label-form">Nombres</label>
               <mat-form-field class="full-width">
                 <mat-label>Nombres</mat-label>
-                <input matInput placeholder="nombres" [value]="user.userInfo.nombres">
+                <input type="text" matInput placeholder="nombres" [(ngModel)]="userToUpdate.nombres" name="nombres" >
               </mat-form-field>
             </div>
             <div>
               <label class="label-form">Apellidos</label>
               <mat-form-field class="full-width">
                 <mat-label>Apellidos</mat-label>
-                <input matInput placeholder="apellidos" [value]="user.userInfo.apellidos">
+                <input type="text" matInput placeholder="apellidos" [(ngModel)]="userToUpdate.apellidos" name="apellidos" >
               </mat-form-field>
             </div>
             <div>
               <label class="label-form">Email</label>
               <mat-form-field class="full-width">
-                <mat-label>Nombres</mat-label>
-                <input matInput placeholder="email" [value]="user.userInfo.email">
+                <mat-label>Email</mat-label>
+                <input type="text" matInput placeholder="email" [(ngModel)]="userToUpdate.email" name="email" [disabled]="true">
               </mat-form-field>
             </div>
             <div>
               <label class="label-form">Telefono</label>
               <mat-form-field class="full-width">
                 <mat-label>Telefono</mat-label>
-                <input matInput placeholder="telefono" [value]="user.userInfo.telefono">
+                <input type="text" matInput placeholder="telefono" [(ngModel)]="userToUpdate.telefono" name="telefono" >
               </mat-form-field>
             </div>
           </div>
@@ -69,21 +69,21 @@
               <label class="label-form">Contraseña Actual</label>
               <mat-form-field class="full-width">
                 <mat-label>Contraseña Actual</mat-label>
-                <input matInput placeholder="contraseña actual">
+                <input type="password" matInput placeholder="contraseña actual" [(ngModel)]="userToUpdate.currentPassword" name="currentPassword" >
               </mat-form-field>
             </div>
             <div>
               <label class="label-form">Contraseña Nueva</label>
               <mat-form-field class="full-width">
                 <mat-label>Contraseña Nueva</mat-label>
-                <input matInput placeholder="contraseña nueva">
+                <input type="password" matInput placeholder="contraseña nueva" [(ngModel)]="userToUpdate.newPassword" name="newPassword" >
               </mat-form-field>
             </div>
             <div>
               <label class="label-form">Confirmar Contraseña Nueva</label>
               <mat-form-field class="full-width">
                 <mat-label>Confirmar Contraseña Nueva</mat-label>
-                <input matInput placeholder="contraseña nueva">
+                <input type="password" matInput placeholder="contraseña nueva" [(ngModel)]="userToUpdate.confirmPassword" name="confirmPassword" >
               </mat-form-field>
             </div>
           </div>

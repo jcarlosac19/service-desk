@@ -116,7 +116,13 @@ export class UserService {
 
   // Update the user on the server (email, pass, etc)
   update(user: any): Observable<UserResponse> {
-    return this.apiService.put('/user', { user }).pipe(
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': `${token}`,
+    });
+    return this.apiService.put('/update-user',  user, { headers } ).pipe(
       map((data) => {
         // Update the currentUser observable
         this.currentUserSubject.next(data.user);
