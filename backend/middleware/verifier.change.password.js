@@ -5,9 +5,9 @@ const bcrypt = require('bcryptjs');
 const verifyPassword = {};
 
 verifyPassword.validateExistingUser = async (req, res, next) => {
-  const { email } = req.body;
+  const { id } = req.body;
   try {
-    const response = await getUserByEmail(email);
+    const response = await getUserById(id);
     if (helper.isNullOrWhitespace(response)) {
       res.status(404).send({ message: 'No se encontro el usuario.' });
       return;
@@ -20,9 +20,9 @@ verifyPassword.validateExistingUser = async (req, res, next) => {
 };
 
 verifyPassword.verifyCurrentPassword = async (req, res, next) => {
-  const { email, currentPassword } = req.body;
+  const { id, currentPassword } = req.body;
   try {
-    const response = await getUserByEmail(email);
+    const response = await getUserById(id);
     if (helper.isNullOrWhitespace(currentPassword)) {
       next();
       return;
@@ -66,9 +66,9 @@ verifyPassword.verifyNewPassword = async (req, res, next) => {
   }
 };
 
-const getUserByEmail = async (email) => {
+const getUserById = async (id) => {
   try{
-    const response = await Usuario.findOne({ email });
+    const response = await Usuario.findById({ _id: id });
     return !helper.isNullOrUndefined(response) ? response : '';
   }catch(err){
     console.log(err);

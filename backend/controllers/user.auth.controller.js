@@ -116,7 +116,7 @@ exports.updateUser = async (req, res) => {
     }),
   };
 
-  if(helper.isObject(userToUpdate)) return;
+  if(!helper.isObject(userToUpdate)) return;
 
   try {
     const response = await Usuario.findOneAndUpdate({ email }, userToUpdate, {
