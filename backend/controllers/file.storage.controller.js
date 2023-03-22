@@ -63,9 +63,36 @@ exports.downloadFile = async function (req, res) {
       res.status(500).send({error: err, message: "No se pudo obtener el archivo."})
     });
   } catch(err){
+    console.log(err);
     res.status(500).send({message: "No se encontro el archivo."}); 
   }
 };
+
+exports.downloadProfileImg = async function(req, res) {
+  const id = req.params.id;
+  try{
+    const auth = await authenticator.authorize();
+    const service = google.drive({version: 'v3', auth});
+    await service.files.get(
+      { fileId: id, alt: 'media'},
+      { responseType: 'arraybuffer' }
+    ).then(content => {
+      res.set({
+        'Content-Type': 'application/octet-stream ',
+        'Content-Disposition': `attachment; filename="img.jpg"`,
+        'Cache-Control' : 'private'
+      })
+      .status(content.status)
+      .send(Buffer.from(content.data));
+    }).catch(err =>{
+      console.log(err);
+      res.status(500).send({error: err, message: "No se pudo obtener el archivo."})
+    });
+  } catch(err){
+    console.log(err);
+    res.status(500).send({message: "No se encontro el archivo."}); 
+  }
+}
 
 exports.getListOfFiles = async (req, res) =>{
   const id = req.params.id;

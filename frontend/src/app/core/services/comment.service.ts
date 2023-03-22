@@ -1,6 +1,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {
   CommentCreate,
   CommentPushing,
@@ -17,7 +18,8 @@ export class CommentService {
   constructor(
     private jwtService: JwtService,
     private apiService: ApiService<CommentResponse>,
-    private apiServicePushing: ApiService<CommentPushing>
+    private apiServicePushing: ApiService<CommentPushing>,
+    private http:HttpClient
   ) {}
 
   getCommentsByTicketId(id: string): Observable<CommentResponse[]> {
@@ -45,4 +47,18 @@ export class CommentService {
 
     return this.apiServicePushing.post('/comentarios', comment, {headers});
   }
+
+  downloadFile(attachmentId: String):Observable<any>{
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+
+    const headers = new HttpHeaders({
+      'x-access-token': `${token}`,
+    });
+
+    return this.http.get(`http://localhost:3000/api/v1/archivos/${attachmentId}`, { 
+      headers , responseType: 'arraybuffer'
+    });
+  }
+
 }
