@@ -118,10 +118,13 @@ export class HistoryTicketsService {
       'Content-Type': 'application/json',
       'x-access-token': `${token}`,
     });
+    const params = new HttpParams()
+      .set('fechaInicio', request.dateStart.toISOString())
+      .set('fechaFin', request.dateEnd.toISOString());
 
     return this.getReportService.getAll(
-      `/historico-reporte?fechaInicio=${request.dateStart}&fechaFin=${request.dateEnd}`,
-      new HttpParams(),
+      `/historico-reporte`,
+      params,
       headers
     );
   }
@@ -133,10 +136,13 @@ export class HistoryTicketsService {
       'Content-Type': 'application/json',
       'x-access-token': `${token}`,
     });
+    const params = new HttpParams()
+      .set('fechaInicio', request.dateStart.toISOString())
+      .set('fechaFin', request.dateEnd.toISOString());
 
     return this.getReportService.getAll(
-      `/historico-reporte-departamentos?fechaInicio=${request.dateStart}&fechaFin=${request.dateEnd}`,
-      new HttpParams(),
+      `/historico-reporte-departamentos`,
+      params,
       headers
     );
   }  

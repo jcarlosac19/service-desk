@@ -56,9 +56,11 @@ export class FileStorageServices {
       'x-access-token': `${token}`,
     });
 
-    return this.http.get(`http://localhost:3000/api/v1/archivos/foto/${attachmentId}`, { 
-      headers , responseType: 'arraybuffer'
-    });
+    const responseType = {
+      responseType: 'arraybuffer'
+    }
+    
+    return this.getService.get(`/archivos/foto/${attachmentId}`, new HttpParams(), headers, responseType);
   }
 
   getListOfFiles(tickeId: Number): Observable<FileMetadataResponse[]> {
