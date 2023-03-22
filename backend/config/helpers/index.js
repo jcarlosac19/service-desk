@@ -29,4 +29,19 @@ function groupBy(objectArray, property) {
   }, {});
 }
 
-module.exports = { isNullOrWhitespace, getDiffInHours,  isNullOrUndefined, formateDateShort, groupBy};
+function isObject(value) {
+  return (
+    !isNullOrUndefined(value) &&
+    typeof value === 'object' &&
+    Object.keys(value).length > 0
+  );
+}
+
+module.exports = {
+  isNullOrWhitespace,
+  getDiffInHours,
+  isNullOrUndefined,
+  formateDateShort,
+  groupBy,
+  isObject,
+};
