@@ -178,8 +178,8 @@ exports.obtenerReporte = async (req, res) => {
         ticketId,
         email_creador,
         asignado,
-        creado_a,
-        compleado_a,
+        fechaCreacion: creado_a,
+        fechaCompletado: compleado_a,
         tiempoEstimadoResolucion: tiempoEstimadoResolucion + ' horas',
         tiempoRealResolucion: tiempoRealResolucion.toFixed(2) + ' horas',
         percentageSLA,
@@ -231,8 +231,8 @@ exports.obtenerReportePorDepto = async (req, res) => {
       const { nombreDepartamento } = departamento_id;
       return {
         ticketId,
-        creado_a: helper.formateDateShort(creado_a),
-        compleado_a: helper.isNullOrWhitespace(compleado_a)
+        fechaCreacion: helper.formateDateShort(creado_a),
+        fechaCompletado: helper.isNullOrWhitespace(compleado_a)
           ? 'Sin completar'
           : helper.formateDateShort(compleado_a),
         email_creador: email,
