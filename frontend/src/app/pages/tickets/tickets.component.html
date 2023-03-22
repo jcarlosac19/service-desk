@@ -1,7 +1,7 @@
 <main class="main-content-ticket-detail">
-    <div class="mb-5 overflow-auto">
-        <div class="d-flex mt-10 overflow-auto">
-            <div class="col-lg-4">
+    <div class="mb-5 ">
+        <div class="d-flex mt-10 ">
+            <div class="col-lg-4 left-aside-details-container">
                 <aside class="user-info-wrapper" style="background-color: white;">
                     <div class="user-cover" style="background-image: url(https://bootdey.com/img/Content/bg1.jpg);">
                         <div class="info-label" data-toggle="tooltip" title=""
@@ -10,7 +10,7 @@
                     </div>
                     <div class="user-info">
                         <div class="user-avatar">
-                            <img [src]="userProfileImage" alt="User">
+                            <img loading="lazy" [src]="userProfileImage" alt="User">
                         </div>
                         <div class="user-data capitalize">
                             <h4>{{ ticket.creador }}</h4><span>Joined {{getDateCreatorJoined()}}</span>
@@ -75,7 +75,7 @@
                 </div>
                 
                     <div class="comment" *ngFor="let comment of comments">
-                        <div class="comment-author-ava"><img [src]="comment.img_url" alt="Avatar"></div>
+                        <div class="comment-author-ava"><img loading="lazy" [src]="comment.img_url" alt="Avatar"></div>
                         <div class="comment-body">
                             <p class="comment-text"> {{comment?.contenido}} .</p>
                             <div class="comment-footer capitalize"><span class="comment-meta"> {{comment.creador.nombres}}

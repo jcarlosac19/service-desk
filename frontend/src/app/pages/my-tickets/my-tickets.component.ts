@@ -11,7 +11,33 @@ import { LoadingService } from 'src/app/shared/loading';
 @Component({
   selector: 'app-my-tickets',
   templateUrl: './my-tickets.component.html',
-  styles: [],
+  styles: [`
+    .table-container::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+    
+    .table-container::-webkit-scrollbar:vertical {
+        width:10px;
+    }
+
+    .table-container::-webkit-scrollbar-button:increment,.table-container::-webkit-scrollbar-button {
+        display: none;
+    } 
+    
+    .table-container::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+    
+    .table-container::-webkit-scrollbar-thumb {
+        background-color: #797979;
+        border-radius: 20px;
+        border: 2px solid #f1f2f3;
+    }
+    
+    .table-container::-webkit-scrollbar-track {
+        border-radius: 10px;  
+    }
+  `],
 })
 export class MyTicketsComponent implements OnInit {
   private tickets: Ticket[] = [];

@@ -76,6 +76,7 @@ img:not([src]) {
     position: relative;
     width: 125px;
     height: 125px;
+    object-fit: cover;
 }
 
 .user-info-wrapper .user-info .user-avatar>img {
@@ -148,7 +149,6 @@ img:not([src]) {
         border: 1px solid #e1e7ec;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
-        overflow-y: auto;
     }
     
     .user-info-wrapper .user-cover {
@@ -163,18 +163,50 @@ img:not([src]) {
         background-size: cover
     }
 
-    .attachment-container {
-        overflow-y: auto;
-        height: 115px;
+    .attachment-group {
+        overflow-y: auto !important;
+        height: auto !important;
     }
 
     .main-content-ticket-detail {
-        overflow-y: auto;
         height: 100%;
     }
 
-    .overflow-y-auto {
+    .left-aside-details-container {
         overflow-y: auto;
+        height: 85.5vh;
+    }
+
+    .left-aside-details-container::-webkit-scrollbar,
+    .right-aside-details-container::-webkit-scrollbar {
+        -webkit-appearance: none;
+    }
+    
+    .left-aside-details-container::-webkit-scrollbar:vertical,
+    .right-aside-details-container::-webkit-scrollbar:vertical {
+        width:10px;
+    }
+
+    .left-aside-details-container::-webkit-scrollbar-button:increment,.left-aside-details-container::-webkit-scrollbar-button,
+    .right-aside-details-container::-webkit-scrollbar-button:increment,.right-aside-details-container::-webkit-scrollbar-button {
+        display: none;
+    } 
+    
+    .left-aside-details-container::-webkit-scrollbar:horizontal,
+    .right-aside-details-container::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+    
+    .left-aside-details-container::-webkit-scrollbar-thumb,
+    .right-aside-details-container::-webkit-scrollbar-thumb {
+        background-color: #797979;
+        border-radius: 20px;
+        border: 2px solid #f1f2f3;
+    }
+    
+    .left-aside-details-container::-webkit-scrollbar-track,
+    .right-aside-details-container::-webkit-scrollbar-track {
+        border-radius: 10px;  
     }
 
     .right-aside-details-container {
@@ -197,7 +229,6 @@ img:not([src]) {
         border: 1px solid #e1e7ec;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
-        overflow-y: auto;
     }
     
     .user-info-wrapper .user-cover {
@@ -218,15 +249,16 @@ img:not([src]) {
     }
 
     .main-content-ticket-detail {
-        overflow-y: auto;
+        /* overflow-y: auto; */
         height: 100%;
     }
 
-    .overflow-y-auto {
+    .right-aside-details-container {
         overflow-y: auto;
+        height: 85.5vh;
     }
 
-    .right-aside-details-container {
+    .left-aside-details-container {
         overflow-y: auto;
         height: 85.5vh;
     }
@@ -478,7 +510,7 @@ a.list-group-item, .list-group-item-action {
     border-radius: 3px;
     background-color: white;
     overflow: visible;
-    height: fit-content;
+    height: auto;
 }
 
 .attachment-section {
