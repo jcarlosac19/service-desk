@@ -30,7 +30,8 @@ import { ViewChild, ElementRef } from "@angular/core";
 import { FileMetadata } from 'src/app/core/interfaces/files.storage.interfaces';
 import { saveAs } from 'file-saver';
 import { LoadingService } from 'src/app/shared/loading/index';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, take } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tickets',
@@ -74,7 +75,7 @@ export class TicketsComponent implements OnInit {
   fileToUpload: File;
 
   shortLink: string = "";
-
+  userProfileImage: any;
 
   columns: ColumnTable[] = [
     {
@@ -145,9 +146,11 @@ export class TicketsComponent implements OnInit {
     private statusService: StatusService,
     private storageService: FileStorageServices,
     private loadingService: LoadingService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
+    this.loadingService.setLoading(true);
     this.servicesSubcription$.push(
       this.activeRoute.params.subscribe((params) => {
         this.servicesSubcription$.push(
@@ -156,6 +159,18 @@ export class TicketsComponent implements OnInit {
             this.ticket = this.ticketService.materializeResponseToTicketById(ticket);
             this.ticketPadded = (this.ticket._id.toString()).padStart(5,"0");
             this.getTicketAttachements();
+
+            this.storageService.downloadProfileImg(this.ticket.foto_perfil).subscribe(img =>{
+              const blob_data: Blob = new Blob([img], {
+                type: "image/jpeg"
+              });
+              const reader = new FileReader();
+              reader.readAsDataURL(blob_data);
+              reader.onloadend = () => {
+                const base64data = reader.result?.toString();
+                this.userProfileImage = base64data;
+                };
+              });
           })
         )
         this.servicesSubcription$.push(
@@ -163,6 +178,19 @@ export class TicketsComponent implements OnInit {
           .getCommentsByTicketId(params['id'])
           .subscribe((comments) => {
             this.comments = comments;
+            this.comments.forEach(data => {
+              this.storageService.downloadProfileImg(data.creador.foto_perfil).subscribe(img =>{
+                const blob_data: Blob = new Blob([img], {
+                  type: "image/jpeg"
+                });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob_data);
+                reader.onloadend = () => {
+                  const base64data = reader.result?.toString();
+                  data.img_url = base64data;
+                };
+              });
+            });
           })
         )
         this.servicesSubcription$.push(
@@ -190,20 +218,38 @@ export class TicketsComponent implements OnInit {
       
       })
     );
-
+    this.loadingService.setLoading(false);
   }
 
   ngOnDestroy(): void {
     this.servicesSubcription$.forEach(sub => sub.unsubscribe());
   }
 
+  getLatestComments(){
+    this.commentService
+          .getCommentsByTicketId(this.ticket._id.toString())
+          .subscribe((comments) => {
+            this.comments = comments;
+            this.comments.forEach(data => {
+              this.storageService.downloadProfileImg(data.creador.foto_perfil).subscribe(img =>{
+                const blob_data: Blob = new Blob([img], {
+                  type: "image/jpeg"
+                });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob_data);
+                reader.onloadend = () => {
+                  const base64data = reader.result?.toString();
+                  data.img_url = base64data;
+                };
+              });
+            });
+          })
+  }
   showHistoryTicket() {
     this.servicesSubcription$.push(
       this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
         this.historyTable = this.historyService.assignTimeResolution(history, this.flujos, this.ticket);
-  
         this.expectedResolutionTime = this.historyTable[0].tiempoEstimadoResolucion || '';
-  
         this.totalTimeResolution = this.historyTable.map(h => {
           if(h.tiempoRealResolucion){
             return parseFloat(h.tiempoRealResolucion);
@@ -225,11 +271,12 @@ export class TicketsComponent implements OnInit {
       asunto: this.ticket.asunto,
       contenido: this.comment,
       ticket: this.ticket._id,
+      img_url: this.userProfileImage
     };
     this.servicesSubcription$.push(
       this.commentService.createComment(request).subscribe((comment) => {
         this.toastr.success(comment.message, 'Exito');
-        this.comments = comment.comentario;
+        this.getLatestComments();
         this.comment = '';
       })
     )

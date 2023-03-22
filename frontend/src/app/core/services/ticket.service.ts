@@ -80,7 +80,8 @@ export class TicketService {
         flujo: ticketResponse.trabajo_flujo_id.nombre,
         modificador: ticketResponse.modificador_id?.email ?? '',
         creado_a: new Date(ticketResponse.creado_a).toLocaleDateString('es-ES'),
-        actualizado_a: new Date(ticketResponse.actualizado_a).toLocaleDateString('es-ES')
+        actualizado_a: new Date(ticketResponse.actualizado_a).toLocaleDateString('es-ES'),
+        foto_perfil: ticketResponse.creador_id.foto_perfil
       };
       tickets.push(ticket);
     });
@@ -99,7 +100,8 @@ export class TicketService {
       flujo: response.trabajo_flujo_id.nombre,
       modificador: response.modificador_id?.email ?? '',
       creado_a: new Date(response.creado_a).toLocaleDateString('es-ES'),
-      actualizado_a: new Date(response.actualizado_a).toLocaleDateString('es-ES')
+      actualizado_a: new Date(response.actualizado_a).toLocaleDateString('es-ES'),
+      foto_perfil: response.creador_id.foto_perfil
     };
     return ticket;
   }

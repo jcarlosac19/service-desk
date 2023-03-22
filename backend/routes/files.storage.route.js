@@ -13,6 +13,13 @@ app.get("/archivos/:id",
     fileStorage.downloadFile
 );
 
+app.get("/archivos/foto/:id",
+    [
+        verifyAccessLevel.isUser
+    ],
+    fileStorage.downloadProfileImg
+);
+
 app.get("/archivos/lista/:id", 
     [
         verifyAccessLevel.isUser

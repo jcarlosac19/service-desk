@@ -94,6 +94,7 @@ export interface CreadorIDClass {
   es_usuario:       boolean;
   esta_activo:      boolean;
   creado_a:         Date;
+  foto_perfil:      string;
   actualizado_a:    Date;
 }
 
@@ -109,6 +110,7 @@ export interface Ticket {
   modificador:      string;
   creado_a:         string;
   actualizado_a:    string;
+  foto_perfil:      string;
   [key: string]: any;
 }
 

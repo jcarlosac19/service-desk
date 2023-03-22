@@ -48,6 +48,19 @@ export class FileStorageServices {
     });
   }
 
+  downloadProfileImg(attachmentId: String):Observable<any>{
+    const token = this.jwtService.getToken();
+    if (helper.isNullOrWhitespace(token)) throw new Error('No token');
+
+    const headers = new HttpHeaders({
+      'x-access-token': `${token}`,
+    });
+
+    return this.http.get(`http://localhost:3000/api/v1/archivos/foto/${attachmentId}`, { 
+      headers , responseType: 'arraybuffer'
+    });
+  }
+
   getListOfFiles(tickeId: Number): Observable<FileMetadataResponse[]> {
     const token = this.jwtService.getToken();
     if (helper.isNullOrWhitespace(token)) throw new Error('No token');

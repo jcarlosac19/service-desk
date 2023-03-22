@@ -10,8 +10,7 @@
                     </div>
                     <div class="user-info">
                         <div class="user-avatar">
-                            <a class="edit-avatar" href="#"></a><img
-                                src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="User">
+                            <img [src]="userProfileImage" alt="User">
                         </div>
                         <div class="user-data capitalize">
                             <h4>{{ ticket.creador }}</h4><span>Joined {{getDateCreatorJoined()}}</span>
@@ -76,7 +75,7 @@
                 </div>
                 
                     <div class="comment" *ngFor="let comment of comments">
-                        <div class="comment-author-ava"><img src="https://i.pinimg.com/originals/ff/a0/9a/ffa09aec412db3f54deadf1b3781de2a.png" alt="Avatar"></div>
+                        <div class="comment-author-ava"><img [src]="comment.img_url" alt="Avatar"></div>
                         <div class="comment-body">
                             <p class="comment-text"> {{comment?.contenido}} .</p>
                             <div class="comment-footer capitalize"><span class="comment-meta"> {{comment.creador.nombres}}

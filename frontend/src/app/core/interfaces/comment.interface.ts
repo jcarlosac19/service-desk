@@ -11,12 +11,14 @@ export interface CommentResponse {
   creado_a: Date;
   actualizado_a: Date;
   message?: string;
+  img_url: any;
 }
 
 export interface CommentCreate {
   asunto: string;
   contenido: string;
   ticket: number;
+  img_url: any;
 }
 
 export interface CommentPushing {

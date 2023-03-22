@@ -40,6 +40,8 @@ export interface GetAllUserResponse {
   esta_activo:      boolean;
   creado_a:         Date;
   actualizado_a:    Date;
+  foto_perfil:      string;
+  img_url:          string;
 }
 
 export interface UpdateUserRequest {
