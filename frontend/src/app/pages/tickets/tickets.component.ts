@@ -191,7 +191,6 @@ export class TicketsComponent implements OnInit {
                 };
               });
             });
-            console.log(this.comments);
           })
         )
         this.servicesSubcription$.push(
@@ -225,6 +224,26 @@ export class TicketsComponent implements OnInit {
     this.servicesSubcription$.forEach(sub => sub.unsubscribe());
   }
 
+  getLatestComments(){
+    this.commentService
+          .getCommentsByTicketId(this.ticket._id.toString())
+          .subscribe((comments) => {
+            this.comments = comments;
+            this.comments.forEach(data => {
+              this.storageService.downloadProfileImg(data.creador.foto_perfil).subscribe(img =>{
+                const blob_data: Blob = new Blob([img], {
+                  type: "image/jpeg"
+                });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob_data);
+                reader.onloadend = () => {
+                  const base64data = reader.result?.toString();
+                  data.img_url = base64data;
+                };
+              });
+            });
+          })
+  }
   showHistoryTicket() {
     this.servicesSubcription$.push(
       this.historyService.getHistoryByTicket(this.ticket._id).subscribe((history) => {
@@ -245,18 +264,18 @@ export class TicketsComponent implements OnInit {
     return this.columns.filter((column: ColumnTable) => column.show);
   }
 
-
   onSubmitComment(event: any) {
     event.preventDefault();
     const request: CommentCreate = {
       asunto: this.ticket.asunto,
       contenido: this.comment,
       ticket: this.ticket._id,
+      img_url: this.userProfileImage
     };
     this.servicesSubcription$.push(
       this.commentService.createComment(request).subscribe((comment) => {
         this.toastr.success(comment.message, 'Exito');
-        this.comments = comment.comentario;
+        this.getLatestComments();
         this.comment = '';
       })
     )

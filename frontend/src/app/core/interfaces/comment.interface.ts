@@ -18,6 +18,7 @@ export interface CommentCreate {
   asunto: string;
   contenido: string;
   ticket: number;
+  img_url: any;
 }
 
 export interface CommentPushing {
