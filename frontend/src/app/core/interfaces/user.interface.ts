@@ -22,7 +22,8 @@ export interface UserInfo  {
   nombres: string,
   apellidos: string,
   telefono: string,
-  rol: string
+  rol: string,
+  fotoPerfil: string,
 }
 
 export interface GetUserResponse {

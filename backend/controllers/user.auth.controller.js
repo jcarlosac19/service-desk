@@ -56,6 +56,7 @@ exports.login = async (req, res) => {
           apellidos: user.apellidos,
           email: user.email,
           telefono: user.telefono,
+          fotoPerfil: user.foto_perfil,
           rol: user.es_administrador ? 'Administrador': 'usuario'
         }
       });
@@ -84,6 +85,7 @@ exports.getUserByEmail = async(req, res) => {
           apellidos: userFound.apellidos,
           email: userFound.email,
           telefono: userFound.telefono,
+          fotoPerfil: userFound.foto_perfil,
           rol: userFound.es_administrador ? 'Administrador': 'usuario'
         }
       }});

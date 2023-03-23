@@ -90,7 +90,9 @@ export class ReportingComponent {
   }
 
   ngOnDestroy() {
-    this.destroySubscription$.unsubscribe();
+    if (this.destroySubscription$) {
+      this.destroySubscription$.unsubscribe();
+    }
   }
 
 

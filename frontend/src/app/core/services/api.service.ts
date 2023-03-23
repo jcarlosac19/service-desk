@@ -13,15 +13,15 @@ export class ApiService<T> {
     return throwError(error.error);
   }
 
-  get(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders()): Observable<T> {
+  get(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders(), responseType?:Object): Observable<T> {
     return this.http
-      .get<T>(`${environment.api_url}${path}`, { params, headers })
+      .get<T>(`${environment.api_url}${path}`, { params, headers, ...(responseType && (responseType)) })
       .pipe(catchError(this.formatErrors));
   }
 
-  getAll(path: string, params:HttpParams, headers:HttpHeaders): Observable<T[]> {
+  getAll(path: string, params:HttpParams = new HttpParams(), headers:HttpHeaders = new HttpHeaders()): Observable<T[]> {
     return this.http
-      .get<T[]>(`${environment.api_url}${path}`, { headers, params })
+      .get<T[]>(`${environment.api_url}${path}`, { params, headers })
       .pipe(catchError(this.formatErrors));
   }
 

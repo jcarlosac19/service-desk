@@ -7,7 +7,7 @@
         <img loading="lazy" src="https://demos.creative-tim.com/paper-dashboard-angular/assets/img/damir-bosnjak.jpg" alt="back-image" class="back-image" />
       </div>
       <div class="user-image-container">
-        <img loading="lazy" src="https://www.w3schools.com/howto/img_avatar.png" class="user-image" alt="user-image">
+        <img loading="lazy" [src]="user.userInfo.fotoPerfil" class="user-image" alt="user-image">
       </div>
       <div class="user-info">
         <h4 class="user-name">{{user.userInfo.nombres}} {{user.userInfo.apellidos}} </h4>

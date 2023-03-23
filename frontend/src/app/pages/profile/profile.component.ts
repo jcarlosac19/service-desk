@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs'
 import { JwtService, UserService } from 'src/app/core';
 import { UpdateUserRequest, UserResponse } from 'src/app/core/interfaces/user.interface';
+import { FileStorageServices } from 'src/app/core/services/file.storage.service';
 import { LoadingService } from 'src/app/shared/loading';
 import * as helper from '../../core/helpers/index';
 
@@ -21,6 +22,7 @@ export class ProfileComponent {
     private userService: UserService,
     private toastr: ToastrService,
     private router: Router,
+    private storageService: FileStorageServices,
     private loadingService: LoadingService,
   ) {
     this.user = JSON.parse(this.jwtService.getUserInfo());
@@ -38,7 +40,25 @@ export class ProfileComponent {
   }
 
   ngOnInit(): void {
-
+    this.loadingService.setLoading(true);
+    this.storageService.downloadProfileImg(this.user.userInfo.fotoPerfil)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          const blobData: Blob = new Blob([response], { type: 'image/jpeg' });
+          const reader = new FileReader();
+          reader.readAsDataURL(blobData);
+          reader.onloadend = () => {
+            const base64data = reader.result;
+            this.user.userInfo.fotoPerfil = base64data as string;
+            this.loadingService.setLoading(false);
+          }
+        },
+        error: (error) => {
+          this.toastr.error('No se pudo cargar la foto de perfil', 'Error');
+          this.loadingService.setLoading(false);
+        },
+      });
   }
 
   ngOnDestroy(): void {
