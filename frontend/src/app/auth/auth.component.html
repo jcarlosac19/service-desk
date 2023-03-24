@@ -7,7 +7,10 @@
     <div>
       <div>
         <div class="bg-light rounded p-3">
-          <h1 class="text-center">Dynamic Incident System | DIS</h1>
+          <!-- <h1 class="text-center">Dynamic Incident System | DIS</h1> -->
+          <div style="margin: .5rem 10rem"> 
+            <img src="../../assets/logo-dis.png" alt="logo-dis" style="width: 100%; height: 90px; object-fit: cover;" />
+          </div>
           <h4 class="text-center">{{ title }}</h4>
           <app-list-errors [errors]="errors"></app-list-errors>
           <form [formGroup]="authForm" (ngSubmit)="handleOnSubmitForm()" ngModel=>
