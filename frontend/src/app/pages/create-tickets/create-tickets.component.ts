@@ -157,12 +157,12 @@ export class CreateTicketsComponent {
           this.ticketResponse = response;
           this.toastr.success(this.ticketResponse?.message, 'Ticket creado');
           this.ticketForm.reset();
+          this.router.navigateByUrl('/my-tickets');
           this.loadingService.setLoading(false);
         },
         error: (err) => {
           this.toastr.error(err?.message, 'Error al crear ticket');
           this.ticketForm.reset();
-          this.router.navigateByUrl('/my-tickets');
           this.loadingService.setLoading(false);
         },
       })
